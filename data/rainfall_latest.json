@@ -1,204 +1,96 @@
 {
-  "generated_at_utc": "2026-08-30T07:28:12.889004+00:00",
+  "generated_at_utc": "2026-08-30T08:57:20.696256+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
-      "rainfall_mm_24h": 4.2,
+      "rainfall_mm_24h": 0.0,
       "data_type": "ESTIMATE",
       "source_station": "Golaghat",
       "note": "No direct station reported for Sivasagar today - showing nearest available station (Golaghat) as an estimate."
     },
     "Charaideo": {
-      "rainfall_mm_24h": 4.2,
+      "rainfall_mm_24h": 0.0,
       "data_type": "ESTIMATE",
       "source_station": "Golaghat",
       "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
     }
   },
   "debug_chief_amount_stations": {
-    "GHARMURA": {
-      "raw_name": "GHARMURA",
-      "rainfall_mm": 90.0
-    },
-    "DHOLAI": {
-      "raw_name": "DHOLAI",
-      "rainfall_mm": 80.0
-    },
-    "ALGAPURCIRCLEAWS": {
-      "raw_name": "ALGAPURCIRCLEAWS",
-      "rainfall_mm": 50.0
-    },
-    "UMRANGSHU": {
-      "raw_name": "UMRANGSHU(ARG)",
-      "rainfall_mm": 40.0
-    },
-    "JORHAT": {
-      "raw_name": "JORHAT",
-      "rainfall_mm": 40.0
-    },
     "TEZPUR": {
       "raw_name": "TEZPUR",
-      "rainfall_mm": 40.0
-    },
-    "MARIYANIAEGCL": {
-      "raw_name": "MARIYANIAEGCL (AWS)",
-      "rainfall_mm": 40.0
-    },
-    "JORHATAGRI": {
-      "raw_name": "JORHATAGRI",
-      "rainfall_mm": 40.0
-    },
-    "AAUBARBHETAJORHAT": {
-      "raw_name": "AAU_BARBHETA_JORHAT(AWS)",
-      "rainfall_mm": 40.0
-    },
-    "SRIBHUMI": {
-      "raw_name": "SRIBHUMI",
       "rainfall_mm": 30.0
     },
-    "LAKHIPUR": {
-      "raw_name": "LAKHIPUR(ARG)",
+    "KVKJORHAT": {
+      "raw_name": "KVKJORHAT(AWS)",
       "rainfall_mm": 30.0
     },
-    "HAFLONG": {
-      "raw_name": "HAFLONG",
+    "BISWANATHCOLLEGEOFAGRICULTUREBISWANATHCHARIALI": {
+      "raw_name": "BISWANATHCOLLEGEOFAGRICULTUREBISWANATHCHARIALI(AWS)(DISTBISWANATH)",
       "rainfall_mm": 30.0
+    },
+    "AGOMANI": {
+      "raw_name": "AGOMANI (AWS)",
+      "rainfall_mm": 20.0
+    },
+    "GHARMURA": {
+      "raw_name": "GHARMURA",
+      "rainfall_mm": 20.0
     },
     "SHILLONGANI": {
       "raw_name": "SHILLONGANI (ARG)",
-      "rainfall_mm": 30.0
-    },
-    "NERIWALAM": {
-      "raw_name": "NERIWALAM (AWS)",
-      "rainfall_mm": 30.0
-    },
-    "ZRSAKBARPUR": {
-      "raw_name": "ZRS AKBARPUR",
-      "rainfall_mm": 30.0
-    },
-    "ZRSSHILLONGANI": {
-      "raw_name": "ZRS_SHILLONGANI(AWS)",
-      "rainfall_mm": 30.0
-    },
-    "PANCHGRAMAEGCL": {
-      "raw_name": "PANCHGRAM AEGCL",
       "rainfall_mm": 20.0
-    },
-    "DHARAMTUL": {
-      "raw_name": "DHARAMTUL",
-      "rainfall_mm": 10.0
-    },
-    "SILCHAR": {
-      "raw_name": "SILCHAR",
-      "rainfall_mm": 20.0
-    },
-    "APGHAT": {
-      "raw_name": "APGHAT",
-      "rainfall_mm": 20.0
-    },
-    "BPGHAT": {
-      "raw_name": "BPGHAT",
-      "rainfall_mm": 20.0
-    },
-    "KHONIKAR": {
-      "raw_name": "KHONIKAR(ARG)",
-      "rainfall_mm": 20.0
-    },
-    "DHANSIRI": {
-      "raw_name": "DHANSIRI(ARG)",
-      "rainfall_mm": 20.0
-    },
-    "DIPHU": {
-      "raw_name": "DIPHU",
-      "rainfall_mm": 20.0
-    },
-    "GOLAGHATCWC": {
-      "raw_name": "GOLAGHATCWC",
-      "rainfall_mm": 20.0
-    },
-    "MANGALDAIKVK": {
-      "raw_name": "MANGALDAIKVK(AWS)",
-      "rainfall_mm": 10.0
-    },
-    "GOSSAIGAONAGRI": {
-      "raw_name": "GOSSAIGAONAGRI",
-      "rainfall_mm": 10.0
-    },
-    "KOKRAJHAR": {
-      "raw_name": "KOKRAJHAR",
-      "rainfall_mm": 10.0
-    },
-    "PUTHIMARI": {
-      "raw_name": "PUTHIMARI",
-      "rainfall_mm": 10.0
-    },
-    "NLAKHIMPUR": {
-      "raw_name": "N/LAKHIMPUR",
-      "rainfall_mm": 10.0
-    },
-    "MATIJURI": {
-      "raw_name": "MATIJURI",
-      "rainfall_mm": 10.0
-    },
-    "AMRAGHAT": {
-      "raw_name": "AMRAGHAT",
-      "rainfall_mm": 10.0
-    },
-    "BOKAJAN": {
-      "raw_name": "BOKAJAN",
-      "rainfall_mm": 10.0
     },
     "NUMALIGARH": {
       "raw_name": "NUMALIGARH",
+      "rainfall_mm": 20.0
+    },
+    "NERIWALAM": {
+      "raw_name": "NERIWALAM (AWS)",
+      "rainfall_mm": 20.0
+    },
+    "SAMAGURIAEGCL": {
+      "raw_name": "SAMAGURI AEGCL (AWS)",
+      "rainfall_mm": 20.0
+    },
+    "ZRSSHILLONGANI": {
+      "raw_name": "ZRS_SHILLONGANI(AWS)",
+      "rainfall_mm": 20.0
+    },
+    "LAHARIGHAT": {
+      "raw_name": "LAHARIGHAT(ARG)",
       "rainfall_mm": 10.0
     },
-    "GELABIL": {
-      "raw_name": "GELABIL",
+    "SIBSAGAR": {
+      "raw_name": "SIBSAGAR",
       "rainfall_mm": 10.0
     },
-    "NEAMATIGHAT": {
-      "raw_name": "NEAMATIGHAT",
+    "BAKULIA": {
+      "raw_name": "BAKULIA(ARG)",
       "rainfall_mm": 10.0
     },
-    "BORPATHAR": {
-      "raw_name": "BORPATHAR",
-      "rainfall_mm": 10.0
-    },
-    "UMPANAIAPDCL": {
-      "raw_name": "UMPANAIAPDCL",
+    "GHORAMARAAEGCL": {
+      "raw_name": "GHORAMARAAEGCL",
       "rainfall_mm": 10.0
     },
     "CNBCOLLAGEBOKAKHAT": {
-      "raw_name": "CNBCOLLAGEBOKAKHAT(AWS)",
-      "rainfall_mm": 10.0
-    },
-    "RAHAAGRI": {
-      "raw_name": "RAHAAGRI",
-      "rainfall_mm": 10.0
-    },
-    "ZRSGOSSAIGAON": {
-      "raw_name": "ZRS_GOSSAIGAON(AWS)",
-      "rainfall_mm": 10.0
-    },
-    "ZRSDIPHU": {
-      "raw_name": "ZRS_DIPHU (AWS)",
+      "raw_name": "CNBCOLLAGEBOKAKHAT (AWS)",
       "rainfall_mm": 10.0
     }
   },
   "debug_main_table_stations": {
-    "Guwahati A/P": 2.4,
+    "Guwahati A/P": 0.0,
     "Dibrugarh A/P": 0.0,
-    "Tezpur": 42.7,
-    "Silchar": 18.2,
-    "Dhubri": 1.6,
-    "Jorhat": 38.5,
-    "N/Lakhimpur": 10.8,
-    "Rangia": 3.0,
+    "Tezpur": 0.0,
+    "Silchar": 31.2,
+    "Dhubri": 0.0,
+    "Jorhat": 2.2,
+    "N/Lakhimpur": 0.0,
+    "Rangia": 4.2,
     "Mazbat": null,
     "Chaparmukh": null,
-    "Haflong": 25.4,
+    "Haflong": 1.0,
     "Goalpara": 0.0,
-    "Golaghat": 4.2,
-    "Lumding": 4.2
+    "Golaghat": 0.0,
+    "Lumding": null
   }
 }
