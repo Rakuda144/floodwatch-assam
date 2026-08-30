@@ -2,10 +2,11 @@ name: Update Flood Watch Assam Data
 
 on:
   schedule:
-    # Runs every 3 hours. Cron is in UTC - adjust if you want it aligned
-    # to specific IST times (IST = UTC+5:30).
     - cron: "0 */3 * * *"
-  workflow_dispatch: {}  # lets you also trigger it manually from GitHub's UI
+  workflow_dispatch: {}
+
+permissions:
+  contents: write  # required so the workflow can push data updates back to the repo
 
 jobs:
   update-data:
