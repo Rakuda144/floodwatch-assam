@@ -1,0 +1,60 @@
+Fetching Sivasagar (018-ubddib)...
+Fetching Bihubar (017-UBDDIB)...
+Fetching Nanglamoraghat (016-UBDDIB)...
+Fetching Desangpani (015-UBDDIB)...
+{
+  "generated_at_utc": "2026-08-30T07:29:58.904329+00:00",
+  "source": "https://ffs.india-water.gov.in/web-api/getHGStationDataForFFS/",
+  "note": "Water levels only - danger/warning/HFL thresholds must be sourced separately (e.g. CWC's SOP document) and are not returned by this endpoint.",
+  "districts": {
+    "Sivasagar": [
+      {
+        "name": "Sivasagar",
+        "river": "Dikhow",
+        "district": "Sivasagar",
+        "lat": 26.98173611,
+        "lon": 94.57904167,
+        "latest": null,
+        "status": "NO_DATA"
+      },
+      {
+        "name": "Bihubar",
+        "river": "Dikhow",
+        "district": "Sivasagar",
+        "lat": 26.85333333,
+        "lon": 94.80055556,
+        "latest": null,
+        "status": "NO_DATA"
+      },
+      {
+        "name": "Nanglamoraghat",
+        "river": "Desang",
+        "district": "Sivasagar",
+        "lat": 26.98488889,
+        "lon": 94.77666667,
+        "latest": null,
+        "status": "NO_DATA"
+      }
+    ],
+    "Charaideo": [
+      {
+        "name": "Desangpani",
+        "river": "Desang",
+        "district": "Charaideo",
+        "lat": 27.04666667,
+        "lon": 94.91222222,
+        "latest": null,
+        "status": "NO_DATA"
+      },
+      {
+        "name": "Nanglamoraghat",
+        "river": "Desang",
+        "district": "Sivasagar",
+        "lat": 26.98488889,
+        "lon": 94.77666667,
+        "latest": null,
+        "status": "NO_DATA"
+      }
+    ]
+  }
+}
