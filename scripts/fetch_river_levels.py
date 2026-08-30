@@ -15,6 +15,18 @@ import requests
 
 CWC_API_URL = "https://ffs.india-water.gov.in/web-api/getHGStationDataForFFS/"
 
+# Some government sites silently drop connections from requests that
+# don't look like a real browser. Worth testing before concluding this
+# is an IP-level block on cloud/datacenter ranges.
+REQUEST_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/124.0.0.0 Safari/537.36",
+    "Referer": "https://ffs.india-water.gov.in/",
+    "Origin": "https://ffs.india-water.gov.in",
+    "Accept": "application/json, text/plain, */*",
+}
+
 # Station code -> metadata. Codes and coordinates verified against the
 # published GUARDIAN dataset's station_locations.csv and name-code.xlsx.
 STATIONS = {
@@ -72,7 +84,7 @@ def fetch_station_data(station_code: str, days_back: int = 3) -> list:
     }
 
     try:
-        resp = requests.post(CWC_API_URL, json=payload, timeout=15)
+        resp = requests.post(CWC_API_URL, json=payload, headers=REQUEST_HEADERS, timeout=25)
         resp.raise_for_status()
         return resp.json()
     except Exception as exc:
@@ -136,4 +148,4 @@ def build_output() -> dict:
 if __name__ == "__main__":
     result = build_output()
     print(json.dumps(result, indent=2, default=str))
-  
+    
