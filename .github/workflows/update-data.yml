@@ -1,0 +1,39 @@
+name: Update Flood Watch Assam Data
+
+on:
+  schedule:
+    # Runs every 3 hours. Cron is in UTC - adjust if you want it aligned
+    # to specific IST times (IST = UTC+5:30).
+    - cron: "0 */3 * * *"
+  workflow_dispatch: {}  # lets you also trigger it manually from GitHub's UI
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Fetch rainfall data
+        run: python scripts/fetch_rainfall.py > data/rainfall_latest.json
+        continue-on-error: true  # one source failing shouldn't block the other
+
+      - name: Fetch river level data
+        run: python scripts/fetch_river_levels.py > data/river_levels_latest.json
+        continue-on-error: true
+
+      - name: Commit and push updated data
+        run: |
+          git config user.name "floodwatch-bot"
+          git config user.email "actions@github.com"
+          git add data/
+          git diff --quiet --cached || git commit -m "Auto-update flood data $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
