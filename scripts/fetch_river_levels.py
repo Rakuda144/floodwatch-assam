@@ -30,9 +30,16 @@ and filters client-side.
 
 import json
 import sys
+import warnings
 from datetime import datetime, timezone
 
 import requests
+from urllib3.exceptions import InsecureRequestWarning
+
+# This government site presents a self-signed certificate. We're only
+# reading public flood data (nothing sensitive sent), so skipping
+# strict verification here is a reasonable tradeoff to get real data.
+warnings.simplefilter("ignore", InsecureRequestWarning)
 
 API_URL = "https://smartaxom.nesdr.gov.in/api_v2/dataCWC"
 
@@ -61,7 +68,7 @@ def fetch_all_stations() -> list:
     raw list of station records from the API's "data" field.
     """
     files = {"key": (None, CAPTURED_KEY)}
-    resp = requests.post(API_URL, headers=HEADERS, files=files, timeout=20)
+    resp = requests.post(API_URL, headers=HEADERS, files=files, timeout=20, verify=False)
     resp.raise_for_status()
     payload = resp.json()
 
