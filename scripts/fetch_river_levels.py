@@ -40,7 +40,6 @@ from urllib3.exceptions import InsecureRequestWarning
 warnings.simplefilter("ignore", InsecureRequestWarning)
 
 API_URL = "https://smartaxom.nesdr.gov.in/api_v2/dataCWC"
-SCRAPERAPI_URL = "http://api.scraperapi.com"
 SCRAPER_API_KEY = os.getenv("SCRAPER_API_KEY")  # set as a GitHub Actions secret
 
 # Captured from a real browser session via DevTools (see caveat above
@@ -66,27 +65,27 @@ TARGET_DISTRICTS = {"SIVASAGAR", "CHARAIDEO"}
 def fetch_all_stations() -> list:
     """
     Replays the captured multipart/form-data POST request, routed
-    through ScraperAPI (Indian IP) when SCRAPER_API_KEY is set - this
-    bypasses the geographic 403 that direct GitHub Actions requests
-    hit. Falls back to a direct call if no key is set (e.g. local
-    testing on a home connection where no proxy is needed).
-    Returns the raw list of station records from the API's "data" field.
+    through ScraperAPI's PROXY PORT method (not the API-endpoint
+    method - that one doesn't reliably forward multipart POST bodies
+    and caused read timeouts in testing). Proxy port mode passes the
+    raw request through more faithfully, per ScraperAPI's own docs for
+    POST/PUT requests. Falls back to a direct call if no key is set
+    (e.g. local testing on a home connection where no proxy is needed).
     """
     files = {"key": (None, CAPTURED_KEY)}
 
     if SCRAPER_API_KEY:
+        # country_code passed via the proxy username, dot-separated,
+        # per ScraperAPI's documented proxy-port parameter format.
+        proxies = {
+            "http": f"http://scraperapi.country_code=in:{SCRAPER_API_KEY}"
+                    f"@proxy-server.scraperapi.com:8001",
+            "https": f"http://scraperapi.country_code=in:{SCRAPER_API_KEY}"
+                     f"@proxy-server.scraperapi.com:8001",
+        }
         resp = requests.post(
-            SCRAPERAPI_URL,
-            params={
-                "api_key": SCRAPER_API_KEY,
-                "url": API_URL,
-                "country_code": "in",
-                "keep_headers": "true",
-            },
-            headers=HEADERS,
-            files=files,
-            timeout=40,
-            verify=False,
+            API_URL, headers=HEADERS, files=files, proxies=proxies,
+            timeout=60, verify=False,
         )
     else:
         resp = requests.post(API_URL, headers=HEADERS, files=files, timeout=20, verify=False)
