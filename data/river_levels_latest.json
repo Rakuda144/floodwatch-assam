@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-08-31T05:14:58.171293+00:00",
-  "source": "https://smartaxom.nesdr.gov.in/api_v2/dataCWC",
-  "error": "403 Client Error: Forbidden for url: https://smartaxom.nesdr.gov.in/api_v2/dataCWC",
+  "generated_at_utc": "2026-08-31T08:21:01.666801+00:00",
+  "source": "https://aff.india-water.gov.in/textdata/Floodday_table_view_header.txt",
+  "error": "HTTPSConnectionPool(host='aff.india-water.gov.in', port=443): Max retries exceeded with url: /textdata/Floodday_table_view_header.txt (Caused by ConnectTimeoutError(<HTTPSConnection(host='aff.india-water.gov.in', port=443) at 0x7f9779f43110>, 'Connection to aff.india-water.gov.in timed out. (connect timeout=30)'))",
   "matched_stations": {}
 }
