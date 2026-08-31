@@ -1,5 +1,6 @@
 {
-  "generated_at_utc": "2026-08-30T23:22:12.668222+00:00",
-  "source": "https://nwdp.nwic.gov.in/dataset/6273c426-32f9-4fdf-b67f-e4e7a46d8554/resource/847f5630-f231-46c0-922d-0f2f379a5cb8/download/rwl_tel_hr_assam_999_2026_2030.csv",
-  "stations": {}
+  "generated_at_utc": "2026-08-31T03:33:34.095923+00:00",
+  "source": "https://smartaxom.nesdr.gov.in/api_v2/dataCWC",
+  "error": "HTTPSConnectionPool(host='smartaxom.nesdr.gov.in', port=443): Max retries exceeded with url: /api_v2/dataCWC (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1016)')))",
+  "matched_stations": {}
 }
