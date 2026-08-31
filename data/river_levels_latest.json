@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-08-31T08:35:09.068822+00:00",
+  "generated_at_utc": "2026-08-31T08:40:05.920001+00:00",
   "source": "https://smartaxom.nesdr.gov.in/api_v2/dataCWC",
-  "error": "HTTPConnectionPool(host='api.scraperapi.com', port=80): Read timed out. (read timeout=40)",
+  "error": "API returned success=false: {'success': False, 'message': 'Error 401 ! Unauthorized Access'}",
   "matched_stations": {}
 }
