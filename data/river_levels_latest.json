@@ -1,6 +1,7 @@
 {
-  "generated_at_utc": "2026-08-31T08:40:05.920001+00:00",
-  "source": "https://smartaxom.nesdr.gov.in/api_v2/dataCWC",
-  "error": "API returned success=false: {'success': False, 'message': 'Error 401 ! Unauthorized Access'}",
+  "generated_at_utc": "2026-08-31T08:58:30.068656+00:00",
+  "source": "https://smartaxom.nesdr.gov.in/analytics/flood/waterlevelinfo",
+  "method": "headless_browser",
+  "error": "No dataCWC response captured - either the request never fired, or it was blocked before returning valid JSON.",
   "matched_stations": {}
 }
