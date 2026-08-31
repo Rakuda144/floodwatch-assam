@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   update-data:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # testing if a real browser fingerprint alone bypasses the block - no home PC needed if this works
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
@@ -23,13 +23,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
+      - name: Install Playwright browser
+        run: playwright install --with-deps chromium
+
       - name: Fetch rainfall data
         run: python scripts/fetch_rainfall.py > data/rainfall_latest.json
         continue-on-error: true  # one source failing shouldn't block the other
 
       - name: Fetch river level data
-        env:
-          SCRAPER_API_KEY: ${{ secrets.SCRAPER_API_KEY }}
         run: python scripts/fetch_river_levels.py > data/river_levels_latest.json
         continue-on-error: true
 
