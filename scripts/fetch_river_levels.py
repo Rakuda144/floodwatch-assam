@@ -32,35 +32,51 @@ TARGET_NAMES = ["sivasagar", "sibsagar", "bihubar", "nanglamoraghat", "desangpan
 TARGET_DISTRICTS = {"SIVASAGAR", "CHARAIDEO"}
 
 
-def fetch_via_browser() -> list:
+def fetch_via_browser() -> dict:
     """
     Loads the real page in headless Chromium, waits for the page's own
     JavaScript to call the dataCWC API, and captures that response
     directly - no manual key replication needed.
+
+    Captures ANY response to dataCWC (not just 200 OK) so we can tell
+    the difference between "request never fired" and "request fired
+    but was rejected" - these need very different fixes.
     """
-    captured_data = {}
+    diagnostics = {"requests_seen": [], "data": None}
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page(ignore_https_errors=True)
 
         def handle_response(response):
-            if "dataCWC" in response.url and response.status == 200:
+            if "dataCWC" not in response.url:
+                return
+            entry = {"url": response.url, "status": response.status}
+            try:
+                body_text = response.text()
+                entry["body_preview"] = body_text[:300]
+            except Exception as e:
+                entry["body_preview"] = f"<could not read body: {e}>"
+            diagnostics["requests_seen"].append(entry)
+
+            if response.status == 200:
                 try:
                     payload = response.json()
                     if payload.get("success"):
-                        captured_data["data"] = payload.get("data", [])
+                        diagnostics["data"] = payload.get("data", [])
                 except Exception:
                     pass
 
         page.on("response", handle_response)
+        page.on("requestfailed", lambda req: diagnostics["requests_seen"].append(
+            {"url": req.url, "status": "REQUEST_FAILED", "failure": req.failure}
+        ) if "dataCWC" in req.url else None)
+
         page.goto(PAGE_URL, timeout=45000, wait_until="networkidle")
-        # Give the page's JS a little extra time in case the request
-        # fires slightly after networkidle is reported
         page.wait_for_timeout(5000)
         browser.close()
 
-    return captured_data.get("data", [])
+    return diagnostics
 
 
 def filter_target_stations(all_stations: list) -> dict:
@@ -91,20 +107,27 @@ def filter_target_stations(all_stations: list) -> dict:
 
 if __name__ == "__main__":
     try:
-        all_stations = fetch_via_browser()
+        diagnostics = fetch_via_browser()
+        all_stations = diagnostics.get("data")
+
         if not all_stations:
-            raise RuntimeError(
-                "No dataCWC response captured - either the request never "
-                "fired, or it was blocked before returning valid JSON."
-            )
-        matches = filter_target_stations(all_stations)
-        result = {
-            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
-            "source": PAGE_URL,
-            "method": "headless_browser",
-            "total_stations_returned": len(all_stations),
-            "matched_stations": matches,
-        }
+            result = {
+                "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+                "source": PAGE_URL,
+                "method": "headless_browser",
+                "error": "No successful dataCWC data captured.",
+                "diagnostics_requests_seen": diagnostics.get("requests_seen", []),
+                "matched_stations": {},
+            }
+        else:
+            matches = filter_target_stations(all_stations)
+            result = {
+                "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+                "source": PAGE_URL,
+                "method": "headless_browser",
+                "total_stations_returned": len(all_stations),
+                "matched_stations": matches,
+            }
     except Exception as exc:
         result = {
             "generated_at_utc": datetime.now(timezone.utc).isoformat(),
