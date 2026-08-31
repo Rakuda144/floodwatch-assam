@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-08-31T03:33:34.095923+00:00",
+  "generated_at_utc": "2026-08-31T03:44:02.325246+00:00",
   "source": "https://smartaxom.nesdr.gov.in/api_v2/dataCWC",
-  "error": "HTTPSConnectionPool(host='smartaxom.nesdr.gov.in', port=443): Max retries exceeded with url: /api_v2/dataCWC (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1016)')))",
+  "error": "403 Client Error: Forbidden for url: https://smartaxom.nesdr.gov.in/api_v2/dataCWC",
   "matched_stations": {}
 }
