@@ -42,11 +42,16 @@ def fetch_via_browser() -> dict:
     the difference between "request never fired" and "request fired
     but was rejected" - these need very different fixes.
     """
-    diagnostics = {"requests_seen": [], "data": None}
+    diagnostics = {"requests_seen": [], "data": None, "page_title": None,
+                    "page_content_snippet": None, "console_messages": []}
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page(ignore_https_errors=True)
+
+        page.on("console", lambda msg: diagnostics["console_messages"].append(
+            f"[{msg.type}] {msg.text}"
+        ))
 
         def handle_response(response):
             if "dataCWC" not in response.url:
@@ -72,7 +77,11 @@ def fetch_via_browser() -> dict:
             {"url": req.url, "status": "REQUEST_FAILED", "failure": req.failure}
         ) if "dataCWC" in req.url else None)
 
-        page.goto(PAGE_URL, timeout=45000, wait_until="networkidle")
+        response = page.goto(PAGE_URL, timeout=45000, wait_until="networkidle")
+        diagnostics["initial_response_status"] = response.status if response else None
+        diagnostics["final_url"] = page.url
+        diagnostics["page_title"] = page.title()
+        diagnostics["page_content_snippet"] = page.content()[:1000]
         page.wait_for_timeout(5000)
         browser.close()
 
@@ -116,6 +125,11 @@ if __name__ == "__main__":
                 "source": PAGE_URL,
                 "method": "headless_browser",
                 "error": "No successful dataCWC data captured.",
+                "initial_response_status": diagnostics.get("initial_response_status"),
+                "final_url": diagnostics.get("final_url"),
+                "page_title": diagnostics.get("page_title"),
+                "page_content_snippet": diagnostics.get("page_content_snippet"),
+                "console_messages": diagnostics.get("console_messages", [])[:20],
                 "diagnostics_requests_seen": diagnostics.get("requests_seen", []),
                 "matched_stations": {},
             }
