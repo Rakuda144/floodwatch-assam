@@ -1,15 +1,7 @@
 {
-  "generated_at_utc": "2026-09-01T08:33:00.431531+00:00",
-  "source": "https://smartaxom.nesdr.gov.in/analytics/flood/waterlevelinfo",
-  "method": "headless_browser",
-  "error": "No successful dataCWC data captured.",
-  "initial_response_status": 403,
-  "final_url": "https://smartaxom.nesdr.gov.in/analytics/flood/waterlevelinfo",
-  "page_title": "403 Forbidden",
-  "page_content_snippet": "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\"><html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n\n</body></html>",
-  "console_messages": [
-    "[error] Failed to load resource: the server responded with a status of 403 (Forbidden)"
-  ],
-  "diagnostics_requests_seen": [],
+  "generated_at_utc": "2026-09-01T08:46:44.095888+00:00",
+  "source": "https://ffs.india-water.gov.in",
+  "method": "cwc_ffs_json",
+  "error": "HTTPSConnectionPool(host='ffs.india-water.gov.in', port=443): Max retries exceeded with url: /iam/api/new-entry-data-aggregate/specification/?specification=%7B%22where%22%3A%7B%22expression%22%3A%7B%22valueIsRelationField%22%3Afalse%2C%22fieldName%22%3A%22id.datatypeCode%22%2C%22operator%22%3A%22eq%22%2C%22value%22%3A%22HHS%22%7D%7D%2C%22and%22%3A%7B%22expression%22%3A%7B%22valueIsRelationField%22%3Afalse%2C%22fieldName%22%3A%22stationCode.floodForecastStaticStationCode.type%22%2C%22operator%22%3A%22in%22%2C%22value%22%3A%22Level%2CInflow%2CBase%22%7D%7D%7D (Caused by ConnectTimeoutError(<HTTPSConnection(host='ffs.india-water.gov.in', port=443) at 0x7fc9072e9f50>, 'Connection to ffs.india-water.gov.in timed out. (connect timeout=60)'))",
   "matched_stations": {}
 }
