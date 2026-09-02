@@ -1,7 +1,7 @@
 {
-  "generated_at_utc": "2026-09-02T11:08:11.145223+00:00",
+  "generated_at_utc": "2026-09-02T16:28:53.882971+00:00",
   "source": "https://ffs.india-water.gov.in",
   "method": "cwc_ffs_json",
-  "error": "HTTPSConnectionPool(host='ffs.india-water.gov.in', port=443): Max retries exceeded with url: /iam/api/new-entry-data-aggregate/specification/?specification=%7B%22where%22%3A%7B%22expression%22%3A%7B%22valueIsRelationField%22%3Afalse%2C%22fieldName%22%3A%22id.datatypeCode%22%2C%22operator%22%3A%22eq%22%2C%22value%22%3A%22HHS%22%7D%7D%2C%22and%22%3A%7B%22expression%22%3A%7B%22valueIsRelationField%22%3Afalse%2C%22fieldName%22%3A%22stationCode.floodForecastStaticStationCode.type%22%2C%22operator%22%3A%22in%22%2C%22value%22%3A%22Level%2CInflow%2CBase%22%7D%7D%7D (Caused by ConnectTimeoutError(<HTTPSConnection(host='ffs.india-water.gov.in', port=443) at 0x7fe6ec7e9d10>, 'Connection to ffs.india-water.gov.in timed out. (connect timeout=60)'))",
+  "error": "HTTPSConnectionPool(host='ffs.india-water.gov.in', port=443): Max retries exceeded with url: /iam/api/new-entry-data-aggregate/specification/?specification=%7B%22where%22%3A%7B%22expression%22%3A%7B%22valueIsRelationField%22%3Afalse%2C%22fieldName%22%3A%22id.datatypeCode%22%2C%22operator%22%3A%22eq%22%2C%22value%22%3A%22HHS%22%7D%7D%2C%22and%22%3A%7B%22expression%22%3A%7B%22valueIsRelationField%22%3Afalse%2C%22fieldName%22%3A%22stationCode.floodForecastStaticStationCode.type%22%2C%22operator%22%3A%22in%22%2C%22value%22%3A%22Level%2CInflow%2CBase%22%7D%7D%7D (Caused by ConnectTimeoutError(<HTTPSConnection(host='ffs.india-water.gov.in', port=443) at 0x7ff3e50a9810>, 'Connection to ffs.india-water.gov.in timed out. (connect timeout=60)'))",
   "matched_stations": {}
 }
