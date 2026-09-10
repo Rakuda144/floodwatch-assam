@@ -1,176 +1,72 @@
 {
-  "generated_at_utc": "2026-09-10T04:21:38.727921+00:00",
+  "generated_at_utc": "2026-09-10T11:06:38.964912+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
-      "rainfall_mm_24h": 40.0,
-      "data_type": "DIRECT",
-      "source_station": "SONARIAEGCL(AWS)",
-      "note": "Direct reading from a station in/near this district."
+      "rainfall_mm_24h": 0.0,
+      "data_type": "ESTIMATE",
+      "source_station": "Golaghat",
+      "note": "No direct station reported for Sivasagar today - showing nearest available station (Golaghat) as an estimate."
     },
     "Charaideo": {
-      "rainfall_mm_24h": 40.0,
-      "data_type": "DIRECT",
-      "source_station": "SONARIAEGCL(AWS)",
-      "note": "Direct reading from a station in/near this district."
+      "rainfall_mm_24h": 0.0,
+      "data_type": "ESTIMATE",
+      "source_station": "Golaghat",
+      "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
     }
   },
   "debug_chief_amount_stations": {
-    "DIPHU": {
-      "raw_name": "DIPHU(AGRI)",
-      "rainfall_mm": 20.0
-    },
-    "LUMDING": {
-      "raw_name": "LUMDING",
-      "rainfall_mm": 80.0
-    },
-    "CHANDUBIAWS": {
-      "raw_name": "CHANDUBIAWS",
-      "rainfall_mm": 70.0
-    },
-    "DHOLAI": {
-      "raw_name": "DHOLAI",
-      "rainfall_mm": 70.0
-    },
-    "SRIBHUMI": {
-      "raw_name": "SRIBHUMI(AGRI)",
-      "rainfall_mm": 60.0
-    },
-    "MATIJURI": {
-      "raw_name": "MATIJURI",
-      "rainfall_mm": 60.0
-    },
-    "LANKA": {
-      "raw_name": "LANKA(ARG)",
-      "rainfall_mm": 50.0
-    },
-    "AMRAGHAT": {
-      "raw_name": "AMRAGHAT",
-      "rainfall_mm": 50.0
-    },
-    "CNBCOLLAGEBOKAKHAT": {
-      "raw_name": "CNBCOLLAGEBOKAKHAT(AWS)",
-      "rainfall_mm": 50.0
-    },
-    "KVKUDALGURI": {
-      "raw_name": "KVK_UDALGURI(AWS)",
-      "rainfall_mm": 50.0
-    },
-    "ZRSAKBARPUR": {
-      "raw_name": "ZRSAKBARPUR",
-      "rainfall_mm": 50.0
-    },
-    "GHARMURA": {
-      "raw_name": "GHARMURA",
+    "MARIYANIAEGCL": {
+      "raw_name": "MARIYANIAEGCL(AWS)",
       "rainfall_mm": 40.0
-    },
-    "HAFLONG": {
-      "raw_name": "HAFLONG",
-      "rainfall_mm": 10.0
-    },
-    "SONARIAEGCL": {
-      "raw_name": "SONARIAEGCL(AWS)",
-      "rainfall_mm": 40.0
-    },
-    "MARGHERITA": {
-      "raw_name": "MARGHERITA(AWS)",
-      "rainfall_mm": 20.0
-    },
-    "KHERONIGHAT": {
-      "raw_name": "KHERONIGHAT",
-      "rainfall_mm": 30.0
     },
     "BOKAKHAT": {
       "raw_name": "BOKAKHAT(ARG)",
+      "rainfall_mm": 30.0
+    },
+    "BURALIKSON": {
+      "raw_name": "BURALIKSON",
+      "rainfall_mm": 30.0
+    },
+    "GOSSAIGAONAGRI": {
+      "raw_name": "GOSSAIGAONAGRI",
       "rainfall_mm": 20.0
     },
-    "UMRANGSHU": {
-      "raw_name": "UMRANGSHU(ARG)",
+    "ZRSGOSSAIGAON": {
+      "raw_name": "ZRS_GOSSAIGAON(AWS)",
       "rainfall_mm": 20.0
     },
-    "TIHU": {
-      "raw_name": "TIHU (ARG)",
-      "rainfall_mm": 20.0
-    },
-    "LAKHIPUR": {
-      "raw_name": "LAKHIPUR",
-      "rainfall_mm": 20.0
-    },
-    "SONARI": {
-      "raw_name": "SONARI(ARG)",
-      "rainfall_mm": 20.0
-    },
-    "DHEKIAJULIAEGCL": {
-      "raw_name": "DHEKIAJULIAEGCL(AWS)",
-      "rainfall_mm": 20.0
-    },
-    "ZRSDIPHU": {
-      "raw_name": "ZRS_DIPHU(AWS)",
-      "rainfall_mm": 20.0
-    },
-    "ZRSSHILLONGANI": {
-      "raw_name": "ZRS_SHILLONGANI(AWS)",
-      "rainfall_mm": 20.0
-    },
-    "SIVSAGARAEGCL": {
-      "raw_name": "SIVSAGARAEGCL(AWS)",
+    "LANKA": {
+      "raw_name": "LANKA (ARG)",
       "rainfall_mm": 10.0
     },
-    "PUTHIMARI": {
-      "raw_name": "PUTHIMARI",
+    "AGOMANI": {
+      "raw_name": "AGOMANI (AWS)",
       "rainfall_mm": 10.0
     },
-    "SILCHAR": {
-      "raw_name": "SILCHAR",
+    "SCSCOLLEGEOFAGRICULTURE": {
+      "raw_name": "SCS COLLEGE OF AGRICULTURE",
       "rainfall_mm": 10.0
     },
-    "JORHAT": {
-      "raw_name": "JORHAT",
-      "rainfall_mm": 10.0
-    },
-    "DALGAON": {
-      "raw_name": "DALGAON(ARG)",
-      "rainfall_mm": 10.0
-    },
-    "SHILLONGANI": {
-      "raw_name": "SHILLONGANI(ARG)",
-      "rainfall_mm": 10.0
-    },
-    "KHETRI": {
-      "raw_name": "KHETRI(ARG)",
-      "rainfall_mm": 10.0
-    },
-    "DILLIGHAT": {
-      "raw_name": "DILLIGHAT",
-      "rainfall_mm": 10.0
-    },
-    "HABANGCIRCLE": {
-      "raw_name": "HABANGCIRCLE(AWS))",
-      "rainfall_mm": 10.0
-    },
-    "JORHATAGRI": {
-      "raw_name": "JORHAT AGRI",
-      "rainfall_mm": 10.0
-    },
-    "AAUBARBHETAJORHAT": {
-      "raw_name": "AAU_BARBHETA_JORHAT(AWS)",
+    "NTPSAPDCL": {
+      "raw_name": "NTPS APDCL (AWS)",
       "rainfall_mm": 10.0
     }
   },
   "debug_main_table_stations": {
-    "Guwahati A/P": 4.2,
-    "Dibrugarh A/P": 6.6,
+    "Guwahati A/P": 0.0,
+    "Dibrugarh A/P": 0.0,
     "Tezpur": 0.0,
-    "Silchar": 8.8,
-    "Dhubri": 0.0,
-    "Jorhat": 9.6,
+    "Silchar": 0.0,
+    "Dhubri": 4.8,
+    "Jorhat": 0.0,
     "N/Lakhimpur": 0.0,
     "Rangia": 0.0,
     "Mazbat": null,
     "Chaparmukh": null,
-    "Haflong": 8.4,
+    "Haflong": 0.0,
     "Goalpara": 0.0,
     "Golaghat": 0.0,
-    "Lumding": 76.0
+    "Lumding": 0.0
   }
 }
