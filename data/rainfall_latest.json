@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-11T04:21:08.468389+00:00",
+  "generated_at_utc": "2026-09-11T11:14:14.745593+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
@@ -16,55 +16,35 @@
     }
   },
   "debug_chief_amount_stations": {
-    "MARIYANIAEGCL": {
-      "raw_name": "MARIYANIAEGCL(AWS)",
-      "rainfall_mm": 40.0
+    "CHANDUBIAWS": {
+      "raw_name": "CHANDUBI AWS",
+      "rainfall_mm": 30.0
     },
     "BOKAKHAT": {
-      "raw_name": "BOKAKHAT(ARG)",
-      "rainfall_mm": 30.0
-    },
-    "BURALIKSON": {
-      "raw_name": "BURALIKSON",
-      "rainfall_mm": 30.0
-    },
-    "GOSSAIGAONAGRI": {
-      "raw_name": "GOSSAIGAONAGRI",
+      "raw_name": "BOKAKHAT (ARG)",
       "rainfall_mm": 20.0
     },
-    "ZRSGOSSAIGAON": {
-      "raw_name": "ZRS_GOSSAIGAON(AWS)",
-      "rainfall_mm": 20.0
-    },
-    "LANKA": {
-      "raw_name": "LANKA (ARG)",
+    "LAKHIPUR": {
+      "raw_name": "LAKHIPUR (ARG)",
       "rainfall_mm": 10.0
     },
-    "AGOMANI": {
-      "raw_name": "AGOMANI (AWS)",
-      "rainfall_mm": 10.0
-    },
-    "SCSCOLLEGEOFAGRICULTURE": {
-      "raw_name": "SCS COLLEGE OF AGRICULTURE",
-      "rainfall_mm": 10.0
-    },
-    "NTPSAPDCL": {
-      "raw_name": "NTPS APDCL (AWS)",
+    "HAFLONG": {
+      "raw_name": "HAFLONG (AEGCL AWS)",
       "rainfall_mm": 10.0
     }
   },
   "debug_main_table_stations": {
-    "Guwahati A/P": 0.0,
+    "Guwahati A/P": 0.9,
     "Dibrugarh A/P": 0.0,
     "Tezpur": 0.0,
     "Silchar": 0.0,
-    "Dhubri": 4.8,
+    "Dhubri": 5.2,
     "Jorhat": 0.0,
     "N/Lakhimpur": 0.0,
-    "Rangia": 0.0,
+    "Rangia": 2.0,
     "Mazbat": null,
     "Chaparmukh": null,
-    "Haflong": 0.0,
+    "Haflong": 2.1,
     "Goalpara": 0.0,
     "Golaghat": 0.0,
     "Lumding": 0.0
