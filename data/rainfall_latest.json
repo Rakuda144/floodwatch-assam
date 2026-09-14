@@ -1,143 +1,71 @@
 {
-  "generated_at_utc": "2026-09-14T04:39:03.140098+00:00",
+  "generated_at_utc": "2026-09-14T12:31:21.566405+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
-      "rainfall_mm_24h": 60.0,
-      "data_type": "DIRECT",
-      "source_station": "BIHUBAR",
-      "note": "Direct reading from a station in/near this district."
+      "rainfall_mm_24h": 0.0,
+      "data_type": "ESTIMATE",
+      "source_station": "Golaghat",
+      "note": "No direct station reported for Sivasagar today - showing nearest available station (Golaghat) as an estimate."
     },
     "Charaideo": {
-      "rainfall_mm_24h": 10.0,
-      "data_type": "DIRECT",
-      "source_station": "SONARIAEGCL(AWS)",
-      "note": "Direct reading from a station in/near this district."
+      "rainfall_mm_24h": 0.0,
+      "data_type": "ESTIMATE",
+      "source_station": "Golaghat",
+      "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
     }
   },
   "debug_chief_amount_stations": {
-    "AGOMANI": {
-      "raw_name": "AGOMANI(AWS)",
-      "rainfall_mm": 140.0
-    },
-    "CHIRANG": {
-      "raw_name": "CHIRANG(AWS)",
-      "rainfall_mm": 120.0
-    },
-    "BIJNI": {
-      "raw_name": "BIJNI(ARG)",
-      "rainfall_mm": 80.0
-    },
     "MARGHERITA": {
-      "raw_name": "MARGHERITA",
+      "raw_name": "MARGHERITA(AWS)",
       "rainfall_mm": 60.0
     },
-    "GAURIPURAEGCL": {
-      "raw_name": "GAURIPURAEGCL(AWS)",
-      "rainfall_mm": 70.0
-    },
-    "BIHUBAR": {
-      "raw_name": "BIHUBAR",
+    "CITRUSPLANTATIONSCROPSRESEARCHSTATION": {
+      "raw_name": "CITRUS_PLANTATIONS_CROPS_RESEARCH_STATION(AWS)",
       "rainfall_mm": 60.0
     },
-    "AGIAAEGCL": {
-      "raw_name": "AGIAAEGCL(AWS)",
-      "rainfall_mm": 50.0
-    },
-    "SCSCOLLEGEOFAGRICULTURE": {
-      "raw_name": "SCSCOLLEGEOFAGRICULTURE",
-      "rainfall_mm": 50.0
-    },
-    "ZRSGOSSAIGAON": {
-      "raw_name": "ZRS_GOSSAIGAON(AWS)",
-      "rainfall_mm": 50.0
-    },
-    "MOTUNGA": {
-      "raw_name": "MOTUNGA",
+    "DKDCOLLEGE": {
+      "raw_name": "DKDCOLLEGE (ARG)",
       "rainfall_mm": 40.0
     },
-    "LUMDING": {
-      "raw_name": "LUMDING(ARG)",
-      "rainfall_mm": 30.0
-    },
-    "TAMULPUR": {
-      "raw_name": "TAMULPUR",
-      "rainfall_mm": 10.0
-    },
-    "NUMALIGARH": {
-      "raw_name": "NUMALIGARH",
-      "rainfall_mm": 20.0
-    },
-    "UMPANAIAPDCL": {
-      "raw_name": "UMPANAIAPDCL",
-      "rainfall_mm": 20.0
-    },
-    "GARUKHUTI": {
-      "raw_name": "GARUKHUTI(AWS)",
-      "rainfall_mm": 20.0
-    },
-    "HABANGCIRCLE": {
-      "raw_name": "HABANGCIRCLE(AWS))",
-      "rainfall_mm": 20.0
-    },
-    "DHUBRI": {
-      "raw_name": "DHUBRI",
-      "rainfall_mm": 10.0
-    },
-    "TIHU": {
-      "raw_name": "TIHU(ARG)",
-      "rainfall_mm": 10.0
-    },
-    "BNCOLLEGE": {
-      "raw_name": "BNCOLLEGE(AWS)",
-      "rainfall_mm": 10.0
-    },
-    "SRIJANGRAM": {
-      "raw_name": "SRIJANGRAM(ARG)",
-      "rainfall_mm": 10.0
-    },
-    "KAMPUR": {
-      "raw_name": "KAMPUR",
-      "rainfall_mm": 10.0
-    },
     "DHUBRIKVK": {
-      "raw_name": "DHUBRIKVK(AWS)",
+      "raw_name": "DHUBRI KVK (AWS)",
+      "rainfall_mm": 20.0
+    },
+    "BAKSAKVK": {
+      "raw_name": "BAKSA KVK (AWS)",
+      "rainfall_mm": 20.0
+    },
+    "BAHALPUR": {
+      "raw_name": "BAHALPUR",
       "rainfall_mm": 10.0
     },
-    "SIBSAGAR": {
-      "raw_name": "SIBSAGAR",
+    "HAZO": {
+      "raw_name": "HAZO (ARG)",
       "rainfall_mm": 10.0
     },
-    "SONARIAEGCL": {
-      "raw_name": "SONARIAEGCL(AWS)",
+    "KVKMORIGAON": {
+      "raw_name": "KVK MORIGAON",
       "rainfall_mm": 10.0
     },
-    "GOALPARA": {
-      "raw_name": "GOALPARA(CWC)",
-      "rainfall_mm": 10.0
-    },
-    "RAHAAGRI": {
-      "raw_name": "RAHAAGRI",
-      "rainfall_mm": 10.0
-    },
-    "ZRSSHILLONGANI": {
-      "raw_name": "ZRS_SHILLONGANI(AWS)",
+    "CHANDMARI": {
+      "raw_name": "CHANDMARI",
       "rainfall_mm": 10.0
     }
   },
   "debug_main_table_stations": {
-    "Guwahati A/P": 0.0,
-    "Dibrugarh A/P": 0.0,
-    "Tezpur": 0.8,
+    "Guwahati A/P": 0.2,
+    "Dibrugarh A/P": 0.2,
+    "Tezpur": 0.0,
     "Silchar": 0.0,
-    "Dhubri": 13.4,
-    "Jorhat": 2.4,
-    "N/Lakhimpur": null,
+    "Dhubri": 0.0,
+    "Jorhat": 0.0,
+    "N/Lakhimpur": 5.4,
     "Rangia": 0.0,
     "Mazbat": null,
     "Chaparmukh": null,
     "Haflong": 0.0,
-    "Goalpara": 3.2,
+    "Goalpara": 0.0,
     "Golaghat": 0.0,
     "Lumding": 0.0
   }
