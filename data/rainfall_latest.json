@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-15T04:39:25.336388+00:00",
+  "generated_at_utc": "2026-09-15T11:34:53.310226+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
@@ -18,49 +18,41 @@
   "debug_chief_amount_stations": {
     "MARGHERITA": {
       "raw_name": "MARGHERITA(AWS)",
-      "rainfall_mm": 60.0
+      "rainfall_mm": 50.0
     },
-    "CITRUSPLANTATIONSCROPSRESEARCHSTATION": {
-      "raw_name": "CITRUS_PLANTATIONS_CROPS_RESEARCH_STATION(AWS)",
-      "rainfall_mm": 60.0
-    },
-    "DKDCOLLEGE": {
-      "raw_name": "DKDCOLLEGE (ARG)",
+    "HABANGCIRCLE": {
+      "raw_name": "HABANGCIRCLE(AWS))",
       "rainfall_mm": 40.0
     },
-    "DHUBRIKVK": {
-      "raw_name": "DHUBRI KVK (AWS)",
+    "SIVSAGARAEGCL": {
+      "raw_name": "SIVSAGARAEGCL(AWS)",
       "rainfall_mm": 20.0
     },
-    "BAKSAKVK": {
-      "raw_name": "BAKSA KVK (AWS)",
+    "NAHARKATIA": {
+      "raw_name": "NAHARKATIA",
       "rainfall_mm": 20.0
     },
-    "BAHALPUR": {
-      "raw_name": "BAHALPUR",
+    "KHOWANG": {
+      "raw_name": "KHOWANG",
       "rainfall_mm": 10.0
     },
-    "HAZO": {
-      "raw_name": "HAZO (ARG)",
+    "NTPSAPDCL": {
+      "raw_name": "NTPS APDCL (AWS)",
       "rainfall_mm": 10.0
     },
-    "KVKMORIGAON": {
-      "raw_name": "KVK MORIGAON",
-      "rainfall_mm": 10.0
-    },
-    "CHANDMARI": {
-      "raw_name": "CHANDMARI",
+    "RUPAIAEGCL": {
+      "raw_name": "RUPAI AEGCL (AWS)",
       "rainfall_mm": 10.0
     }
   },
   "debug_main_table_stations": {
-    "Guwahati A/P": 0.2,
-    "Dibrugarh A/P": 0.2,
+    "Guwahati A/P": 0.0,
+    "Dibrugarh A/P": 0.0,
     "Tezpur": 0.0,
     "Silchar": 0.0,
     "Dhubri": 0.0,
     "Jorhat": 0.0,
-    "N/Lakhimpur": 5.4,
+    "N/Lakhimpur": 0.0,
     "Rangia": 0.0,
     "Mazbat": null,
     "Chaparmukh": null,
