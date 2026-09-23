@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-23T04:31:28.541673+00:00",
+  "generated_at_utc": "2026-09-23T11:21:25.378290+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
@@ -16,33 +16,261 @@
     }
   },
   "debug_chief_amount_stations": {
-    "AMRAGHAT": {
-      "raw_name": "AMRAGHAT",
+    "SAMAGURIAEGCL": {
+      "raw_name": "SAMAGURIAEGCL(AWS)",
+      "rainfall_mm": 140.0
+    },
+    "SHILLONGANI": {
+      "raw_name": "SHILLONGANI(ARG)",
+      "rainfall_mm": 110.0
+    },
+    "ZRSSHILLONGANI": {
+      "raw_name": "ZRS_SHILLONGANI(AWS)",
+      "rainfall_mm": 110.0
+    },
+    "DHARAMTUL": {
+      "raw_name": "DHARAMTUL",
+      "rainfall_mm": 80.0
+    },
+    "BISWANATHCOLLEGEOFAGRICULTUREBISWANATHCHARIALI": {
+      "raw_name": "BISWANATH COLLEGEOFAGRICULTUREBISWANATHCHARIALI(AWS)(DISTBISWANATH)",
+      "rainfall_mm": 80.0
+    },
+    "ROWTAAEGCL": {
+      "raw_name": "ROWTAAEGCL(AWS)",
+      "rainfall_mm": 70.0
+    },
+    "KHERONIGHAT": {
+      "raw_name": "KHERONIGHAT",
+      "rainfall_mm": 60.0
+    },
+    "UMPANAIAPDCL": {
+      "raw_name": "UMPANAIAPDCL",
+      "rainfall_mm": 60.0
+    },
+    "KVKUDALGURI": {
+      "raw_name": "KVK_UDALGURI(AWS)",
+      "rainfall_mm": 60.0
+    },
+    "BARPETA": {
+      "raw_name": "BARPETA(ARG)",
+      "rainfall_mm": 50.0
+    },
+    "SRIJANGRAM": {
+      "raw_name": "SRIJANGRAM(ARG)",
+      "rainfall_mm": 50.0
+    },
+    "BOKOAEGCL": {
+      "raw_name": "BOKOAEGCL(AWS)",
+      "rainfall_mm": 50.0
+    },
+    "TEZPUR": {
+      "raw_name": "TEZPUR",
+      "rainfall_mm": 50.0
+    },
+    "RAHAAGRI": {
+      "raw_name": "RAHAAGRI",
+      "rainfall_mm": 50.0
+    },
+    "RAHAFISHERY": {
+      "raw_name": "RAHA_FISHERY(ARG)",
+      "rainfall_mm": 50.0
+    },
+    "UDALGURI": {
+      "raw_name": "UDALGURI(AWS)",
+      "rainfall_mm": 40.0
+    },
+    "DALGAON": {
+      "raw_name": "DALGAON(ARG)",
+      "rainfall_mm": 40.0
+    },
+    "MAJBAT": {
+      "raw_name": "MAJBAT",
+      "rainfall_mm": 40.0
+    },
+    "DHUDNOI": {
+      "raw_name": "DHUDNOI(ARG)",
+      "rainfall_mm": 40.0
+    },
+    "KAMPUR": {
+      "raw_name": "KAMPUR(ARG)",
+      "rainfall_mm": 40.0
+    },
+    "DHEKIAJULIAEGCL": {
+      "raw_name": "DHEKIAJULIAEGCL(AWS)",
+      "rainfall_mm": 40.0
+    },
+    "LAHARIGHAT": {
+      "raw_name": "LAHARIGHAT(ARG)",
       "rainfall_mm": 30.0
     },
-    "LAKHIPUR": {
-      "raw_name": "LAKHIPUR (ARG)",
+    "JIABHARALINTXING": {
+      "raw_name": "JIABHARALINTXING",
+      "rainfall_mm": 30.0
+    },
+    "PANDU": {
+      "raw_name": "PANDU",
+      "rainfall_mm": 30.0
+    },
+    "DHUBRIKVK": {
+      "raw_name": "DHUBRIKVK(AWS)",
+      "rainfall_mm": 30.0
+    },
+    "BHOMORAGURI": {
+      "raw_name": "BHOMORAGURI",
+      "rainfall_mm": 30.0
+    },
+    "GARUKHUTI": {
+      "raw_name": "GARUKHUTI(AWS)",
+      "rainfall_mm": 30.0
+    },
+    "HABANGCIRCLE": {
+      "raw_name": "HABANGCIRCLE(AWS))",
+      "rainfall_mm": 30.0
+    },
+    "NALBARI": {
+      "raw_name": "NALBARI",
+      "rainfall_mm": 20.0
+    },
+    "RANGIA": {
+      "raw_name": "RANGIA",
+      "rainfall_mm": 20.0
+    },
+    "BOKAKHAT": {
+      "raw_name": "BOKAKHAT(ARG)",
+      "rainfall_mm": 20.0
+    },
+    "DRF": {
+      "raw_name": "DRF",
+      "rainfall_mm": 20.0
+    },
+    "TAMULPUR": {
+      "raw_name": "TAMULPUR",
       "rainfall_mm": 10.0
     },
-    "WRDDIBRUGARH": {
-      "raw_name": "WRD DIBRUGARH (ARG)",
+    "KAMAKHYA": {
+      "raw_name": "KAMAKHYA(ARG)",
+      "rainfall_mm": 20.0
+    },
+    "GUWAHATIARG": {
+      "raw_name": "GUWAHATI(CITY)ARG",
+      "rainfall_mm": 20.0
+    },
+    "SUALKUCHI": {
+      "raw_name": "SUALKUCHI(ARG)",
+      "rainfall_mm": 20.0
+    },
+    "CHANDMARI": {
+      "raw_name": "CHANDMARI",
+      "rainfall_mm": 20.0
+    },
+    "GUWAHATIAP": {
+      "raw_name": "GUWAHATIA/P(AWS)",
+      "rainfall_mm": 20.0
+    },
+    "CNBCOLLAGEBOKAKHAT": {
+      "raw_name": "CNBCOLLAGEBOKAKHAT(AWS)",
+      "rainfall_mm": 20.0
+    },
+    "NALBARIKVK": {
+      "raw_name": "NALBARIKVK(AWS)",
+      "rainfall_mm": 20.0
+    },
+    "KOLLONGPARIB": {
+      "raw_name": "KOLLONGPARIB",
+      "rainfall_mm": 20.0
+    },
+    "KVKDARRANG": {
+      "raw_name": "KVKDARRANG",
+      "rainfall_mm": 20.0
+    },
+    "SRIBHUMI": {
+      "raw_name": "SRIBHUMI(AGRI)",
+      "rainfall_mm": 10.0
+    },
+    "MANGALDAIKVK": {
+      "raw_name": "MANGALDAIKVK(AWS)",
+      "rainfall_mm": 10.0
+    },
+    "GOSSAIGAONAGRI": {
+      "raw_name": "GOSSAIGAONAGRI",
+      "rainfall_mm": 10.0
+    },
+    "BAJALIAWS": {
+      "raw_name": "BAJALI AWS",
+      "rainfall_mm": 10.0
+    },
+    "CHIRANG": {
+      "raw_name": "CHIRANG(AWS)",
+      "rainfall_mm": 10.0
+    },
+    "TIHU": {
+      "raw_name": "TIHU(ARG)",
+      "rainfall_mm": 10.0
+    },
+    "LAKHIPUR": {
+      "raw_name": "LAKHIPUR(ARG)",
+      "rainfall_mm": 10.0
+    },
+    "KVKMORIGAON": {
+      "raw_name": "KVKMORIGAON",
+      "rainfall_mm": 10.0
+    },
+    "GANDHIMANDOPSARANIA": {
+      "raw_name": "GANDHIMANDOP SARANIA",
+      "rainfall_mm": 10.0
+    },
+    "GUWAHATICITY": {
+      "raw_name": "GUWAHATICITY(AWS)",
+      "rainfall_mm": 10.0
+    },
+    "GUWAHATUNIVERSITY": {
+      "raw_name": "GUWAHATUNIVERSITY(AWS)",
+      "rainfall_mm": 10.0
+    },
+    "GHORAMARAAEGCL": {
+      "raw_name": "GHORAMARAAEGCL",
+      "rainfall_mm": 10.0
+    },
+    "DOWNTOWNUNIVERSITY": {
+      "raw_name": "DOWNTOWN UNIVERSITY(AWS)",
+      "rainfall_mm": 10.0
+    },
+    "BAKSAKVK": {
+      "raw_name": "BAKSAKVK(AWS)",
+      "rainfall_mm": 10.0
+    },
+    "AAUHRS": {
+      "raw_name": "AAUHRS(ARG)",
+      "rainfall_mm": 10.0
+    },
+    "GUWAHATIDCCOURT": {
+      "raw_name": "GUWAHATIDCCOURT",
+      "rainfall_mm": 10.0
+    },
+    "GUWAHATIUNIVERSITY": {
+      "raw_name": "GUWAHATIUNIVERSITY(AWS)",
+      "rainfall_mm": 10.0
+    },
+    "ZRSGOSSAIGAON": {
+      "raw_name": "ZRS_GOSSAIGAON(AWS)",
       "rainfall_mm": 10.0
     }
   },
   "debug_main_table_stations": {
-    "Guwahati A/P": 0.0,
-    "Dibrugarh A/P": 0.0,
-    "Tezpur": 0.0,
+    "Guwahati A/P": 19.2,
+    "Dibrugarh A/P": 1.0,
+    "Tezpur": 55.0,
     "Silchar": 0.0,
     "Dhubri": 0.0,
-    "Jorhat": 0.0,
-    "N/Lakhimpur": 0.0,
-    "Rangia": 0.0,
+    "Jorhat": 0.6,
+    "N/Lakhimpur": null,
+    "Rangia": 21.0,
     "Mazbat": null,
     "Chaparmukh": null,
     "Haflong": 0.0,
-    "Goalpara": 0.0,
+    "Goalpara": 1.2,
     "Golaghat": 0.0,
-    "Lumding": 0.0
+    "Lumding": 6.2
   }
 }
