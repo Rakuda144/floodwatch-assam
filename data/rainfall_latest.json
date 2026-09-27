@@ -1,87 +1,59 @@
 {
-  "generated_at_utc": "2026-09-27T05:04:44.525283+00:00",
+  "generated_at_utc": "2026-09-27T11:53:01.935736+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
-      "rainfall_mm_24h": 0.0,
-      "data_type": "ESTIMATE",
-      "source_station": "Golaghat",
-      "note": "No direct station reported for Sivasagar today - showing nearest available station (Golaghat) as an estimate."
+      "rainfall_mm_24h": 10.0,
+      "data_type": "DIRECT",
+      "source_station": "BIHUBAR",
+      "note": "Direct reading from a station in/near this district."
     },
     "Charaideo": {
-      "rainfall_mm_24h": 0.0,
-      "data_type": "ESTIMATE",
-      "source_station": "Golaghat",
-      "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
+      "rainfall_mm_24h": 10.0,
+      "data_type": "DIRECT",
+      "source_station": "SONARI(ARG)",
+      "note": "Direct reading from a station in/near this district."
     }
   },
   "debug_chief_amount_stations": {
-    "KAMAKHYA": {
-      "raw_name": "KAMAKHYA(ARG)",
-      "rainfall_mm": 40.0
-    },
-    "GUWAHATIAP": {
-      "raw_name": "GUWAHATIA/P(AWS)",
-      "rainfall_mm": 40.0
-    },
-    "AAUHRS": {
-      "raw_name": "AAUHRS(ARG)",
-      "rainfall_mm": 30.0
-    },
-    "GUWAHATICITY": {
-      "raw_name": "GUWAHATICITY (AWS)",
+    "UDAIPUR": {
+      "raw_name": "UDAIPUR",
       "rainfall_mm": 20.0
     },
-    "GUWAHATIDCCOURT": {
-      "raw_name": "GUWAHATIDCCOURT",
-      "rainfall_mm": 20.0
-    },
-    "BEKIMATHANGURI": {
-      "raw_name": "BEKI-MATHANGURI",
+    "BIHUBAR": {
+      "raw_name": "BIHUBAR",
       "rainfall_mm": 10.0
     },
-    "DHUDNOI": {
-      "raw_name": "DHUDNOI(ARG)",
+    "SONARI": {
+      "raw_name": "SONARI(ARG)",
       "rainfall_mm": 10.0
     },
-    "GHARMURA": {
-      "raw_name": "GHARMURA",
+    "NAHARKATIA": {
+      "raw_name": "NAHARKATIA",
       "rainfall_mm": 10.0
     },
-    "DHOLAI": {
-      "raw_name": "DHOLAI",
+    "DCOFCDIBRUGARH": {
+      "raw_name": "DCOFCDIBRUGARH(ARG)",
       "rainfall_mm": 10.0
     },
-    "BOKOAEGCL": {
-      "raw_name": "BOKO AEGCL (AWS)",
+    "MANAS": {
+      "raw_name": "MANAS(AWS)",
       "rainfall_mm": 10.0
     },
-    "KHERONIGHAT": {
-      "raw_name": "KHERONIGHAT",
-      "rainfall_mm": 10.0
-    },
-    "GUWAHATIARG": {
-      "raw_name": "GUWAHATI (CITY) ARG",
-      "rainfall_mm": 10.0
-    },
-    "DHANSIRI": {
-      "raw_name": "DHANSIRI (ARG)",
-      "rainfall_mm": 10.0
-    },
-    "SARUSAJAI": {
-      "raw_name": "SARUSAJAI (ARG)",
+    "SILAPATHARSCIENCECOLLEGE": {
+      "raw_name": "SILAPATHAR SCIENCE COLLEGE",
       "rainfall_mm": 10.0
     }
   },
   "debug_main_table_stations": {
-    "Guwahati A/P": 39.9,
-    "Dibrugarh A/P": 0.0,
+    "Guwahati A/P": 0.0,
+    "Dibrugarh A/P": 7.2,
     "Tezpur": 0.0,
     "Silchar": 0.0,
-    "Dhubri": null,
+    "Dhubri": 0.0,
     "Jorhat": 0.0,
     "N/Lakhimpur": 0.0,
-    "Rangia": 2.0,
+    "Rangia": 0.0,
     "Mazbat": null,
     "Chaparmukh": null,
     "Haflong": 0.0,
