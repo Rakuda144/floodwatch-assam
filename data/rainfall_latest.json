@@ -1,47 +1,43 @@
 {
-  "generated_at_utc": "2026-09-28T05:06:38.539832+00:00",
+  "generated_at_utc": "2026-09-28T13:38:54.296095+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
-      "rainfall_mm_24h": 10.0,
+      "rainfall_mm_24h": 20.0,
       "data_type": "DIRECT",
-      "source_station": "BIHUBAR",
+      "source_station": "NAZIRA (ARG)",
       "note": "Direct reading from a station in/near this district."
     },
     "Charaideo": {
-      "rainfall_mm_24h": 10.0,
-      "data_type": "DIRECT",
-      "source_station": "SONARI(ARG)",
-      "note": "Direct reading from a station in/near this district."
+      "rainfall_mm_24h": 0.0,
+      "data_type": "ESTIMATE",
+      "source_station": "Golaghat",
+      "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
     }
   },
   "debug_chief_amount_stations": {
-    "UDAIPUR": {
-      "raw_name": "UDAIPUR",
+    "NAZIRA": {
+      "raw_name": "NAZIRA (ARG)",
       "rainfall_mm": 20.0
     },
-    "BIHUBAR": {
-      "raw_name": "BIHUBAR",
-      "rainfall_mm": 10.0
+    "CHOULDHUAGHAT": {
+      "raw_name": "CHOULDHUAGHAT (ARG)",
+      "rainfall_mm": 20.0
     },
-    "SONARI": {
-      "raw_name": "SONARI(ARG)",
-      "rainfall_mm": 10.0
+    "CHOULDHOWAGHAT": {
+      "raw_name": "CHOULDHOWAGHAT",
+      "rainfall_mm": 20.0
     },
-    "NAHARKATIA": {
-      "raw_name": "NAHARKATIA",
-      "rainfall_mm": 10.0
+    "DHEMAJI": {
+      "raw_name": "DHEMAJI",
+      "rainfall_mm": 20.0
     },
-    "DCOFCDIBRUGARH": {
-      "raw_name": "DCOFCDIBRUGARH(ARG)",
-      "rainfall_mm": 10.0
+    "JIAGOAN": {
+      "raw_name": "JIAGOAN",
+      "rainfall_mm": 20.0
     },
-    "MANAS": {
-      "raw_name": "MANAS(AWS)",
-      "rainfall_mm": 10.0
-    },
-    "SILAPATHARSCIENCECOLLEGE": {
-      "raw_name": "SILAPATHAR SCIENCE COLLEGE",
+    "KHERONIGHAT": {
+      "raw_name": "KHERONIGHAT",
       "rainfall_mm": 10.0
     }
   },
