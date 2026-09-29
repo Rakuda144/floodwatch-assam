@@ -1,12 +1,12 @@
 {
-  "generated_at_utc": "2026-09-29T05:30:19.213607+00:00",
+  "generated_at_utc": "2026-09-29T12:38:36.692888+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
-      "rainfall_mm_24h": 20.0,
-      "data_type": "DIRECT",
-      "source_station": "NAZIRA (ARG)",
-      "note": "Direct reading from a station in/near this district."
+      "rainfall_mm_24h": 0.0,
+      "data_type": "ESTIMATE",
+      "source_station": "Golaghat",
+      "note": "No direct station reported for Sivasagar today - showing nearest available station (Golaghat) as an estimate."
     },
     "Charaideo": {
       "rainfall_mm_24h": 0.0,
@@ -16,34 +16,14 @@
     }
   },
   "debug_chief_amount_stations": {
-    "NAZIRA": {
-      "raw_name": "NAZIRA (ARG)",
-      "rainfall_mm": 20.0
-    },
-    "CHOULDHUAGHAT": {
-      "raw_name": "CHOULDHUAGHAT (ARG)",
-      "rainfall_mm": 20.0
-    },
-    "CHOULDHOWAGHAT": {
-      "raw_name": "CHOULDHOWAGHAT",
-      "rainfall_mm": 20.0
-    },
-    "DHEMAJI": {
-      "raw_name": "DHEMAJI",
-      "rainfall_mm": 20.0
-    },
-    "JIAGOAN": {
-      "raw_name": "JIAGOAN",
-      "rainfall_mm": 20.0
-    },
-    "KHERONIGHAT": {
-      "raw_name": "KHERONIGHAT",
+    "DHARAMTUL": {
+      "raw_name": "DHARAMTUL(ARG)",
       "rainfall_mm": 10.0
     }
   },
   "debug_main_table_stations": {
     "Guwahati A/P": 0.0,
-    "Dibrugarh A/P": 7.2,
+    "Dibrugarh A/P": 0.0,
     "Tezpur": 0.0,
     "Silchar": 0.0,
     "Dhubri": 0.0,
@@ -55,6 +35,6 @@
     "Haflong": 0.0,
     "Goalpara": 0.0,
     "Golaghat": 0.0,
-    "Lumding": 0.0
+    "Lumding": 2.2
   }
 }
