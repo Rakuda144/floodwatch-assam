@@ -1,172 +1,60 @@
 {
-  "generated_at_utc": "2026-10-06T06:03:37.114751+00:00",
+  "generated_at_utc": "2026-10-06T15:49:57.224837+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
-      "rainfall_mm_24h": 10.4,
+      "rainfall_mm_24h": 0.0,
       "data_type": "ESTIMATE",
       "source_station": "Golaghat",
       "note": "No direct station reported for Sivasagar today - showing nearest available station (Golaghat) as an estimate."
     },
     "Charaideo": {
-      "rainfall_mm_24h": 10.4,
+      "rainfall_mm_24h": 0.0,
       "data_type": "ESTIMATE",
       "source_station": "Golaghat",
       "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
     }
   },
   "debug_chief_amount_stations": {
-    "TAMULPUR": {
-      "raw_name": "TAMULPUR(ARG)",
-      "rainfall_mm": 50.0
-    },
-    "BAKSAKVK": {
-      "raw_name": "BAKSAKVK(AWS)",
-      "rainfall_mm": 70.0
-    },
-    "DCOFCDIBRUGARH": {
-      "raw_name": "DCOFCDIBRUGARH(ARG)",
-      "rainfall_mm": 40.0
-    },
-    "GOIBERGAON": {
-      "raw_name": "GOIBERGAON",
-      "rainfall_mm": 30.0
-    },
-    "MOTUNGA": {
-      "raw_name": "MOTUNGA",
-      "rainfall_mm": 30.0
-    },
-    "DRF": {
-      "raw_name": "DRF",
-      "rainfall_mm": 30.0
-    },
-    "SRIJANGRAM": {
-      "raw_name": "SRIJANGRAM(ARG)",
-      "rainfall_mm": 30.0
-    },
-    "NUMALIGARH": {
-      "raw_name": "NUMALIGARH",
-      "rainfall_mm": 30.0
-    },
-    "BADATIGHAT": {
-      "raw_name": "BADATIGHAT",
-      "rainfall_mm": 30.0
-    },
-    "BISWANATHCOLLEGEOFAGRICULTUREBISWANATHCHARIALI": {
-      "raw_name": "BISWANATHCOLLEGEOF AGRICULTURE BISWANATH CHARIALI (AWS)(DIST BISWANATH)",
-      "rainfall_mm": 30.0
-    },
-    "SMANDAPLANTSRESEARCHSTATIONBURALIKSON": {
-      "raw_name": "S_M_AND_A_PLANTS_RESEARCH_STATION_BURALIKSON(AWS)",
-      "rainfall_mm": 30.0
-    },
-    "JIABHARALINTXING": {
-      "raw_name": "JIABHARALINTXING",
+    "KOKRAJHAR": {
+      "raw_name": "KOKRAJHAR",
       "rainfall_mm": 20.0
     },
-    "DIBRUGARHAP": {
-      "raw_name": "DIBRUGARH A/P",
+    "GAURIPURAEGCL": {
+      "raw_name": "GAURIPURAEGCL(AWS)",
       "rainfall_mm": 20.0
     },
-    "KVKJORHAT": {
-      "raw_name": "KVKJORHAT(AWS)",
-      "rainfall_mm": 20.0
-    },
-    "DKDCOLLEGE": {
-      "raw_name": "DKDCOLLEGE(ARG)",
-      "rainfall_mm": 20.0
-    },
-    "KVKDIBRUGARH": {
-      "raw_name": "KVKDIBRUGARH(AWS)",
-      "rainfall_mm": 20.0
-    },
-    "BIJNI": {
-      "raw_name": "BIJNI(ARG)",
-      "rainfall_mm": 10.0
-    },
-    "SILCHAR": {
-      "raw_name": "SILCHAR",
-      "rainfall_mm": 10.0
-    },
-    "JORHAT": {
-      "raw_name": "JORHAT",
-      "rainfall_mm": 10.0
-    },
-    "MAJULI": {
-      "raw_name": "MAJULI(AWS)",
-      "rainfall_mm": 10.0
-    },
-    "NTXING": {
-      "raw_name": "NTXING(RANGANADI)",
-      "rainfall_mm": 10.0
-    },
-    "DHEMAJI": {
-      "raw_name": "DHEMAJI",
-      "rainfall_mm": 10.0
-    },
-    "BPGHAT": {
-      "raw_name": "BPGHAT",
-      "rainfall_mm": 10.0
-    },
-    "DHOLLABAZAR": {
-      "raw_name": "DHOLLABAZAR",
-      "rainfall_mm": 10.0
-    },
-    "KAMPUR": {
-      "raw_name": "KAMPUR",
+    "BAHALPUR": {
+      "raw_name": "BAHALPUR",
       "rainfall_mm": 10.0
     },
     "TEZPUR": {
       "raw_name": "TEZPUR",
       "rainfall_mm": 10.0
     },
-    "NEAMATIGHAT": {
-      "raw_name": "NEAMATIGHAT",
+    "BURALIKSON": {
+      "raw_name": "BURALIKSON",
       "rainfall_mm": 10.0
     },
-    "DHEKIAJULIAEGCL": {
-      "raw_name": "DHEKIAJULI AEGCL (AWS)",
-      "rainfall_mm": 10.0
-    },
-    "ROWTAAEGCL": {
-      "raw_name": "ROWTA AEGCL (AWS)",
-      "rainfall_mm": 10.0
-    },
-    "KVKUDALGURI": {
-      "raw_name": "KVK_UDALGURI (AWS)",
-      "rainfall_mm": 10.0
-    },
-    "GOLAGHAT": {
-      "raw_name": "GOLAGHAT",
-      "rainfall_mm": 10.0
-    },
-    "JORHATAGRI": {
-      "raw_name": "JORHAT AGRI",
-      "rainfall_mm": 10.0
-    },
-    "CITRUSPLANTATIONSCROPSRESEARCHSTATION": {
-      "raw_name": "CITRUS_PLANTATIONS_CROPS_RESEARCH_STATION(AWS)",
-      "rainfall_mm": 10.0
-    },
-    "AAUBARBHETAJORHAT": {
-      "raw_name": "AAU_BARBHETA_JORHAT(AWS)",
+    "NERIWALAM": {
+      "raw_name": "NERIWALAM(AWS)",
       "rainfall_mm": 10.0
     }
   },
   "debug_main_table_stations": {
     "Guwahati A/P": 0.0,
-    "Dibrugarh A/P": 18.0,
-    "Tezpur": 13.0,
-    "Silchar": 15.2,
-    "Dhubri": 0.0,
-    "Jorhat": 12.0,
-    "N/Lakhimpur": 0.8,
-    "Rangia": 1.0,
+    "Dibrugarh A/P": null,
+    "Tezpur": 7.8,
+    "Silchar": 0.0,
+    "Dhubri": 6.0,
+    "Jorhat": 0.0,
+    "N/Lakhimpur": 0.2,
+    "Rangia": 0.0,
     "Mazbat": null,
     "Chaparmukh": null,
-    "Haflong": 0.0,
-    "Goalpara": 0.0,
-    "Golaghat": 10.4,
+    "Haflong": 1.1,
+    "Goalpara": 2.2,
+    "Golaghat": 0.0,
     "Lumding": 0.0
   }
 }
