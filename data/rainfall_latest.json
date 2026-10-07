@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-07T05:38:49.273132+00:00",
+  "generated_at_utc": "2026-10-07T13:09:17.240691+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
@@ -15,45 +15,20 @@
       "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
     }
   },
-  "debug_chief_amount_stations": {
-    "KOKRAJHAR": {
-      "raw_name": "KOKRAJHAR",
-      "rainfall_mm": 20.0
-    },
-    "GAURIPURAEGCL": {
-      "raw_name": "GAURIPURAEGCL(AWS)",
-      "rainfall_mm": 20.0
-    },
-    "BAHALPUR": {
-      "raw_name": "BAHALPUR",
-      "rainfall_mm": 10.0
-    },
-    "TEZPUR": {
-      "raw_name": "TEZPUR",
-      "rainfall_mm": 10.0
-    },
-    "BURALIKSON": {
-      "raw_name": "BURALIKSON",
-      "rainfall_mm": 10.0
-    },
-    "NERIWALAM": {
-      "raw_name": "NERIWALAM(AWS)",
-      "rainfall_mm": 10.0
-    }
-  },
+  "debug_chief_amount_stations": {},
   "debug_main_table_stations": {
     "Guwahati A/P": 0.0,
-    "Dibrugarh A/P": null,
-    "Tezpur": 7.8,
+    "Dibrugarh A/P": 0.0,
+    "Tezpur": 0.0,
     "Silchar": 0.0,
-    "Dhubri": 6.0,
+    "Dhubri": 0.0,
     "Jorhat": 0.0,
-    "N/Lakhimpur": 0.2,
+    "N/Lakhimpur": 0.0,
     "Rangia": 0.0,
     "Mazbat": null,
     "Chaparmukh": null,
-    "Haflong": 1.1,
-    "Goalpara": 2.2,
+    "Haflong": 0.0,
+    "Goalpara": 0.0,
     "Golaghat": 0.0,
     "Lumding": 0.0
   }
