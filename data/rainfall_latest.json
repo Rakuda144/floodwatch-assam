@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-12T00:25:18.038686+00:00",
+  "generated_at_utc": "2026-10-12T10:36:04.544217+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
@@ -17,13 +17,13 @@
   },
   "debug_chief_amount_stations": {},
   "debug_main_table_stations": {
-    "Guwahati A/P": 5.8,
+    "Guwahati A/P": 0.0,
     "Dibrugarh A/P": 0.0,
     "Tezpur": 0.0,
     "Silchar": 0.0,
     "Dhubri": 0.0,
     "Jorhat": 0.0,
-    "N/Lakhimpur": 1.6,
+    "N/Lakhimpur": 0.0,
     "Rangia": 0.0,
     "Mazbat": null,
     "Chaparmukh": null,
