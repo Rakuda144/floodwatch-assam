@@ -1,18 +1,18 @@
 {
-  "generated_at_utc": "2026-10-16T04:15:58.729792+00:00",
+  "generated_at_utc": "2026-10-16T11:11:37.149127+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
       "rainfall_mm_24h": 0.0,
       "data_type": "ESTIMATE",
-      "source_station": "Jorhat",
-      "note": "No direct station reported for Sivasagar today - showing nearest available station (Jorhat) as an estimate."
+      "source_station": "Golaghat",
+      "note": "No direct station reported for Sivasagar today - showing nearest available station (Golaghat) as an estimate."
     },
     "Charaideo": {
       "rainfall_mm_24h": 0.0,
       "data_type": "ESTIMATE",
-      "source_station": "Jorhat",
-      "note": "No direct station reported for Charaideo today - showing nearest available station (Jorhat) as an estimate."
+      "source_station": "Golaghat",
+      "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
     }
   },
   "debug_chief_amount_stations": {},
@@ -29,7 +29,7 @@
     "Chaparmukh": null,
     "Haflong": 0.0,
     "Goalpara": 0.0,
-    "Golaghat": null,
+    "Golaghat": 0.0,
     "Lumding": 0.0
   }
 }
