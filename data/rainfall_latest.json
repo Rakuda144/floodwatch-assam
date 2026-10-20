@@ -1,0 +1,40 @@
+{
+  "generated_at_utc": "2026-10-20T08:24:19.895541+00:00",
+  "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
+  "districts": {
+    "Sivasagar": {
+      "rainfall_mm_24h": 0.0,
+      "data_type": "ESTIMATE",
+      "source_station": "Golaghat",
+      "note": "No direct station reported for Sivasagar today - showing nearest available station (Golaghat) as an estimate."
+    },
+    "Charaideo": {
+      "rainfall_mm_24h": 0.0,
+      "data_type": "ESTIMATE",
+      "source_station": "Golaghat",
+      "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
+    }
+  },
+  "debug_chief_amount_stations": {
+    "KHETRI": {
+      "raw_name": "KHETRI (ARG)",
+      "rainfall_mm": 10.0
+    }
+  },
+  "debug_main_table_stations": {
+    "Guwahati A/P": 0.0,
+    "Dibrugarh A/P": 0.0,
+    "Tezpur": 0.0,
+    "Silchar": 0.0,
+    "Dhubri": 0.0,
+    "Jorhat": 0.0,
+    "N/Lakhimpur": 0.0,
+    "Rangia": 0.0,
+    "Mazbat": null,
+    "Chaparmukh": null,
+    "Haflong": null,
+    "Goalpara": 0.0,
+    "Golaghat": 0.0,
+    "Lumding": 0.0
+  }
+}
