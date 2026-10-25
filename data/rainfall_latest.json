@@ -1,21 +1,26 @@
 {
-  "generated_at_utc": "2026-10-25T04:23:29.846101+00:00",
+  "generated_at_utc": "2026-10-25T11:10:27.267226+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
       "rainfall_mm_24h": 0.0,
       "data_type": "ESTIMATE",
-      "source_station": "Golaghat",
-      "note": "No direct station reported for Sivasagar today - showing nearest available station (Golaghat) as an estimate."
+      "source_station": "Jorhat",
+      "note": "No direct station reported for Sivasagar today - showing nearest available station (Jorhat) as an estimate."
     },
     "Charaideo": {
       "rainfall_mm_24h": 0.0,
       "data_type": "ESTIMATE",
-      "source_station": "Golaghat",
-      "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
+      "source_station": "Jorhat",
+      "note": "No direct station reported for Charaideo today - showing nearest available station (Jorhat) as an estimate."
     }
   },
-  "debug_chief_amount_stations": {},
+  "debug_chief_amount_stations": {
+    "HABANGCIRCLE": {
+      "raw_name": "HABANG CIRCLE (AWS) )",
+      "rainfall_mm": 10.0
+    }
+  },
   "debug_main_table_stations": {
     "Guwahati A/P": 0.0,
     "Dibrugarh A/P": 0.0,
@@ -29,7 +34,7 @@
     "Chaparmukh": null,
     "Haflong": null,
     "Goalpara": 0.0,
-    "Golaghat": 0.0,
+    "Golaghat": null,
     "Lumding": 0.0
   }
 }
