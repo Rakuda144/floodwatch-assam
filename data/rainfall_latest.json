@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-26T04:26:34.035087+00:00",
+  "generated_at_utc": "2026-10-26T12:44:38.415527+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
@@ -15,12 +15,7 @@
       "note": "No direct station reported for Charaideo today - showing nearest available station (Jorhat) as an estimate."
     }
   },
-  "debug_chief_amount_stations": {
-    "HABANGCIRCLE": {
-      "raw_name": "HABANG CIRCLE (AWS) )",
-      "rainfall_mm": 10.0
-    }
-  },
+  "debug_chief_amount_stations": {},
   "debug_main_table_stations": {
     "Guwahati A/P": 0.0,
     "Dibrugarh A/P": 0.0,
