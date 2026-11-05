@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-05T06:22:01.927788+00:00",
+  "generated_at_utc": "2026-11-05T17:17:00.313339+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
@@ -15,24 +15,7 @@
       "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
     }
   },
-  "debug_chief_amount_stations": {
-    "YOMCHA": {
-      "raw_name": "YOMCHA(AWS)",
-      "rainfall_mm": 20.0
-    },
-    "CHOULDHOWAGHAT": {
-      "raw_name": "CHOULDHOWAGHAT",
-      "rainfall_mm": 10.0
-    },
-    "DAPORIJO": {
-      "raw_name": "DAPORIJO(CWC)",
-      "rainfall_mm": 10.0
-    },
-    "LONGDING": {
-      "raw_name": "LONGDING(AWS)",
-      "rainfall_mm": 10.0
-    }
-  },
+  "debug_chief_amount_stations": {},
   "debug_main_table_stations": {
     "Guwahati A/P": 0.0,
     "Dibrugarh A/P": 0.0,
