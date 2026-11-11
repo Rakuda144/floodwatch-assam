@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-11T01:10:52.509062+00:00",
+  "generated_at_utc": "2026-11-11T10:40:00.163672+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
@@ -16,20 +16,36 @@
     }
   },
   "debug_chief_amount_stations": {
-    "ALGAPURCIRCLEAWS": {
-      "raw_name": "ALGAPUR CIRCLE AWS",
+    "KHOWANG": {
+      "raw_name": "KHOWANG",
+      "rainfall_mm": 40.0
+    },
+    "BAHALPUR": {
+      "raw_name": "BAHALPUR",
       "rainfall_mm": 20.0
     },
-    "PANCHGRAMAEGCL": {
-      "raw_name": "PANCHGRAM AEGCL",
+    "DHOLLABAZAR": {
+      "raw_name": "DHOLLABAZAR",
+      "rainfall_mm": 10.0
+    },
+    "MORANHAT": {
+      "raw_name": "MORANHAT",
+      "rainfall_mm": 10.0
+    },
+    "UDAIPUR": {
+      "raw_name": "UDAIPUR",
+      "rainfall_mm": 10.0
+    },
+    "KVKBALEK": {
+      "raw_name": "KVK_BALEK(AGRO)",
       "rainfall_mm": 10.0
     }
   },
   "debug_main_table_stations": {
-    "Guwahati A/P": 0.0,
-    "Dibrugarh A/P": 0.0,
+    "Guwahati A/P": null,
+    "Dibrugarh A/P": 6.8,
     "Tezpur": 0.0,
-    "Silchar": 4.0,
+    "Silchar": 0.0,
     "Dhubri": 0.0,
     "Jorhat": 0.0,
     "N/Lakhimpur": 0.0,
@@ -37,7 +53,7 @@
     "Mazbat": null,
     "Chaparmukh": null,
     "Haflong": 0.0,
-    "Goalpara": 0.0,
+    "Goalpara": 2.2,
     "Golaghat": 0.0,
     "Lumding": 0.0
   }
