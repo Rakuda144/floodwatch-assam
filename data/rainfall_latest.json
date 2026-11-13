@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-13T01:45:17.073547+00:00",
+  "generated_at_utc": "2026-11-13T10:48:09.024409+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
@@ -15,27 +15,10 @@
       "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
     }
   },
-  "debug_chief_amount_stations": {
-    "JIAGOAN": {
-      "raw_name": "JIAGOAN",
-      "rainfall_mm": 60.0
-    },
-    "HAFLONG": {
-      "raw_name": "HAFLONG",
-      "rainfall_mm": 10.0
-    },
-    "GOALPARA": {
-      "raw_name": "GOALPARA (CWC)",
-      "rainfall_mm": 10.0
-    },
-    "DHOLLABAZAR": {
-      "raw_name": "DHOLLABAZAR",
-      "rainfall_mm": 10.0
-    }
-  },
+  "debug_chief_amount_stations": {},
   "debug_main_table_stations": {
-    "Guwahati A/P": 1.1,
-    "Dibrugarh A/P": 1.7,
+    "Guwahati A/P": 0.0,
+    "Dibrugarh A/P": 0.0,
     "Tezpur": 0.0,
     "Silchar": 0.0,
     "Dhubri": 0.0,
@@ -44,9 +27,9 @@
     "Rangia": 0.0,
     "Mazbat": null,
     "Chaparmukh": null,
-    "Haflong": 8.2,
-    "Goalpara": 8.8,
+    "Haflong": 0.0,
+    "Goalpara": 0.0,
     "Golaghat": 0.0,
-    "Lumding": 0.2
+    "Lumding": 0.0
   }
 }
