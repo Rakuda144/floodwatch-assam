@@ -1,48 +1,148 @@
 {
-  "generated_at_utc": "2026-11-17T03:39:22.671393+00:00",
+  "generated_at_utc": "2026-11-17T15:51:17.629653+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
-      "rainfall_mm_24h": 0.0,
+      "rainfall_mm_24h": 15.7,
       "data_type": "ESTIMATE",
-      "source_station": "Golaghat",
-      "note": "No direct station reported for Sivasagar today - showing nearest available station (Golaghat) as an estimate."
+      "source_station": "Dibrugarh A/P",
+      "note": "No direct station reported for Sivasagar today - showing nearest available station (Dibrugarh A/P) as an estimate."
     },
     "Charaideo": {
-      "rainfall_mm_24h": 0.0,
+      "rainfall_mm_24h": 15.7,
       "data_type": "ESTIMATE",
-      "source_station": "Golaghat",
-      "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
+      "source_station": "Dibrugarh A/P",
+      "note": "No direct station reported for Charaideo today - showing nearest available station (Dibrugarh A/P) as an estimate."
     }
   },
   "debug_chief_amount_stations": {
-    "HAZUWA": {
-      "raw_name": "HAZUWA",
+    "NTXING": {
+      "raw_name": "NTXING(RANGANADI)",
+      "rainfall_mm": 40.0
+    },
+    "TAMULPUR": {
+      "raw_name": "TAMULPUR",
       "rainfall_mm": 30.0
+    },
+    "BAKSAKVK": {
+      "raw_name": "BAKSAKVK(AWS)",
+      "rainfall_mm": 30.0
+    },
+    "LAHARIGHAT": {
+      "raw_name": "LAHARIGHAT(ARG)",
+      "rainfall_mm": 20.0
+    },
+    "AIENHXING": {
+      "raw_name": "AIENHXING",
+      "rainfall_mm": 20.0
+    },
+    "MANASNHXING": {
+      "raw_name": "MANASNHXING",
+      "rainfall_mm": 20.0
+    },
+    "DIBRUGARHAP": {
+      "raw_name": "DIBRUGARHA/P",
+      "rainfall_mm": 20.0
     },
     "NLAKHIMPUR": {
       "raw_name": "N/LAKHIMPUR",
       "rainfall_mm": 20.0
     },
-    "DIBRUGARHAP": {
-      "raw_name": "DIBRUGARH A/P",
+    "DALGAON": {
+      "raw_name": "DALGAON(ARG)",
+      "rainfall_mm": 20.0
+    },
+    "TEZPUR": {
+      "raw_name": "TEZPUR",
+      "rainfall_mm": 20.0
+    },
+    "LAKHIMPUR": {
+      "raw_name": "LAKHIMPUR(AWS)",
+      "rainfall_mm": 20.0
+    },
+    "DCOFCDIBRUGARH": {
+      "raw_name": "DCOFCDIBRUGARH (ARG)",
+      "rainfall_mm": 20.0
+    },
+    "DHEKIAJULIAEGCL": {
+      "raw_name": "DHEKIAJULIAEGCL(AWS)",
+      "rainfall_mm": 20.0
+    },
+    "BISWANATHCOLLEGEOFAGRICULTUREBISWANATHCHARIALI": {
+      "raw_name": "BISWANATHCOLLEGEOFAGRICULTUREBISWANATHCHARIALI(AWS)(DIST BISWANATH)",
+      "rainfall_mm": 20.0
+    },
+    "UDALGURI": {
+      "raw_name": "UDALGURI(AWS)",
+      "rainfall_mm": 10.0
+    },
+    "BEKIRDBRIDGE": {
+      "raw_name": "BEKIRD.BRIDGE",
+      "rainfall_mm": 10.0
+    },
+    "PANBARI": {
+      "raw_name": "PANBARI",
+      "rainfall_mm": 10.0
+    },
+    "MAJULI": {
+      "raw_name": "MAJULI(AWS)",
+      "rainfall_mm": 10.0
+    },
+    "AGIAAEGCL": {
+      "raw_name": "AGIAAEGCL(AWS)",
+      "rainfall_mm": 10.0
+    },
+    "AGOMANI": {
+      "raw_name": "AGOMANI (AWS)",
+      "rainfall_mm": 10.0
+    },
+    "CHOULDHUAGHAT": {
+      "raw_name": "CHOULDHUAGHAT(ARG)",
+      "rainfall_mm": 10.0
+    },
+    "GAURIPURAEGCL": {
+      "raw_name": "GAURIPURAEGCL(AWS)",
+      "rainfall_mm": 10.0
+    },
+    "DHEMAJI": {
+      "raw_name": "DHEMAJI",
+      "rainfall_mm": 10.0
+    },
+    "BADATIGHAT": {
+      "raw_name": "BADATIGHAT",
+      "rainfall_mm": 10.0
+    },
+    "SILAPATHARSCIENCECOLLEGE": {
+      "raw_name": "SILAPATHARSCIENCE COLLEGE",
+      "rainfall_mm": 10.0
+    },
+    "GHORAMARAAEGCL": {
+      "raw_name": "GHORAMARA AEGCL",
+      "rainfall_mm": 10.0
+    },
+    "NERIWALAM": {
+      "raw_name": "NERIWALAM (AWS)",
+      "rainfall_mm": 10.0
+    },
+    "KVKDIBRUGARH": {
+      "raw_name": "KVK DIBRUGARH (AWS)",
       "rainfall_mm": 10.0
     }
   },
   "debug_main_table_stations": {
-    "Guwahati A/P": 0.0,
-    "Dibrugarh A/P": 9.3,
-    "Tezpur": 0.0,
+    "Guwahati A/P": null,
+    "Dibrugarh A/P": 15.7,
+    "Tezpur": 15.9,
     "Silchar": 0.0,
     "Dhubri": 0.0,
-    "Jorhat": 2.0,
-    "N/Lakhimpur": 17.0,
-    "Rangia": null,
+    "Jorhat": null,
+    "N/Lakhimpur": 20.2,
+    "Rangia": 0.0,
     "Mazbat": null,
     "Chaparmukh": null,
     "Haflong": 0.0,
     "Goalpara": 0.0,
-    "Golaghat": 0.0,
+    "Golaghat": null,
     "Lumding": 0.0
   }
 }
