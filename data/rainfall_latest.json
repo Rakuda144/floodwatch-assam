@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-11-20T02:12:19.563823+00:00",
+  "generated_at_utc": "2026-11-20T11:15:36.656976+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
@@ -16,40 +16,12 @@
     }
   },
   "debug_chief_amount_stations": {
-    "SRIBHUMI": {
-      "raw_name": "SRIBHUMI(AGRI)",
-      "rainfall_mm": 30.0
-    },
-    "HAFLONG": {
-      "raw_name": "HAFLONG(AEGCLAWS)",
-      "rainfall_mm": 30.0
-    },
-    "PANCHGRAMAEGCL": {
-      "raw_name": "PANCHGRAMAEGCL",
-      "rainfall_mm": 20.0
-    },
-    "SILCHAR": {
-      "raw_name": "SILCHAR",
-      "rainfall_mm": 20.0
-    },
     "ALGAPURCIRCLEAWS": {
-      "raw_name": "ALGAPUR CIRCLEAWS",
-      "rainfall_mm": 20.0
-    },
-    "DAKHINGAONASDMA": {
-      "raw_name": "DAKHINGAON ASDMA",
-      "rainfall_mm": 20.0
-    },
-    "ZRSAKBARPUR": {
-      "raw_name": "ZRS AKBARPUR",
-      "rainfall_mm": 20.0
-    },
-    "LAHARIGHAT": {
-      "raw_name": "LAHARIGHAT (ARG)",
+      "raw_name": "ALGAPUR CIRCLE AWS",
       "rainfall_mm": 10.0
     },
-    "NALBARIKVK": {
-      "raw_name": "NALBARI KVK (AWS)",
+    "HAFLONG": {
+      "raw_name": "HAFLONG (AEGCL AWS)",
       "rainfall_mm": 10.0
     }
   },
@@ -57,14 +29,14 @@
     "Guwahati A/P": 0.0,
     "Dibrugarh A/P": 0.0,
     "Tezpur": 0.0,
-    "Silchar": 15.7,
+    "Silchar": 7.1,
     "Dhubri": 0.0,
     "Jorhat": 0.0,
     "N/Lakhimpur": 0.0,
-    "Rangia": 0.0,
+    "Rangia": null,
     "Mazbat": null,
     "Chaparmukh": null,
-    "Haflong": 2.2,
+    "Haflong": 0.0,
     "Goalpara": 0.0,
     "Golaghat": 0.0,
     "Lumding": 0.0
