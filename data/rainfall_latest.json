@@ -1,35 +1,80 @@
 {
-  "generated_at_utc": "2026-11-22T01:07:51.758107+00:00",
+  "generated_at_utc": "2026-11-22T11:00:29.658540+00:00",
   "source": "https://mausam.imd.gov.in/guwahati/mcdata/dwr.pdf",
   "districts": {
     "Sivasagar": {
-      "rainfall_mm_24h": 0.0,
+      "rainfall_mm_24h": 1.6,
       "data_type": "ESTIMATE",
-      "source_station": "Golaghat",
-      "note": "No direct station reported for Sivasagar today - showing nearest available station (Golaghat) as an estimate."
+      "source_station": "Jorhat",
+      "note": "No direct station reported for Sivasagar today - showing nearest available station (Jorhat) as an estimate."
     },
     "Charaideo": {
-      "rainfall_mm_24h": 0.0,
+      "rainfall_mm_24h": 1.6,
       "data_type": "ESTIMATE",
-      "source_station": "Golaghat",
-      "note": "No direct station reported for Charaideo today - showing nearest available station (Golaghat) as an estimate."
+      "source_station": "Jorhat",
+      "note": "No direct station reported for Charaideo today - showing nearest available station (Jorhat) as an estimate."
     }
   },
-  "debug_chief_amount_stations": {},
+  "debug_chief_amount_stations": {
+    "DHANSIRI": {
+      "raw_name": "DHANSIRI(ARG)",
+      "rainfall_mm": 60.0
+    },
+    "LUMDING": {
+      "raw_name": "LUMDING(ARG)",
+      "rainfall_mm": 40.0
+    },
+    "UMLAPHER": {
+      "raw_name": "UMLAPHER(AWS))",
+      "rainfall_mm": 40.0
+    },
+    "ZRSDIPHU": {
+      "raw_name": "ZRS_DIPHU(AWS)",
+      "rainfall_mm": 40.0
+    },
+    "UMRANGSHU": {
+      "raw_name": "UMRANGSHU",
+      "rainfall_mm": 30.0
+    },
+    "KHERONIGHAT": {
+      "raw_name": "KHERONIGHAT",
+      "rainfall_mm": 30.0
+    },
+    "UMPANAIAPDCL": {
+      "raw_name": "UMPANAIAPDCL",
+      "rainfall_mm": 30.0
+    },
+    "HABANGCIRCLE": {
+      "raw_name": "HABANGCIRCLE(AWS))",
+      "rainfall_mm": 30.0
+    },
+    "BAKULIA": {
+      "raw_name": "BAKULIA(ARG)",
+      "rainfall_mm": 20.0
+    },
+    "SARUPATHAR": {
+      "raw_name": "SARUPATHAR (ARG)",
+      "rainfall_mm": 10.0
+    },
+    "CHANDUBIAWS": {
+      "raw_name": "CHANDUBI AWS",
+      "rainfall_mm": 10.0
+    }
+  },
   "debug_main_table_stations": {
-    "Guwahati A/P": 0.0,
+    "Guwahati A/P": 2.6,
     "Dibrugarh A/P": 0.0,
     "Tezpur": 0.0,
-    "Silchar": 0.6,
-    "Dhubri": 0.0,
-    "Jorhat": 0.0,
+    "Silchar": 2.9,
+    "Dhubri": 6.0,
+    "Jorhat": 1.6,
     "N/Lakhimpur": 0.0,
-    "Rangia": null,
+    "Rangia": 0.0,
     "Mazbat": null,
     "Chaparmukh": null,
-    "Haflong": 0.0,
-    "Goalpara": 0.0,
-    "Golaghat": 0.0,
-    "Lumding": 0.0
+    "Haflong": 2.2,
+    "Goalpara": 0.8,
+    "Golaghat": null,
+    "Lumding": 46.6
   }
 }
