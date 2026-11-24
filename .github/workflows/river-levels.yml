@@ -2,7 +2,7 @@ name: Hourly River Levels (CWC Assam)
 
 on:
 schedule:
-# Runs every 1 hour (minute 5 past the hour avoids top-of-hour queue spikes)
+# Runs every 1 hour at minute 5 past the hour
 - cron: "5 * * * *"
 workflow_dispatch:
 inputs:
