@@ -1,0 +1,2180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#071426" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="Real-time flood, river gauge, and rainfall monitoring dashboard for Assam powered by CWC & Open-Meteo." />
+  <title>Flood Watch Assam — Live CWC River &amp; Rainfall Monitor</title>
+
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS & JS for Interactive Assam Flood Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            navy: {
+              900: '#071426',
+              800: '#0e2240',
+              700: '#163561',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes pulseSoft {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.45; }
+    }
+    .animate-pulse-soft { animation: pulseSoft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    @keyframes tickerScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .alert-ticker-track {
+      display: flex;
+      width: max-content;
+      animation: tickerScroll 34s linear infinite;
+    }
+    .alert-ticker-wrapper:hover .alert-ticker-track,
+    .alert-ticker-wrapper:active .alert-ticker-track {
+      animation-play-state: paused;
+    }
+    .leaflet-container { z-index: 10; font-family: 'Inter', system-ui, sans-serif; }
+    .leaflet-popup-content-wrapper {
+      border-radius: 14px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.18);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col pb-20 md:pb-0">
+
+  <!-- ===================================================================== -->
+  <!-- TOP NAVIGATION BAR                                                    -->
+  <!-- ===================================================================== -->
+  <header class="bg-navy-900 text-white sticky top-0 z-40 shadow-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-3">
+
+        <!-- Brand Identity -->
+        <button onclick="switchTab('dashboard')" class="flex items-center gap-2.5 sm:gap-3 text-left focus:outline-none group">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-500/15 border border-blue-400/30 flex items-center justify-center shrink-0 group-hover:bg-blue-500/25 transition">
+            <svg class="w-6 h-6 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 10.5L12 3l9 7.5" class="text-white" stroke="currentColor"/>
+              <path d="M5.5 9.5V15h13V9.5" class="text-white" stroke="currentColor"/>
+              <path d="M2 18c1.5-1.2 3-1.2 4.5 0s3 1.2 4.5 0 3-1.2 4.5 0 3 1.2 4.5 0" class="text-sky-400" stroke="currentColor"/>
+              <path d="M2 21c1.5-1.2 3-1.2 4.5 0s3 1.2 4.5 0 3-1.2 4.5 0 3 1.2 4.5 0" class="text-sky-400" stroke="currentColor"/>
+            </svg>
+          </div>
+          <div class="leading-tight">
+            <div class="font-extrabold tracking-tight text-sm sm:text-base lg:text-lg text-white flex items-center gap-1.5">
+              <span>FLOOD WATCH <span class="text-sky-400">ASSAM</span></span>
+            </div>
+            <div class="text-[11px] sm:text-xs text-slate-300 hidden sm:block">
+              Live CWC river gauges &amp; rainfall monitor
+            </div>
+          </div>
+        </button>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-1" aria-label="Primary Navigation">
+          <button data-tab="dashboard" onclick="switchTab('dashboard')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 bg-blue-600 text-white">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+            Dashboard
+          </button>
+          <button data-tab="rivers" onclick="switchTab('rivers')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-white/10">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
+            Gauges
+            <span id="nav-gauge-count" class="ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-white/15 text-sky-200">--</span>
+          </button>
+          <button data-tab="weather" onclick="switchTab('weather')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-white/10">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 16.2A4.5 4.5 0 0017.5 8h-1.8A7 7 0 104 14.9M8 19v2m4-3v3m4-2v2"/></svg>
+            Live Weather
+          </button>
+          <button data-tab="alerts" onclick="switchTab('alerts')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-white/10">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+            Alerts
+            <span id="nav-alert-count" class="ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500 text-white">0</span>
+          </button>
+          <button data-tab="sos" onclick="switchTab('sos')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 text-red-200 hover:text-white hover:bg-red-500/20">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            SOS
+          </button>
+        </nav>
+
+        <!-- Right Status, Lite Mode & Refresh -->
+        <div class="flex items-center gap-2">
+          <!-- Live Feed Status Pill -->
+          <div
+            id="data-source-pill"
+            class="px-2.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[11px] font-bold flex items-center gap-1.5"
+          >
+            <span id="data-source-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-soft"></span>
+            <span id="data-source-label">Loading...</span>
+          </div>
+
+          <!-- 2G / Low-Bandwidth Lite Mode Toggle -->
+          <button
+            id="lite-mode-btn"
+            onclick="toggleLiteMode()"
+            title="Toggle 2G Low-Bandwidth Lite Mode"
+            class="px-2.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100 text-xs font-bold flex items-center gap-1"
+            aria-label="Toggle 2G Lite Mode"
+          >
+            <span>⚡</span>
+            <span class="hidden sm:inline">Lite</span>
+          </button>
+
+          <button onclick="loadLiveCwcData(true)" title="Refresh live CWC data" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100" aria-label="Refresh Data">
+            <svg id="refresh-icon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Live Sync Sub-Bar -->
+  <div class="bg-navy-800 text-slate-200 text-[11px] px-4 py-1.5 border-b border-white/10">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <span id="sync-status-text" class="flex items-center gap-1.5 font-medium text-sky-300">
+        Loading live CWC Assam data...
+      </span>
+      <span id="live-clock" class="text-slate-300 font-medium">IST</span>
+    </div>
+  </div>
+
+  <!-- Offline Mode Banner -->
+  <div id="offline-banner" class="hidden bg-amber-500 text-slate-950 text-xs font-semibold px-4 py-2 text-center shadow-sm">
+    <span>⚠️ You are currently offline — showing last cached readings &amp; emergency numbers.</span>
+  </div>
+
+  <!-- 2G / Low-Bandwidth Lite Mode Banner -->
+  <div id="lite-mode-banner" class="hidden bg-emerald-950 text-emerald-100 text-xs font-medium px-4 py-2 flex items-center justify-center gap-3 shadow-sm border-b border-emerald-800">
+    <span>⚡ <strong>2G Lite Mode Active</strong> — Heavy map tiles &amp; rain radar hidden to save mobile data.</span>
+    <button onclick="toggleLiteMode()" class="underline font-bold text-white hover:text-emerald-200 shrink-0">Switch to Full</button>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN CONTENT CONTAINER                                                -->
+  <!-- ===================================================================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-5">
+
+    <!-- ------------------------------------------------------------------- -->
+    <!-- VIEW: DASHBOARD                                                     -->
+    <!-- ------------------------------------------------------------------- -->
+    <div id="view-dashboard" class="space-y-5">
+
+      <!-- LEVEL 1: DYNAMIC FLOOD STATUS + SCROLLING ALERT TICKER -->
+      <section id="status-ticker-bar" class="bg-white rounded-2xl shadow-sm border border-emerald-200/90 overflow-hidden flex items-stretch">
+        <div id="status-pill-left" class="bg-gradient-to-r from-emerald-600 to-teal-500 text-white px-3 sm:px-4 py-2.5 flex items-center gap-2 shrink-0">
+          <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+          <span id="status-pill-text" class="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider whitespace-nowrap">Normal Flow</span>
+        </div>
+
+        <div class="alert-ticker-wrapper flex-1 overflow-hidden relative py-2.5 bg-slate-50/70">
+          <div id="alert-ticker-track" class="alert-ticker-track items-center gap-6 px-4"></div>
+        </div>
+
+        <button
+          onclick="switchTab('alerts')"
+          class="px-3 sm:px-4 py-2.5 bg-white hover:bg-slate-50 border-l border-slate-200 text-xs font-bold text-blue-600 hover:text-blue-700 shrink-0 transition whitespace-nowrap flex items-center gap-1"
+        >
+          Alerts
+          <span id="ticker-alert-count" class="hidden sm:inline">(0)</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </section>
+
+      <!-- LEVEL 2: MY WATCHLIST (MAX 3 GAUGES) -->
+      <section class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h2 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                <svg class="w-5 h-5 text-amber-500 fill-amber-400" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                </svg>
+                My Watchlist
+              </h2>
+              <span id="watchlist-count-badge" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200/80">
+                3 / 3 Pinned
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">Tap any gauge card for details &amp; thresholds, or pin up to 3 Assam CWC stations.</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+            <span id="user-location-pill" class="hidden items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-sky-50 text-sky-700 border border-sky-200 text-xs font-semibold">
+              <span>📍</span>
+              <span id="user-location-name">Assam</span>
+              <button onclick="clearUserLocation()" title="Clear saved location" class="ml-0.5 text-sky-400 hover:text-sky-700 font-bold" aria-label="Clear saved location">&times;</button>
+            </span>
+            <button id="nearest-gauges-btn" onclick="pinNearestThreeGauges()" class="px-3 py-2 rounded-xl bg-sky-50 hover:bg-sky-100 active:scale-95 text-sky-700 border border-sky-200 text-xs font-semibold transition flex items-center gap-1.5">
+              <span>📍</span>
+              <span>Nearest to Me</span>
+            </button>
+            <button onclick="openWatchlistModal()" class="px-3.5 py-2 rounded-xl bg-navy-900 hover:bg-navy-800 active:scale-95 text-white text-xs font-semibold transition flex items-center gap-1.5 shadow-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              Edit Watchlist
+            </button>
+            <button onclick="switchTab('rivers')" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+              All (<span id="home-all-count">--</span>)
+            </button>
+          </div>
+        </div>
+
+        <div id="watchlist-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+
+        <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500"></span>Normal (Below WL)</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-orange-500"></span>Warning (Above WL)</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-red-500"></span>Flood (Above DL)</span>
+          </div>
+          <span class="text-[11px] text-slate-400">WL = Warning Level &bull; DL = Danger Level &bull; HFL = Record Flood</span>
+        </div>
+      </section>
+
+      <!-- LEVEL 3: INTERACTIVE ASSAM FLOOD & GAUGE MAP -->
+      <section id="assam-map-section" class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+          <div>
+            <h2 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+              </svg>
+              Assam Live CWC Gauge Map
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">Tap any marker to view live CWC level, pin to watchlist, or share a WhatsApp card.</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-1.5">
+            <div class="inline-flex rounded-xl bg-slate-100 p-0.5 text-xs font-semibold">
+              <button id="map-layer-gauges" onclick="setMapLayer('gauges')" class="px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition">
+                Gauges
+              </button>
+              <button id="map-layer-rainfall" onclick="setMapLayer('rainfall')" class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition">
+                Rainfall
+              </button>
+            </div>
+            <button onclick="focusMapRegion('upper')" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold transition">
+              Upper Assam
+            </button>
+            <button onclick="focusMapRegion('barak')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+              Barak Valley
+            </button>
+            <button onclick="focusMapRegion('all')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+              All Assam
+            </button>
+          </div>
+        </div>
+
+        <div id="assam-map" class="w-full h-72 sm:h-80 lg:h-96 rounded-2xl border border-slate-200 overflow-hidden bg-slate-100"></div>
+        <div id="map-legend" class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600"></div>
+      </section>
+
+      <!-- LEVEL 4: UPSTREAM-TO-DOWNSTREAM FLOW CHAIN -->
+      <section class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-4">
+          <div>
+            <h2 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+              <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+              </svg>
+              Upstream-to-Downstream Flow Chain
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">Live water levels ordered from upstream hills to downstream plains.</p>
+          </div>
+          <div class="inline-flex rounded-xl bg-slate-100 p-0.5 text-xs font-semibold self-start sm:self-auto">
+            <button id="chain-dikhow-btn" onclick="renderFlowChain('dikhow')" class="px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition">
+              Dikhow Basin
+            </button>
+            <button id="chain-brahmaputra-btn" onclick="renderFlowChain('brahmaputra')" class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition">
+              Brahmaputra
+            </button>
+          </div>
+        </div>
+        <div id="flow-chain-container" class="flex items-stretch gap-2 overflow-x-auto pb-1 no-scrollbar"></div>
+      </section>
+
+      <!-- LEVEL 5: LOCAL RAINFALL (24H) + NETWORK SUMMARY & HELPLINES -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
+        <div class="lg:col-span-6 bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Assam Rainfall Watch (24h Live)</h2>
+                <p class="text-[11px] text-slate-400 mt-0.5">Tap a town to locate it on the map above</p>
+              </div>
+              <button onclick="switchTab('weather')" class="text-xs font-semibold text-blue-600 hover:text-blue-700">
+                Live Open-Meteo &rarr;
+              </button>
+            </div>
+            <div id="rainfall-list" class="divide-y divide-slate-100"></div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Live Network Summary &amp; Helplines</h2>
+              <button onclick="switchTab('sos')" class="text-xs font-semibold text-red-600 hover:text-red-700">SOS Directory &rarr;</button>
+            </div>
+
+            <div id="network-summary-cards" class="grid grid-cols-3 gap-2.5 mb-4"></div>
+
+            <div class="space-y-2.5 text-xs pt-2 border-t border-slate-100">
+              <div class="flex items-start gap-2.5">
+                <span class="text-red-600 text-base leading-none mt-0.5">📞</span>
+                <div>
+                  <div class="font-bold text-slate-800">Assam Emergency Numbers</div>
+                  <div class="text-[11px] text-slate-600">
+                    State Helpline: <a href="tel:1070" class="font-bold text-red-600 hover:underline">1070</a> &bull;
+                    District DEOC: <a href="tel:1077" class="font-bold text-red-600 hover:underline">1077</a> &bull;
+                    SDRF: <a href="tel:03612237219" class="font-semibold text-blue-700 hover:underline">0361-2237219</a>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-start gap-2.5">
+                <span class="text-emerald-600 text-base leading-none mt-0.5">🛡️</span>
+                <div>
+                  <div class="font-bold text-slate-800">Official Data Pipeline</div>
+                  <div class="text-[11px] text-slate-500">Central Water Commission (CWC FFS) &bull; Open-Meteo Weather &bull; Hourly Sync</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ------------------------------------------------------------------- -->
+    <!-- VIEW: ALL GAUGES DIRECTORY                                          -->
+    <!-- ------------------------------------------------------------------- -->
+    <div id="view-rivers" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <h1 class="text-lg font-bold text-slate-900">All Assam CWC River Gauges</h1>
+            <p class="text-xs text-slate-500">Filter by station, river, or district. Pin up to <strong>3 gauges</strong> to your Home Watchlist.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <select
+              id="river-district-filter"
+              onchange="renderAllGaugesDirectory()"
+              class="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">All Districts</option>
+            </select>
+            <div class="relative w-full sm:w-64">
+              <input
+                id="river-search-input"
+                type="text"
+                oninput="renderAllGaugesDirectory()"
+                placeholder="Search Bihubar, Sivasagar, Dikhow..."
+                class="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div id="all-gauges-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5"></div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------------- -->
+    <!-- VIEW: LIVE WEATHER FORECAST                                         -->
+    <!-- ------------------------------------------------------------------- -->
+    <div id="view-weather" class="hidden space-y-5">
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h1 class="text-lg font-bold text-slate-900">Live Weather Forecast</h1>
+              <span id="weather-source-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">
+                Open-Meteo Live
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">Hourly precipitation, 7-day rain outlook, and live upstream hill radar.</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              onclick="detectUserLocation(false, true)"
+              class="px-3 py-2 rounded-xl bg-sky-50 hover:bg-sky-100 active:scale-95 text-sky-700 border border-sky-200 text-xs font-bold transition flex items-center gap-1.5"
+            >
+              <span>📍</span>
+              <span>Use My Location</span>
+            </button>
+            <select
+              id="weather-city-select"
+              onchange="loadWeatherForecast(this.value)"
+              class="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="sivasagar">Sivasagar</option>
+              <option value="bihubar">Bihubar</option>
+              <option value="nazira">Nazira</option>
+              <option value="jorhat">Jorhat</option>
+              <option value="dibrugarh">Dibrugarh</option>
+              <option value="tinsukia">Tinsukia</option>
+              <option value="guwahati">Guwahati</option>
+              <option value="silchar">Silchar</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="weather-current-summary" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5"></div>
+
+        <div>
+          <div class="flex items-center justify-between mb-2.5">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Hourly Rain Timeline (Next 24 Hours)</h2>
+            <span class="text-[11px] text-slate-400">Scroll sideways &rarr;</span>
+          </div>
+          <div id="weather-hourly-strip" class="flex gap-2.5 overflow-x-auto pb-2 no-scrollbar"></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
+        <div class="lg:col-span-7 bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 flex flex-col">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h2 class="text-sm sm:text-base font-bold text-slate-900">Live Cloud &amp; Rain Radar</h2>
+              <p class="text-xs text-slate-500">Upper Assam, Nagaland &amp; Arunachal hills.</p>
+            </div>
+            <span class="px-2 py-1 rounded-lg bg-blue-50 text-blue-700 text-[11px] font-semibold shrink-0">Windy Live</span>
+          </div>
+          <div id="windy-radar-container" class="w-full h-72 sm:h-80 lg:flex-1 lg:min-h-[330px] rounded-2xl overflow-hidden border border-slate-200 bg-slate-100">
+            <iframe
+              title="Assam Live Rain Radar"
+              class="w-full h-full border-0"
+              loading="lazy"
+              src="https://embed.windy.com/embed2.html?lat=26.95&lon=94.55&detailLat=26.98&detailLon=94.64&width=650&height=450&zoom=7&level=surface&overlay=rain&product=ecmwf&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1"
+            ></iframe>
+          </div>
+          <div id="windy-radar-lite-placeholder" class="hidden w-full py-10 px-4 rounded-2xl border border-dashed border-slate-300 bg-slate-50 text-center">
+            <div class="text-sm font-bold text-slate-700">⚡ Rain Radar Paused (2G Lite Mode)</div>
+            <button onclick="toggleLiteMode()" class="mt-3 px-3.5 py-1.5 rounded-xl bg-navy-900 text-white text-xs font-semibold">Load Full Radar</button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
+          <h2 class="text-sm sm:text-base font-bold text-slate-900 mb-1">7-Day Rainfall Outlook</h2>
+          <p class="text-xs text-slate-500 mb-3">Expected daily precipitation (mm) and temperature range.</p>
+          <div id="weather-7day-list" class="divide-y divide-slate-100"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------------- -->
+    <!-- VIEW: ALERTS DETAIL                                                 -->
+    <!-- ------------------------------------------------------------------- -->
+    <div id="view-alerts" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
+        <h1 class="text-lg font-bold text-slate-900 mb-1">Live River &amp; Flood Alerts</h1>
+        <p class="text-xs text-slate-500 mb-4">Automatically generated from active CWC Assam stations crossing Warning or Danger thresholds.</p>
+        <div id="alerts-full-list" class="space-y-3"></div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------------- -->
+    <!-- VIEW: EMERGENCY SOS                                                 -->
+    <!-- ------------------------------------------------------------------- -->
+    <div id="view-sos" class="hidden space-y-5">
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-red-200/80">
+        <h1 class="text-lg font-bold text-slate-900 flex items-center gap-2 mb-1">
+          <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
+          Assam Flood Emergency Helplines
+        </h1>
+        <p class="text-xs text-slate-500 mb-4">Tap any card below to dial immediately. Available offline.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <a href="tel:1070" class="p-4 rounded-2xl bg-red-50 hover:bg-red-100 border border-red-200 transition flex items-center justify-between">
+            <div>
+              <div class="text-xs font-bold uppercase text-red-700">State Disaster Helpline</div>
+              <div class="text-2xl font-extrabold text-red-600 mt-0.5">1070</div>
+              <div class="text-[11px] text-slate-600 mt-0.5">ASDMA 24&times;7 Toll-Free Control Room</div>
+            </div>
+            <span class="w-11 h-11 rounded-xl bg-red-600 text-white flex items-center justify-center text-lg shrink-0">📞</span>
+          </a>
+          <a href="tel:1077" class="p-4 rounded-2xl bg-orange-50 hover:bg-orange-100 border border-orange-200 transition flex items-center justify-between">
+            <div>
+              <div class="text-xs font-bold uppercase text-orange-800">District Emergency (DEOC)</div>
+              <div class="text-2xl font-extrabold text-orange-600 mt-0.5">1077</div>
+              <div class="text-[11px] text-slate-600 mt-0.5">Connects to your local District DDMA</div>
+            </div>
+            <span class="w-11 h-11 rounded-xl bg-orange-500 text-white flex items-center justify-center text-lg shrink-0">📞</span>
+          </a>
+          <a href="tel:03612237219" class="p-4 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 transition flex items-center justify-between">
+            <div>
+              <div class="text-xs font-bold uppercase text-blue-800">Assam SDRF Rescue</div>
+              <div class="text-xl font-extrabold text-blue-700 mt-0.5">0361-2237219</div>
+              <div class="text-[11px] text-slate-600 mt-0.5">State Disaster Response Force</div>
+            </div>
+            <span class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg shrink-0">🚤</span>
+          </a>
+          <a href="tel:108" class="p-4 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition flex items-center justify-between">
+            <div>
+              <div class="text-xs font-bold uppercase text-slate-700">Emergency Ambulance</div>
+              <div class="text-2xl font-extrabold text-slate-900 mt-0.5">108</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">Mrityunjoy Medical &amp; Boat Ambulance</div>
+            </div>
+            <span class="w-11 h-11 rounded-xl bg-slate-800 text-white flex items-center justify-center text-lg shrink-0">🚑</span>
+          </a>
+          <a href="tel:112" class="p-4 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition flex items-center justify-between">
+            <div>
+              <div class="text-xs font-bold uppercase text-slate-700">Police / All-in-One SOS</div>
+              <div class="text-2xl font-extrabold text-slate-900 mt-0.5">112</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">National Emergency Response System</div>
+            </div>
+            <span class="w-11 h-11 rounded-xl bg-slate-800 text-white flex items-center justify-center text-lg shrink-0">🚨</span>
+          </a>
+          <a href="tel:9711077372" class="p-4 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition flex items-center justify-between">
+            <div>
+              <div class="text-xs font-bold uppercase text-slate-700">NDRF Control Room</div>
+              <div class="text-lg font-extrabold text-slate-900 mt-0.5">97110-77372</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">National Disaster Response Force</div>
+            </div>
+            <span class="w-11 h-11 rounded-xl bg-slate-800 text-white flex items-center justify-center text-lg shrink-0">🛟</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-slate-500">
+      <div>
+        <strong class="text-slate-700">DISCLAIMER:</strong> For monitoring purposes only. Always follow official ASDMA / CWC / District Administration warnings.
+      </div>
+      <div class="shrink-0 font-medium text-slate-600">
+        Flood Watch Assam &bull; Built for Assam
+      </div>
+    </div>
+  </footer>
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t border-slate-200 shadow-lg" aria-label="Mobile Navigation">
+    <div class="grid grid-cols-5 gap-1 px-1.5 py-1.5">
+      <button data-tab="dashboard" onclick="switchTab('dashboard')" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-blue-600 bg-blue-50 font-semibold text-[10px]">
+        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+        Home
+      </button>
+      <button data-tab="rivers" onclick="switchTab('rivers')" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium text-[10px]">
+        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
+        Gauges
+      </button>
+      <button data-tab="weather" onclick="switchTab('weather')" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium text-[10px]">
+        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 16.2A4.5 4.5 0 0017.5 8h-1.8A7 7 0 104 14.9M8 19v2m4-3v3m4-2v2"/></svg>
+        Weather
+      </button>
+      <button data-tab="alerts" onclick="switchTab('alerts')" class="mobile-nav-btn relative flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium text-[10px]">
+        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+        Alerts
+      </button>
+      <button data-tab="sos" onclick="switchTab('sos')" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-red-600 font-semibold text-[10px]">
+        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        SOS
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: CUSTOMIZE WATCHLIST                                            -->
+  <!-- ===================================================================== -->
+  <div id="watchlist-modal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-slate-900/60 backdrop-blur-sm p-0 sm:p-4">
+    <div class="bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl max-h-[88vh] flex flex-col overflow-hidden">
+      <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-bold text-slate-900">Customize Home Watchlist</h3>
+          <p class="text-xs text-slate-500 mt-0.5">Select up to <strong>3 Assam gauges</strong> to pin at the top of your dashboard.</p>
+        </div>
+        <button onclick="closeWatchlistModal()" class="p-2 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-700">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="px-5 pt-3 pb-2">
+        <input
+          id="modal-gauge-search"
+          type="text"
+          oninput="renderWatchlistModalList()"
+          placeholder="Filter by station, river, or district..."
+          class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div id="modal-gauge-list" class="flex-1 overflow-y-auto px-5 py-2 space-y-2"></div>
+
+      <div class="px-5 py-3.5 border-t border-slate-100 bg-slate-50 flex items-center justify-between gap-3">
+        <div class="text-xs text-slate-600">Selected: <strong id="modal-counter" class="text-blue-700">3 / 3</strong></div>
+        <div class="flex items-center gap-2">
+          <button onclick="resetDefaultWatchlist()" class="px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-200 transition">Reset Default</button>
+          <button onclick="closeWatchlistModal()" class="px-4 py-2 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-semibold transition">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: WHATSAPP SHAREABLE IMAGE CARD PREVIEW                          -->
+  <!-- ===================================================================== -->
+  <div id="share-modal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-slate-900/70 backdrop-blur-sm p-0 sm:p-4">
+    <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <h3 class="text-sm sm:text-base font-bold text-slate-900">Share Gauge Update Card</h3>
+          <p class="text-[11px] text-slate-500">Generated PNG image ready for WhatsApp groups &amp; family.</p>
+        </div>
+        <button onclick="closeShareModal()" class="p-2 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-700">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="p-4 bg-slate-100 flex items-center justify-center overflow-y-auto">
+        <img id="share-preview-img" alt="Flood Watch Assam Status Card" class="w-full max-w-[340px] rounded-2xl shadow-lg border border-slate-200 bg-white" />
+      </div>
+      <div class="p-4 border-t border-slate-100 bg-white grid grid-cols-2 gap-2.5">
+        <button onclick="shareGeneratedImage()" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+          <span>📲</span> Share to WhatsApp
+        </button>
+        <button onclick="downloadGeneratedImage()" class="py-2.5 px-3 rounded-xl bg-navy-900 hover:bg-navy-800 active:scale-95 text-white text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+          <span>⬇️</span> Save PNG
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: GAUGE DETAIL DRAWER                                            -->
+  <!-- ===================================================================== -->
+  <div id="gauge-detail-modal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-slate-900/65 backdrop-blur-sm p-0 sm:p-4">
+    <div class="bg-white w-full sm:max-w-xl rounded-t-3xl sm:rounded-2xl shadow-2xl max-h-[92vh] flex flex-col overflow-hidden">
+      <div class="px-5 py-4 bg-navy-900 text-white flex items-start justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h3 id="detail-station-name" class="text-lg font-extrabold leading-tight">Bihubar</h3>
+            <span id="detail-status-pill" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">Normal</span>
+          </div>
+          <p id="detail-river-subtitle" class="text-xs text-slate-300 mt-0.5">Dikhow River &bull; Sivasagar District</p>
+        </div>
+        <button onclick="closeGaugeDetailModal()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="detail-modal-body" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+      <div id="detail-modal-footer" class="px-5 py-3.5 border-t border-slate-100 bg-slate-50 flex flex-wrap items-center justify-between gap-2"></div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 translate-y-2">
+    <div class="px-4 py-2.5 rounded-xl bg-navy-900 text-white text-xs sm:text-sm font-medium shadow-xl flex items-center gap-2 whitespace-nowrap">
+      <span id="toast-message">Updated</span>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- APPLICATION LOGIC (GITHUB PAGES LIVE CWC + OPEN-METEO)                -->
+  <!-- ===================================================================== -->
+  <script>
+    const MAX_WATCHLIST = 3;
+    const STORAGE_KEY = 'floodwatch_assam_cwc_watchlist_v1';
+    const LITE_MODE_KEY = 'floodwatch_assam_lite_mode_v1';
+    const USER_LOC_KEY = 'floodwatch_assam_user_location_v1';
+
+    // Default 3 pinned gauges: Bihubar (Dikhow), Sivasagar (Dikhow), Nanglamoraghat (Desang)
+    const DEFAULT_WATCHLIST = ['017-ubddib', '018-ubddib', '016-ubddib'];
+
+    // Offline/preview fallback snapshot if ./data/levels.json cannot be reached
+    const FALLBACK_CWC_SNAPSHOT = [
+      { code: '017-ubddib', inAssam: true, type: 'Base', name: 'Bihubar', river: 'Dikhow', basin: 'Brahmaputra', district: 'Sivasagar', bank: 'Right', catchmentArea: 3012, telemetric: true, lat: 26.8533, lon: 94.8006, status: 'normal', level: 93.80, warningLevel: 102.77, dangerLevel: 103.77, highestLevel: 105.30, highestLevelDate: '2026-07-20', ageHours: 26.1, time: '2026-11-23T13:00:00' },
+      { code: '018-ubddib', inAssam: true, type: 'Level', name: 'Sivasagar', river: 'Dikhow', basin: 'Brahmaputra', district: 'Sivasagar', bank: 'Left', catchmentArea: 3425, telemetric: true, lat: 26.9817, lon: 94.5792, status: 'normal', level: 87.18, warningLevel: 91.40, dangerLevel: 92.40, highestLevel: 94.68, highestLevelDate: '2026-07-20', ageHours: 26.1, time: '2026-11-23T13:00:00' },
+      { code: '016-ubddib', inAssam: true, type: 'Level', name: 'Nanglamoraghat', river: 'Desang', basin: 'Brahmaputra', district: 'Sivasagar', bank: 'Right', catchmentArea: 2894, telemetric: true, lat: 26.9850, lon: 94.7767, status: 'normal', level: 88.50, warningLevel: 93.46, dangerLevel: 94.46, highestLevel: 96.60, highestLevelDate: '2026-07-21', ageHours: 29.8, time: '2026-11-23T08:00:00' }
+    ];
+
+    const RAINFALL_STATIONS = [
+      { name: 'Sivasagar', district: 'Sivasagar', mm: 0, lat: 26.984, lng: 94.637 },
+      { name: 'Bihubar', district: 'Sivasagar', mm: 0, lat: 26.853, lng: 94.801 },
+      { name: 'Dibrugarh', district: 'Dibrugarh', mm: 0, lat: 27.473, lng: 94.912 },
+      { name: 'Jorhat', district: 'Jorhat', mm: 0, lat: 26.751, lng: 94.203 },
+      { name: 'Tezpur', district: 'Sonitpur', mm: 0, lat: 26.652, lng: 92.792 },
+      { name: 'Guwahati', district: 'Kamrup (M)', mm: 0, lat: 26.144, lng: 91.736 },
+      { name: 'Silchar', district: 'Cachar', mm: 0, lat: 24.833, lng: 92.779 }
+    ];
+
+    const WEATHER_CITIES = {
+      sivasagar: { name: 'Sivasagar', lat: 26.984, lng: 94.637 },
+      bihubar: { name: 'Bihubar', lat: 26.853, lng: 94.801 },
+      nazira: { name: 'Nazira', lat: 26.915, lng: 94.732 },
+      jorhat: { name: 'Jorhat', lat: 26.751, lng: 94.203 },
+      dibrugarh: { name: 'Dibrugarh', lat: 27.473, lng: 94.912 },
+      tinsukia: { name: 'Tinsukia', lat: 27.492, lng: 95.359 },
+      guwahati: { name: 'Guwahati', lat: 26.144, lng: 91.736 },
+      silchar: { name: 'Silchar', lat: 24.833, lng: 92.779 }
+    };
+
+    // Runtime state
+    let ALL_GAUGES = [];
+    let ALERTS_DATA = [];
+    let dataSourceMode = 'loading';
+    let lastFetchedAt = null;
+    let watchlistIds = loadWatchlist();
+    let isLiteMode = loadLiteMode();
+    let userLocation = loadUserLocation();
+    let activeMapLayer = 'gauges';
+    let assamMap = null;
+    let mapMarkersLayer = null;
+    let weatherLoadedOnce = false;
+    let toastTimer = null;
+    let currentShareGauge = null;
+    let currentShareBlob = null;
+    let currentShareFilename = 'floodwatch-assam.png';
+
+    // =========================================================================
+    // 1. CWC DATA NORMALIZER & GITHUB PAGES REPO LOADER
+    // =========================================================================
+    function formatAge(ageHours) {
+      if (ageHours == null || isNaN(ageHours)) return 'No timestamp';
+      if (ageHours < 1) return `${Math.max(1, Math.round(ageHours * 60))} mins ago`;
+      if (ageHours < 48) return `${Math.round(ageHours)}h ago`;
+      return `${Math.round(ageHours / 24)}d ago`;
+    }
+
+    function normalizeCwcStation(raw) {
+      const code = String(raw.code || raw.stationCode || '').toLowerCase();
+      const level = typeof raw.level === 'number' ? raw.level : null;
+      const warning = typeof raw.warningLevel === 'number' ? raw.warningLevel : null;
+      const danger = typeof raw.dangerLevel === 'number' ? raw.dangerLevel : null;
+      const hfl = typeof raw.highestLevel === 'number' ? raw.highestLevel : null;
+      const hflYear = raw.highestLevelDate ? String(raw.highestLevelDate).slice(0, 4) : null;
+
+      return {
+        id: code,
+        code,
+        station: raw.name || code.toUpperCase(),
+        river: raw.river && raw.river !== '-' ? raw.river : 'Assam River',
+        basin: raw.basin || 'Brahmaputra',
+        district: raw.district || 'Assam',
+        bank: raw.bank || null,
+        catchmentArea: raw.catchmentArea ?? null,
+        type: raw.type || 'Level',
+        telemetric: raw.telemetric ?? null,
+        inAssam: raw.inAssam !== false,
+        lat: typeof raw.lat === 'number' ? raw.lat : null,
+        lng: typeof raw.lon === 'number' ? raw.lon : (typeof raw.lng === 'number' ? raw.lng : null),
+        current: level,
+        warning,
+        danger,
+        hfl,
+        hflYear,
+        hflDate: raw.highestLevelDate || null,
+        cwcStatus: raw.status || 'normal',
+        stale: Boolean(raw.stale),
+        ageHours: raw.ageHours ?? null,
+        time: raw.time || null,
+        updated: formatAge(raw.ageHours),
+        pastFloodNote: raw.pastFloodNote || null
+      };
+    }
+
+    function applyCwcDataset(rawList, modeLabel, fetchedAtIso) {
+      // Include all Assam stations with an active numeric reading (exclude offline)
+      const normalized = rawList
+        .map(normalizeCwcStation)
+        .filter(g => g.inAssam && g.current !== null && g.cwcStatus !== 'offline');
+
+      const rank = { flood: 0, warning: 1, normal: 2, 'no-data': 3 };
+      normalized.sort((a, b) => (rank[a.cwcStatus] ?? 4) - (rank[b.cwcStatus] ?? 4) || a.station.localeCompare(b.station));
+
+      ALL_GAUGES = normalized;
+      lastFetchedAt = fetchedAtIso || new Date().toISOString();
+      dataSourceMode = modeLabel;
+
+      const validPinned = watchlistIds.filter(id => ALL_GAUGES.some(g => g.id === id));
+      if (validPinned.length === 0) {
+        const defaultsPresent = DEFAULT_WATCHLIST.filter(id => ALL_GAUGES.some(g => g.id === id));
+        watchlistIds = defaultsPresent.length > 0 ? defaultsPresent : ALL_GAUGES.slice(0, MAX_WATCHLIST).map(g => g.id);
+        saveWatchlist();
+      } else {
+        watchlistIds = validPinned;
+      }
+
+      buildLiveAlertsFromGauges();
+      populateDistrictFilter();
+      updateDataSourceUI();
+      renderAlertsAndTicker();
+      renderWatchlist();
+      renderFlowChain('dikhow');
+      renderAllGaugesDirectory();
+      renderNetworkSummary();
+      renderMapMarkers();
+    }
+
+    function buildLiveAlertsFromGauges() {
+      const alerts = [];
+      ALL_GAUGES.forEach(g => {
+        if (g.cwcStatus === 'flood' || (g.danger !== null && g.current >= g.danger)) {
+          alerts.push({
+            severity: 'high',
+            title: `${g.station} (${g.river}) ABOVE Danger Level`,
+            detail: `Current level ${g.current.toFixed(2)} m vs Danger Level ${g.danger?.toFixed(2) ?? '—'} m in ${g.district} district.`,
+            time: g.updated,
+            source: 'CWC FFS Live'
+          });
+        } else if (g.cwcStatus === 'warning' || (g.warning !== null && g.current >= g.warning)) {
+          alerts.push({
+            severity: 'medium',
+            title: `${g.station} (${g.river}) above Warning Level`,
+            detail: `Current level ${g.current.toFixed(2)} m (WL: ${g.warning?.toFixed(2) ?? '—'} m, DL: ${g.danger?.toFixed(2) ?? '—'} m) in ${g.district}.`,
+            time: g.updated,
+            source: 'CWC FFS Live'
+          });
+        }
+      });
+      ALERTS_DATA = alerts;
+    }
+
+    async function loadLiveCwcData(manualRefresh = false) {
+      const icon = document.getElementById('refresh-icon');
+      if (icon) icon.classList.add('animate-spin');
+
+      try {
+        const [lvRes, stRes] = await Promise.all([
+          fetch('./data/levels.json', { cache: 'no-store' }),
+          fetch('./data/stations.json', { cache: 'no-store' }).catch(() => null)
+        ]);
+
+        if (lvRes.ok) {
+          const lv = await lvRes.json();
+          const st = stRes && stRes.ok ? await stRes.json() : { stations: [] };
+          const metaByCode = Object.fromEntries(
+            (st.stations || []).map(s => [String(s.code).toLowerCase(), s])
+          );
+
+          // Merge live readings with clean station metadata (district, river, basin, inAssam)
+          const merged = (lv.stations || []).map(l => {
+            const m = metaByCode[String(l.code).toLowerCase()] || {};
+            return {
+              ...l,
+              name: m.name || l.name,
+              river: m.river || l.river || null,
+              basin: m.basin || l.basin || null,
+              district: m.district || l.district || null,
+              state: m.state || l.state || null,
+              inAssam: m.inAssam ?? l.inAssam,
+              lat: m.lat ?? l.lat,
+              lon: m.lon ?? l.lon,
+              bank: m.bank || l.bank || null,
+              catchmentArea: m.catchmentArea ?? l.catchmentArea ?? null,
+              telemetric: m.telemetric ?? l.telemetric ?? null,
+              operational: m.operational ?? l.operational ?? null
+            };
+          });
+
+          applyCwcDataset(merged, 'live-repo', lv.fetchedAt);
+          if (manualRefresh) showToast(`Synced ${ALL_GAUGES.length} live Assam CWC gauges`);
+          if (icon) icon.classList.remove('animate-spin');
+          return;
+        }
+      } catch (e) {
+        // Fallback below if opened locally without ./data/levels.json
+      }
+
+      applyCwcDataset(FALLBACK_CWC_SNAPSHOT, 'snapshot', '2026-11-24T09:00:00Z');
+      if (manualRefresh) showToast('Could not reach ./data/levels.json — showing cached snapshot');
+      if (icon) icon.classList.remove('animate-spin');
+    }
+
+    function updateDataSourceUI() {
+      const pill = document.getElementById('data-source-pill');
+      const dot = document.getElementById('data-source-dot');
+      const label = document.getElementById('data-source-label');
+      const syncText = document.getElementById('sync-status-text');
+
+      document.getElementById('nav-gauge-count').textContent = ALL_GAUGES.length;
+      document.getElementById('home-all-count').textContent = ALL_GAUGES.length;
+
+      const syncedTime = lastFetchedAt
+        ? new Date(lastFetchedAt).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: true })
+        : '';
+
+      if (dataSourceMode === 'live-repo') {
+        pill.className = 'px-2.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[11px] font-bold flex items-center gap-1.5';
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse-soft';
+        label.textContent = `Live CWC (${ALL_GAUGES.length})`;
+        syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ${ALL_GAUGES.length} active Assam CWC stations &bull; Last synced ${syncedTime} IST`;
+      } else {
+        pill.className = 'px-2.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-200 text-[11px] font-bold flex items-center gap-1.5';
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+        label.textContent = `Cached (${ALL_GAUGES.length})`;
+        syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Preview mode — live ./data/levels.json loads automatically on GitHub Pages`;
+      }
+    }
+
+    // =========================================================================
+    // 2. LIVE OPEN-METEO RAINFALL FOR HOME LIST
+    // =========================================================================
+    async function loadLiveAssamRainfall() {
+      try {
+        const lats = RAINFALL_STATIONS.map(s => s.lat).join(',');
+        const lngs = RAINFALL_STATIONS.map(s => s.lng).join(',');
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lngs}&daily=rain_sum&past_days=1&forecast_days=1&timezone=Asia%2FKolkata`;
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const data = await res.json();
+        const arr = Array.isArray(data) ? data : [data];
+        arr.forEach((item, idx) => {
+          if (RAINFALL_STATIONS[idx] && item?.daily?.rain_sum) {
+            const sums = item.daily.rain_sum;
+            RAINFALL_STATIONS[idx].mm = Math.round(Number(sums[sums.length - 1] || 0));
+          }
+        });
+        renderRainfall();
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // 3. STORAGE & LOCATION HELPERS
+    // =========================================================================
+    function loadWatchlist() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed.slice(0, MAX_WATCHLIST);
+        }
+      } catch (err) {}
+      return [...DEFAULT_WATCHLIST];
+    }
+
+    function saveWatchlist() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(watchlistIds)); } catch (err) {}
+    }
+
+    function loadLiteMode() {
+      try { return localStorage.getItem(LITE_MODE_KEY) === '1'; } catch (err) { return false; }
+    }
+
+    function toggleLiteMode() {
+      isLiteMode = !isLiteMode;
+      try { localStorage.setItem(LITE_MODE_KEY, isLiteMode ? '1' : '0'); } catch (err) {}
+      applyLiteMode();
+      showToast(isLiteMode ? '⚡ 2G Lite Mode ON' : 'Full Mode restored');
+    }
+
+    function applyLiteMode() {
+      const btn = document.getElementById('lite-mode-btn');
+      const banner = document.getElementById('lite-mode-banner');
+      const mapSection = document.getElementById('assam-map-section');
+      const radarBox = document.getElementById('windy-radar-container');
+      const radarPlaceholder = document.getElementById('windy-radar-lite-placeholder');
+      if (btn) {
+        btn.className = isLiteMode
+          ? 'px-2.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 transition text-white text-xs font-bold flex items-center gap-1 shadow-sm'
+          : 'px-2.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100 text-xs font-bold flex items-center gap-1';
+      }
+      if (banner) banner.classList.toggle('hidden', !isLiteMode);
+      if (mapSection) mapSection.classList.toggle('hidden', isLiteMode);
+      if (radarBox) radarBox.classList.toggle('hidden', isLiteMode);
+      if (radarPlaceholder) radarPlaceholder.classList.toggle('hidden', !isLiteMode);
+      if (!isLiteMode && assamMap) setTimeout(() => assamMap.invalidateSize(), 150);
+    }
+
+    function loadUserLocation() {
+      try {
+        const raw = localStorage.getItem(USER_LOC_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed.lat === 'number' && typeof parsed.lng === 'number') return parsed;
+      } catch (err) {}
+      return null;
+    }
+
+    function saveUserLocation(loc) {
+      userLocation = loc;
+      try {
+        if (loc) localStorage.setItem(USER_LOC_KEY, JSON.stringify(loc));
+        else localStorage.removeItem(USER_LOC_KEY);
+      } catch (err) {}
+    }
+
+    function clearUserLocation() {
+      saveUserLocation(null);
+      updateUserLocationUI();
+      renderWatchlist();
+      renderAllGaugesDirectory();
+      renderRainfall();
+      showToast('Cleared saved GPS location');
+    }
+
+    function distanceKm(lat1, lng1, lat2, lng2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLng = (lng2 - lng1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function isInsideAssam(lat, lng) {
+      return lat >= 24.0 && lat <= 28.2 && lng >= 89.6 && lng <= 96.1;
+    }
+
+    function updateUserLocationUI() {
+      const pill = document.getElementById('user-location-pill');
+      const nameEl = document.getElementById('user-location-name');
+      const select = document.getElementById('weather-city-select');
+      if (pill && nameEl) {
+        if (userLocation) {
+          nameEl.textContent = userLocation.name;
+          pill.classList.remove('hidden');
+          pill.classList.add('inline-flex');
+        } else {
+          pill.classList.add('hidden');
+          pill.classList.remove('inline-flex');
+        }
+      }
+      if (select) {
+        let gpsOpt = select.querySelector('option[value="gps"]');
+        if (userLocation) {
+          if (!gpsOpt) {
+            gpsOpt = document.createElement('option');
+            gpsOpt.value = 'gps';
+            select.insertBefore(gpsOpt, select.firstChild);
+          }
+          gpsOpt.textContent = `📍 ${userLocation.name} (My Area)`;
+        } else if (gpsOpt) {
+          gpsOpt.remove();
+        }
+      }
+    }
+
+    function applyNearestThreeGauges() {
+      if (!userLocation) return;
+      const withCoords = ALL_GAUGES.filter(g => g.lat !== null && g.lng !== null);
+      const sorted = [...withCoords].sort((a, b) =>
+        distanceKm(userLocation.lat, userLocation.lng, a.lat, a.lng) -
+        distanceKm(userLocation.lat, userLocation.lng, b.lat, b.lng)
+      );
+      watchlistIds = sorted.slice(0, MAX_WATCHLIST).map(g => g.id);
+      saveWatchlist();
+      renderWatchlist();
+      renderAllGaugesDirectory();
+      renderMapMarkers();
+      if (assamMap && !isLiteMode) assamMap.flyTo([userLocation.lat, userLocation.lng], 9, { duration: 0.7 });
+      showToast(`Pinned 3 gauges nearest to ${userLocation.name}`);
+    }
+
+    function pinNearestThreeGauges() {
+      if (userLocation) applyNearestThreeGauges();
+      else detectUserLocation(true, false);
+    }
+
+    function detectUserLocation(autoPinNearest = false, refreshWeather = false) {
+      if (!navigator.geolocation) {
+        showToast('Geolocation not supported — please pick your town manually.');
+        return;
+      }
+      showToast('Detecting your location...');
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          const { latitude: lat, longitude: lng } = pos.coords;
+          if (!isInsideAssam(lat, lng)) {
+            showToast('Outside Assam detected — please select your Assam district manually.');
+            return;
+          }
+          const withCoords = ALL_GAUGES.filter(g => g.lat !== null && g.lng !== null);
+          const nearestGauge = [...withCoords].sort((a, b) =>
+            distanceKm(lat, lng, a.lat, a.lng) - distanceKm(lat, lng, b.lat, b.lng)
+          )[0];
+          let placeName = nearestGauge ? `Near ${nearestGauge.station}` : 'Your Location';
+          try {
+            const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`);
+            if (res.ok) {
+              const geo = await res.json();
+              placeName = geo.locality || geo.city || geo.principalSubdivision || placeName;
+            }
+          } catch (e) {}
+          saveUserLocation({ name: placeName, lat, lng, source: 'gps' });
+          updateUserLocationUI();
+          renderWatchlist();
+          renderAllGaugesDirectory();
+          renderRainfall();
+          if (autoPinNearest) applyNearestThreeGauges();
+          else showToast(`Location set to ${placeName}`);
+          if (refreshWeather || weatherLoadedOnce) {
+            const select = document.getElementById('weather-city-select');
+            if (select) select.value = 'gps';
+            loadWeatherForecast('gps');
+          }
+        },
+        () => showToast('Location permission unavailable — pick your town manually.'),
+        { enableHighAccuracy: false, timeout: 8000, maximumAge: 600000 }
+      );
+    }
+
+    // =========================================================================
+    // 4. STATUS & RENDERING
+    // =========================================================================
+    function getGaugeStatus(g) {
+      if (g.cwcStatus === 'flood' || (g.danger !== null && g.current >= g.danger)) {
+        return { key: 'danger', label: 'Above Danger', textClass: 'text-red-600', badgeBg: 'bg-red-100 text-red-700', barColor: 'bg-red-500', stroke: '#dc2626' };
+      }
+      if (g.cwcStatus === 'warning' || (g.warning !== null && g.current >= g.warning)) {
+        return { key: 'warning', label: 'Above Warning', textClass: 'text-orange-600', badgeBg: 'bg-orange-100 text-orange-700', barColor: 'bg-orange-500', stroke: '#ea580c' };
+      }
+      if (g.warning !== null && (g.warning - g.current) <= 1.0) {
+        return { key: 'watch', label: 'Near Warning', textClass: 'text-amber-600', badgeBg: 'bg-amber-100 text-amber-800', barColor: 'bg-amber-500', stroke: '#d97706' };
+      }
+      if (g.danger === null && g.warning === null) {
+        return { key: 'normal', label: 'Base Gauge', textClass: 'text-sky-700', badgeBg: 'bg-sky-100 text-sky-700', barColor: 'bg-sky-500', stroke: '#0284c7' };
+      }
+      return { key: 'normal', label: 'Normal', textClass: 'text-emerald-600', badgeBg: 'bg-emerald-100 text-emerald-700', barColor: 'bg-emerald-500', stroke: '#059669' };
+    }
+
+    function getDangerProgressPct(g) {
+      if (g.danger === null || g.current === null) return 22;
+      const floor = (g.warning ?? (g.danger - 1)) - 8.0;
+      const pct = ((g.current - floor) / (g.danger - floor)) * 100;
+      return Math.max(8, Math.min(100, Math.round(pct)));
+    }
+
+    function getRainfallMeta(mm) {
+      if (mm > 100) return { label: 'Extreme', text: 'text-purple-700', dot: 'bg-purple-600', bar: 'bg-purple-600', badge: 'bg-purple-100 text-purple-700', hex: '#9333ea' };
+      if (mm >= 75) return { label: 'Very Heavy', text: 'text-red-600', dot: 'bg-red-500', bar: 'bg-red-500', badge: 'bg-red-100 text-red-700', hex: '#ef4444' };
+      if (mm >= 50) return { label: 'Heavy', text: 'text-orange-600', dot: 'bg-orange-500', bar: 'bg-orange-500', badge: 'bg-orange-100 text-orange-700', hex: '#f97316' };
+      if (mm >= 25) return { label: 'Moderate', text: 'text-amber-600', dot: 'bg-amber-400', bar: 'bg-amber-400', badge: 'bg-amber-100 text-amber-800', hex: '#f59e0b' };
+      if (mm > 0) return { label: 'Light', text: 'text-emerald-600', dot: 'bg-emerald-500', bar: 'bg-emerald-500', badge: 'bg-emerald-100 text-emerald-700', hex: '#10b981' };
+      return { label: 'Dry', text: 'text-slate-500', dot: 'bg-slate-300', bar: 'bg-slate-300', badge: 'bg-slate-100 text-slate-600', hex: '#94a3b8' };
+    }
+
+    function renderAlertsAndTicker() {
+      const tickerTrack = document.getElementById('alert-ticker-track');
+      const fullList = document.getElementById('alerts-full-list');
+      const statusBar = document.getElementById('status-ticker-bar');
+      const pillLeft = document.getElementById('status-pill-left');
+      const pillText = document.getElementById('status-pill-text');
+      const navCount = document.getElementById('nav-alert-count');
+      const tickerCount = document.getElementById('ticker-alert-count');
+
+      navCount.textContent = ALERTS_DATA.length;
+      tickerCount.textContent = `(${ALERTS_DATA.length})`;
+
+      const hasHigh = ALERTS_DATA.some(a => a.severity === 'high');
+      const hasMed = ALERTS_DATA.some(a => a.severity === 'medium');
+
+      if (hasHigh) {
+        statusBar.className = 'bg-white rounded-2xl shadow-sm border border-red-200/90 overflow-hidden flex items-stretch';
+        pillLeft.className = 'bg-gradient-to-r from-red-600 to-rose-600 text-white px-3 sm:px-4 py-2.5 flex items-center gap-2 shrink-0';
+        pillText.textContent = 'Flood Alert';
+        navCount.className = 'ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-red-500 text-white';
+      } else if (hasMed) {
+        statusBar.className = 'bg-white rounded-2xl shadow-sm border border-orange-200/90 overflow-hidden flex items-stretch';
+        pillLeft.className = 'bg-gradient-to-r from-orange-600 to-amber-500 text-white px-3 sm:px-4 py-2.5 flex items-center gap-2 shrink-0';
+        pillText.textContent = 'Flood Watch';
+        navCount.className = 'ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-orange-500 text-white';
+      } else {
+        statusBar.className = 'bg-white rounded-2xl shadow-sm border border-emerald-200/90 overflow-hidden flex items-stretch';
+        pillLeft.className = 'bg-gradient-to-r from-emerald-600 to-teal-500 text-white px-3 sm:px-4 py-2.5 flex items-center gap-2 shrink-0';
+        pillText.textContent = 'All Normal';
+        navCount.className = 'ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500 text-white';
+      }
+
+      if (ALERTS_DATA.length === 0) {
+        const calmItems = `
+          <span class="inline-flex items-center gap-2 text-xs text-slate-700 whitespace-nowrap">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span class="font-bold">All ${ALL_GAUGES.length} monitored Assam CWC gauges are currently below Warning Level</span>
+          </span>
+          <span class="text-slate-300 select-none">|</span>
+          <span class="inline-flex items-center gap-2 text-xs text-slate-600 whitespace-nowrap">
+            <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+            <span>Automated hourly sync active for Brahmaputra, Dikhow, Desang, Subansiri &amp; Barak basins</span>
+          </span>
+          <span class="text-slate-300 select-none">|</span>
+        `;
+        tickerTrack.innerHTML = calmItems + calmItems;
+        fullList.innerHTML = `
+          <div class="p-6 rounded-2xl border border-emerald-200 bg-emerald-50/60 text-center">
+            <div class="text-2xl mb-1">✅</div>
+            <div class="text-sm font-bold text-emerald-900">No Active River Flood Alerts in Assam</div>
+            <p class="text-xs text-emerald-700 mt-1">All ${ALL_GAUGES.length} reporting CWC stations are safely below their Warning and Danger levels.</p>
+          </div>
+        `;
+      } else {
+        const items = ALERTS_DATA.map(a => {
+          const dot = a.severity === 'high' ? 'bg-red-500' : 'bg-orange-500';
+          return `
+            <button onclick="switchTab('alerts')" class="inline-flex items-center gap-2 text-xs text-slate-800 hover:text-blue-700 transition whitespace-nowrap">
+              <span class="w-2 h-2 rounded-full ${dot} shrink-0"></span>
+              <span class="font-bold">${a.title}</span>
+              <span class="text-slate-400">&bull; ${a.time}</span>
+            </button>
+            <span class="text-slate-300 select-none">|</span>
+          `;
+        }).join('');
+        tickerTrack.innerHTML = items + items;
+
+        fullList.innerHTML = ALERTS_DATA.map(a => `
+          <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/60 flex items-start gap-3">
+            <div class="w-9 h-9 rounded-xl ${a.severity === 'high' ? 'bg-red-500' : 'bg-orange-500'} text-white flex items-center justify-center shrink-0 text-sm font-bold">!</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h3 class="text-sm font-bold text-slate-900">${a.title}</h3>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">${a.source}</span>
+              </div>
+              <p class="text-xs text-slate-600 mt-1">${a.detail}</p>
+              <div class="text-[11px] text-slate-400 mt-1">Reading ${a.time}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function renderGaugeCard(g, isPinned) {
+      const st = getGaugeStatus(g);
+      const pct = getDangerProgressPct(g);
+      const distText = (userLocation && g.lat !== null && g.lng !== null)
+        ? ` &bull; <span class="text-sky-600 font-semibold">${Math.round(distanceKm(userLocation.lat, userLocation.lng, g.lat, g.lng))} km</span>`
+        : '';
+
+      const belowDanger = g.danger !== null ? (g.danger - g.current).toFixed(2) : null;
+      const marginText = belowDanger !== null
+        ? (Number(belowDanger) >= 0 ? `${belowDanger} m below DL` : `${Math.abs(belowDanger).toFixed(2)} m ABOVE DL`)
+        : 'Base Reference Gauge';
+
+      const hflText = g.hfl !== null
+        ? `${(g.hfl - g.current).toFixed(2)} m below ${g.hflYear || 'Record'} HFL (${g.hfl.toFixed(2)} m)`
+        : 'HFL record unavailable';
+
+      return `
+        <div
+          onclick="openGaugeDetailModal('${g.id}')"
+          role="button"
+          tabindex="0"
+          class="cursor-pointer rounded-2xl border border-slate-200/90 bg-white hover:border-blue-400 hover:shadow-md transition p-4 flex flex-col justify-between text-left"
+        >
+          <div>
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <div class="font-bold text-slate-900 text-base leading-tight truncate">${g.station}</div>
+                <div class="text-xs text-slate-500 mt-0.5 truncate">${g.river} River &bull; ${g.district}${distText}</div>
+              </div>
+              <button
+                onclick="event.stopPropagation(); toggleWatchlist('${g.id}')"
+                title="${isPinned ? 'Remove from Home Watchlist' : 'Pin to Home Watchlist'}"
+                class="p-1.5 rounded-lg hover:bg-slate-100 active:scale-90 transition shrink-0"
+              >
+                <svg class="w-4 h-4 ${isPinned ? 'text-amber-500 fill-amber-400' : 'text-slate-300 hover:text-amber-400'}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="mt-2.5 flex items-baseline justify-between gap-2">
+              <div class="text-2xl font-extrabold tracking-tight ${st.textClass}">
+                ${g.current.toFixed(2)} <span class="text-xs font-semibold text-slate-400">m</span>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${st.badgeBg}">
+                ${st.label}
+              </span>
+            </div>
+
+            <div class="mt-1.5 flex items-center justify-between gap-2 text-[10px]">
+              <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-semibold border border-slate-200">
+                ${marginText}
+              </span>
+              <span class="text-slate-400 font-medium">${g.type} ${g.telemetric ? '• Auto' : ''}</span>
+            </div>
+
+            <div class="mt-2 grid grid-cols-2 gap-1.5 text-[11px] bg-slate-50 rounded-xl p-2 border border-slate-100">
+              <div>
+                <span class="text-slate-400">WL:</span>
+                <span class="font-semibold text-slate-700">${g.warning !== null ? g.warning.toFixed(2) + ' m' : '—'}</span>
+              </div>
+              <div>
+                <span class="text-slate-400">DL:</span>
+                <span class="font-semibold text-red-600">${g.danger !== null ? g.danger.toFixed(2) + ' m' : '—'}</span>
+              </div>
+            </div>
+
+            <div class="mt-1.5 text-[10px] font-medium text-slate-500 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-400 shrink-0"></span>
+              <span class="truncate">${hflText}</span>
+            </div>
+
+            <div class="mt-2 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full rounded-full ${st.barColor} transition-all duration-500" style="width: ${pct}%"></div>
+            </div>
+          </div>
+
+          <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+            <span class="text-[10px] text-slate-400">CWC &bull; ${g.updated}</span>
+            <button
+              onclick="event.stopPropagation(); openShareImageModal('${g.id}')"
+              class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/80 text-[11px] font-bold active:scale-95 transition"
+            >
+              Share Card
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderWatchlist() {
+      const container = document.getElementById('watchlist-grid');
+      const badge = document.getElementById('watchlist-count-badge');
+      badge.textContent = `${watchlistIds.length} / ${MAX_WATCHLIST} Pinned`;
+
+      const pinnedGauges = watchlistIds.map(id => ALL_GAUGES.find(g => g.id === id)).filter(Boolean);
+      let html = pinnedGauges.map(g => renderGaugeCard(g, true)).join('');
+
+      if (pinnedGauges.length < MAX_WATCHLIST) {
+        html += `
+          <button
+            onclick="openWatchlistModal()"
+            class="rounded-2xl border-2 border-dashed border-slate-200 hover:border-blue-400 hover:bg-blue-50/40 transition p-5 flex flex-col items-center justify-center text-center min-h-[200px] group"
+          >
+            <div class="w-10 h-10 rounded-full bg-slate-100 group-hover:bg-blue-100 text-slate-400 group-hover:text-blue-600 flex items-center justify-center mb-2 transition">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </div>
+            <div class="text-xs font-bold text-slate-700 group-hover:text-blue-700">Pin Another Gauge</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">${MAX_WATCHLIST - pinnedGauges.length} slot${MAX_WATCHLIST - pinnedGauges.length === 1 ? '' : 's'} left</div>
+          </button>
+        `;
+      }
+      container.innerHTML = html;
+    }
+
+    function renderFlowChain(basin) {
+      const container = document.getElementById('flow-chain-container');
+      const dBtn = document.getElementById('chain-dikhow-btn');
+      const bBtn = document.getElementById('chain-brahmaputra-btn');
+
+      if (basin === 'dikhow') {
+        dBtn.className = 'px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition';
+        bBtn.className = 'px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition';
+      } else {
+        bBtn.className = 'px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition';
+        dBtn.className = 'px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition';
+      }
+
+      const byCode = (code) => ALL_GAUGES.find(g => g.id === code);
+      const makeNode = (code, fallbackName, role, eta) => {
+        const g = byCode(code);
+        if (!g) {
+          return { name: fallbackName, role, metric: 'No live reading', status: 'Monitoring', color: 'border-slate-200 bg-slate-50', dot: 'bg-slate-400', text: 'text-slate-600', eta };
+        }
+        const st = getGaugeStatus(g);
+        const bg = st.key === 'danger' ? 'border-red-300 bg-red-50/60' : st.key === 'warning' ? 'border-orange-300 bg-orange-50/60' : 'border-emerald-200 bg-emerald-50/40';
+        return { name: g.station, gaugeId: g.id, role, metric: `${g.current.toFixed(2)} m`, status: `${st.label} • ${g.updated}`, color: bg, dot: st.barColor, text: st.textClass, eta };
+      };
+
+      const chains = {
+        dikhow: [
+          makeNode('017-ubddib', 'Bihubar', 'Upstream Base Gauge', '~3–4 hrs'),
+          makeNode('018-ubddib', 'Sivasagar', 'Town Level Gauge', '~2 hrs'),
+          makeNode('016-ubddib', 'Nanglamoraghat', 'Nearby Desang Basin')
+        ],
+        brahmaputra: [
+          makeNode('010-ubddib', 'Dibrugarh', 'Upper Valley', '~10 hrs'),
+          makeNode('019-ubddib', 'Neamatighat', 'Jorhat Gauge', '~14 hrs'),
+          makeNode('031-ubddib', 'Tezpur', 'Central Assam', '~12 hrs'),
+          makeNode('001-mbdghy', 'Guwahati', 'Lower Valley')
+        ]
+      };
+
+      const nodes = chains[basin];
+      container.innerHTML = nodes.map((n, idx) => `
+        <div class="flex items-center shrink-0">
+          <div class="w-48 sm:w-52 rounded-xl border ${n.color} p-3 flex flex-col justify-between min-h-[120px]">
+            <div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-[10px] font-bold uppercase tracking-wide text-slate-400">${n.role}</span>
+                <span class="w-2 h-2 rounded-full ${n.dot}"></span>
+              </div>
+              <div class="font-bold text-sm text-slate-900 mt-1 truncate">${n.name}</div>
+              <div class="text-sm font-extrabold ${n.text} mt-1">${n.metric}</div>
+              <div class="text-[11px] font-medium text-slate-600 mt-0.5 truncate">${n.status}</div>
+            </div>
+            ${n.gaugeId ? `
+              <button
+                onclick="openGaugeDetailModal('${n.gaugeId}')"
+                class="mt-2.5 w-full px-2 py-1 rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-[10px] font-bold transition"
+              >
+                Inspect Gauge &rarr;
+              </button>
+            ` : ''}
+          </div>
+          ${idx < nodes.length - 1 ? `
+            <div class="px-2 flex flex-col items-center justify-center text-slate-400 shrink-0">
+              <span class="text-[9px] font-semibold text-slate-400 mb-0.5">${n.eta || 'Flow'}</span>
+              <svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    function renderNetworkSummary() {
+      const floodCount = ALL_GAUGES.filter(g => g.cwcStatus === 'flood').length;
+      const warnCount = ALL_GAUGES.filter(g => g.cwcStatus === 'warning').length;
+      const normCount = ALL_GAUGES.length - floodCount - warnCount;
+      document.getElementById('network-summary-cards').innerHTML = `
+        <div class="rounded-xl bg-emerald-50 border border-emerald-200/80 p-3 text-center">
+          <div class="text-xl font-extrabold text-emerald-700">${normCount}</div>
+          <div class="text-[10px] font-bold uppercase text-emerald-600 mt-0.5">Normal</div>
+        </div>
+        <div class="rounded-xl bg-orange-50 border border-orange-200/80 p-3 text-center">
+          <div class="text-xl font-extrabold text-orange-600">${warnCount}</div>
+          <div class="text-[10px] font-bold uppercase text-orange-600 mt-0.5">Warning</div>
+        </div>
+        <div class="rounded-xl bg-red-50 border border-red-200/80 p-3 text-center">
+          <div class="text-xl font-extrabold text-red-600">${floodCount}</div>
+          <div class="text-[10px] font-bold uppercase text-red-600 mt-0.5">Danger</div>
+        </div>
+      `;
+    }
+
+    function populateDistrictFilter() {
+      const sel = document.getElementById('river-district-filter');
+      if (!sel) return;
+      const current = sel.value;
+      const districts = [...new Set(ALL_GAUGES.map(g => g.district).filter(Boolean))].sort();
+      sel.innerHTML = `<option value="">All Districts (${districts.length})</option>` +
+        districts.map(d => `<option value="${d}">${d}</option>`).join('');
+      if (districts.includes(current)) sel.value = current;
+    }
+
+    function renderAllGaugesDirectory() {
+      const query = (document.getElementById('river-search-input')?.value || '').trim().toLowerCase();
+      const dist = document.getElementById('river-district-filter')?.value || '';
+      const filtered = ALL_GAUGES.filter(g => {
+        const matchDist = !dist || g.district === dist;
+        const matchQ = !query ||
+          g.river.toLowerCase().includes(query) ||
+          g.station.toLowerCase().includes(query) ||
+          g.district.toLowerCase().includes(query) ||
+          g.code.toLowerCase().includes(query);
+        return matchDist && matchQ;
+      });
+
+      const grid = document.getElementById('all-gauges-grid');
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-8 text-sm text-slate-500">No river gauges found matching your filter.</div>`;
+        return;
+      }
+      grid.innerHTML = filtered.map(g => renderGaugeCard(g, watchlistIds.includes(g.id))).join('');
+    }
+
+    function renderRainfall() {
+      const list = document.getElementById('rainfall-list');
+      const stations = userLocation
+        ? [...RAINFALL_STATIONS].sort((a, b) =>
+            distanceKm(userLocation.lat, userLocation.lng, a.lat, a.lng) -
+            distanceKm(userLocation.lat, userLocation.lng, b.lat, b.lng)
+          )
+        : RAINFALL_STATIONS;
+
+      list.innerHTML = stations.map((r, idx) => {
+        const meta = getRainfallMeta(r.mm);
+        const widthPct = Math.min(100, Math.round((r.mm / 100) * 100));
+        const nearestBadge = userLocation && idx === 0
+          ? `<span class="px-1.5 py-0.5 rounded bg-sky-100 text-sky-700 text-[9px] font-bold uppercase shrink-0">Nearest</span>`
+          : '';
+        return `
+          <button
+            onclick="focusRainfallStation(${r.lat}, ${r.lng}, '${r.name}', ${r.mm})"
+            class="w-full py-2.5 flex items-center justify-between gap-3 hover:bg-slate-50 px-1.5 rounded-lg transition text-left"
+          >
+            <div class="min-w-[115px] flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full ${meta.dot} shrink-0"></span>
+              <span class="text-xs sm:text-sm font-semibold text-slate-800 truncate">${r.name}</span>
+              ${nearestBadge}
+            </div>
+            <div class="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden hidden sm:block">
+              <div class="h-full rounded-full ${meta.bar}" style="width: ${widthPct}%"></div>
+            </div>
+            <span class="text-xs sm:text-sm font-bold ${meta.text} shrink-0">${r.mm} mm</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // 5. INTERACTIVE ASSAM MAP (LEAFLET)
+    // =========================================================================
+    function initAssamMap() {
+      try {
+        if (typeof L === 'undefined') return;
+        assamMap = L.map('assam-map', { center: [26.65, 93.35], zoom: 7, scrollWheelZoom: false });
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+          attribution: '&copy; OpenStreetMap &copy; CARTO',
+          maxZoom: 18
+        }).addTo(assamMap);
+        mapMarkersLayer = L.layerGroup().addTo(assamMap);
+        renderMapMarkers();
+      } catch (err) {}
+    }
+
+    function renderMapMarkers() {
+      if (!assamMap || !mapMarkersLayer) return;
+      mapMarkersLayer.clearLayers();
+      const legendEl = document.getElementById('map-legend');
+
+      if (activeMapLayer === 'gauges') {
+        ALL_GAUGES.filter(g => g.lat !== null && g.lng !== null).forEach(g => {
+          const st = getGaugeStatus(g);
+          const isPinned = watchlistIds.includes(g.id);
+          const marker = L.circleMarker([g.lat, g.lng], {
+            radius: isPinned ? 10 : 7.5,
+            fillColor: st.stroke,
+            color: isPinned ? '#071426' : '#ffffff',
+            weight: isPinned ? 2.5 : 2,
+            opacity: 1,
+            fillOpacity: 0.92
+          });
+
+          marker.bindPopup(`
+            <div style="min-width: 210px;">
+              <div style="font-weight: 800; font-size: 14px; color: #0f172a;">${g.station}</div>
+              <div style="font-size: 11px; color: #64748b; margin-bottom: 6px;">${g.river} River &bull; ${g.district}</div>
+              <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-size: 18px; font-weight: 800; color: ${st.stroke};">${g.current.toFixed(2)} m</span>
+                <span style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; background: #f1f5f9; color: #334155;">${st.label}</span>
+              </div>
+              <div style="font-size: 11px; color: #475569; margin-bottom: 10px;">
+                WL: <strong>${g.warning !== null ? g.warning.toFixed(2) + ' m' : '—'}</strong> &bull; DL: <strong style="color:#dc2626;">${g.danger !== null ? g.danger.toFixed(2) + ' m' : '—'}</strong>
+              </div>
+              <div style="display: flex; gap: 6px;">
+                <button onclick="toggleWatchlist('${g.id}')" style="flex: 1; padding: 6px 8px; border-radius: 8px; border: none; background: ${isPinned ? '#fef3c7' : '#071426'}; color: ${isPinned ? '#92400e' : '#ffffff'}; font-size: 11px; font-weight: 700; cursor: pointer;">
+                  ${isPinned ? '★ Pinned' : '☆ Pin'}
+                </button>
+                <button onclick="openShareImageModal('${g.id}')" style="flex: 1; padding: 6px 8px; border-radius: 8px; border: 1px solid #a7f3d0; background: #ecfdf5; color: #047857; font-size: 11px; font-weight: 700; cursor: pointer;">
+                  Share Card
+                </button>
+              </div>
+            </div>
+          `);
+          marker.bindTooltip(`${g.station} (${g.current.toFixed(2)}m)`, { direction: 'top', offset: [0, -8] });
+          marker.addTo(mapMarkersLayer);
+        });
+
+        legendEl.innerHTML = `
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>Normal</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>Warning</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>Danger</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>Base Gauge</span>
+          </div>
+          <span class="text-[11px] text-slate-400">Dark ring = Pinned in Watchlist</span>
+        `;
+      } else {
+        RAINFALL_STATIONS.forEach(r => {
+          const meta = getRainfallMeta(r.mm);
+          const marker = L.circleMarker([r.lat, r.lng], {
+            radius: Math.max(8, Math.min(18, Math.round(r.mm / 4.5) + 6)),
+            fillColor: meta.hex,
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.85
+          });
+          marker.bindPopup(`<strong>${r.name}</strong><br/>${r.mm} mm (${meta.label})`);
+          marker.addTo(mapMarkersLayer);
+        });
+        legendEl.innerHTML = `<span class="text-[11px] text-slate-500">24h live Open-Meteo rainfall estimates across Assam towns</span>`;
+      }
+    }
+
+    function setMapLayer(layer) {
+      activeMapLayer = layer;
+      const gBtn = document.getElementById('map-layer-gauges');
+      const rBtn = document.getElementById('map-layer-rainfall');
+      if (layer === 'gauges') {
+        gBtn.className = 'px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition';
+        rBtn.className = 'px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition';
+      } else {
+        rBtn.className = 'px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition';
+        gBtn.className = 'px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition';
+      }
+      renderMapMarkers();
+    }
+
+    function focusMapRegion(region) {
+      if (!assamMap) return;
+      if (region === 'upper') assamMap.flyTo([27.05, 94.75], 9, { duration: 0.7 });
+      else if (region === 'barak') assamMap.flyTo([24.82, 92.65], 10, { duration: 0.7 });
+      else assamMap.flyTo([26.55, 93.25], 7, { duration: 0.7 });
+    }
+
+    function focusRainfallStation(lat, lng, name, mm) {
+      if (isLiteMode) {
+        showToast(`${name}: ${mm} mm (24h)`);
+        return;
+      }
+      setMapLayer('rainfall');
+      document.getElementById('assam-map-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (assamMap) assamMap.flyTo([lat, lng], 9, { duration: 0.6 });
+    }
+
+    // =========================================================================
+    // 6. WATCHLIST, DETAIL DRAWER & WHATSAPP SHARE CARD
+    // =========================================================================
+    function toggleWatchlist(gaugeId) {
+      const gauge = ALL_GAUGES.find(g => g.id === gaugeId);
+      if (!gauge) return;
+      const idx = watchlistIds.indexOf(gaugeId);
+      if (idx > -1) {
+        if (watchlistIds.length <= 1) {
+          showToast('Keep at least 1 gauge pinned on your home screen.');
+          return;
+        }
+        watchlistIds.splice(idx, 1);
+        showToast(`Removed ${gauge.station} from Watchlist`);
+      } else {
+        if (watchlistIds.length >= MAX_WATCHLIST) {
+          showToast(`Watchlist full (max ${MAX_WATCHLIST}). Unpin one first.`);
+          return;
+        }
+        watchlistIds.push(gaugeId);
+        showToast(`Pinned ${gauge.station} (${gauge.river}) to Home`);
+      }
+      saveWatchlist();
+      renderWatchlist();
+      renderAllGaugesDirectory();
+      renderWatchlistModalList();
+      renderMapMarkers();
+    }
+
+    function openWatchlistModal() {
+      const modal = document.getElementById('watchlist-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.getElementById('modal-gauge-search').value = '';
+      renderWatchlistModalList();
+    }
+
+    function closeWatchlistModal() {
+      const modal = document.getElementById('watchlist-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function resetDefaultWatchlist() {
+      const defaultsPresent = DEFAULT_WATCHLIST.filter(id => ALL_GAUGES.some(g => g.id === id));
+      watchlistIds = defaultsPresent.length > 0 ? defaultsPresent : ALL_GAUGES.slice(0, MAX_WATCHLIST).map(g => g.id);
+      saveWatchlist();
+      renderWatchlist();
+      renderAllGaugesDirectory();
+      renderWatchlistModalList();
+      renderMapMarkers();
+      showToast('Restored default Upper Assam gauges');
+    }
+
+    function renderWatchlistModalList() {
+      const list = document.getElementById('modal-gauge-list');
+      const counter = document.getElementById('modal-counter');
+      const query = (document.getElementById('modal-gauge-search')?.value || '').trim().toLowerCase();
+      counter.textContent = `${watchlistIds.length} / ${MAX_WATCHLIST}`;
+
+      const filtered = ALL_GAUGES.filter(g =>
+        g.river.toLowerCase().includes(query) ||
+        g.station.toLowerCase().includes(query) ||
+        g.district.toLowerCase().includes(query)
+      );
+
+      list.innerHTML = filtered.map(g => {
+        const isPinned = watchlistIds.includes(g.id);
+        const st = getGaugeStatus(g);
+        return `
+          <div class="w-full p-3 rounded-xl border ${isPinned ? 'border-blue-400 bg-blue-50/50' : 'border-slate-200 hover:bg-slate-50'} flex items-center justify-between gap-2 transition">
+            <button onclick="toggleWatchlist('${g.id}')" class="flex-1 min-w-0 text-left">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-sm text-slate-900 truncate">${g.station}</span>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${st.badgeBg}">${st.label}</span>
+              </div>
+              <div class="text-xs text-slate-500 mt-0.5">${g.river} River &bull; ${g.district} &bull; <strong>${g.current.toFixed(2)} m</strong></div>
+            </button>
+            <button onclick="toggleWatchlist('${g.id}')" class="w-8 h-8 rounded-lg flex items-center justify-center ${isPinned ? 'bg-amber-100 text-amber-500' : 'bg-slate-100 text-slate-400'}">
+              <svg class="w-4 h-4 ${isPinned ? 'fill-amber-400' : ''}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+              </svg>
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openGaugeDetailModal(gaugeId) {
+      const g = ALL_GAUGES.find(item => item.id === gaugeId);
+      if (!g) return;
+      const st = getGaugeStatus(g);
+      const isPinned = watchlistIds.includes(g.id);
+      const toDanger = g.danger !== null ? (g.danger - g.current).toFixed(2) : null;
+      const toHfl = g.hfl !== null ? (g.hfl - g.current).toFixed(2) : null;
+
+      document.getElementById('detail-station-name').textContent = g.station;
+      document.getElementById('detail-river-subtitle').textContent = `${g.river} River • ${g.district} District • Code: ${g.code.toUpperCase()}`;
+      const pill = document.getElementById('detail-status-pill');
+      pill.textContent = st.label;
+      pill.className = `px-2.5 py-0.5 rounded-full text-[11px] font-bold ${st.badgeBg}`;
+
+      document.getElementById('detail-modal-body').innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 rounded-2xl p-4 border border-slate-200/80">
+          <div>
+            <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Latest CWC Water Level</div>
+            <div class="text-3xl font-extrabold ${st.textClass} mt-0.5">${g.current.toFixed(2)} <span class="text-sm font-semibold text-slate-400">m</span></div>
+          </div>
+          <div class="text-right">
+            <div class="text-xs font-bold text-slate-700">${g.time ? g.time.replace('T', ' ') + ' IST' : g.updated}</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">
+              ${toDanger !== null ? (Number(toDanger) >= 0 ? `${toDanger} m below Danger Level` : `${Math.abs(toDanger).toFixed(2)} m ABOVE Danger Level`) : 'Base reference station'}
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5 text-center">
+          <div class="rounded-xl bg-slate-50 border border-slate-200/70 p-2.5">
+            <div class="text-[10px] font-bold text-slate-400 uppercase">Warning (WL)</div>
+            <div class="text-sm font-extrabold text-slate-800 mt-0.5">${g.warning !== null ? g.warning.toFixed(2) + ' m' : '—'}</div>
+          </div>
+          <div class="rounded-xl bg-red-50/60 border border-red-200/70 p-2.5">
+            <div class="text-[10px] font-bold text-red-500 uppercase">Danger (DL)</div>
+            <div class="text-sm font-extrabold text-red-600 mt-0.5">${g.danger !== null ? g.danger.toFixed(2) + ' m' : '—'}</div>
+          </div>
+          <div class="rounded-xl bg-slate-50 border border-slate-200/70 p-2.5">
+            <div class="text-[10px] font-bold text-slate-400 uppercase">HFL (${g.hflYear || '—'})</div>
+            <div class="text-sm font-extrabold text-slate-900 mt-0.5">${g.hfl !== null ? g.hfl.toFixed(2) + ' m' : '—'}</div>
+            <div class="text-[10px] text-slate-500">${toHfl !== null ? toHfl + ' m below' : ''}</div>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 p-4 bg-white space-y-2 text-xs">
+          <div class="font-bold text-slate-800">Station Metadata (CWC Official)</div>
+          <div class="grid grid-cols-2 gap-2 text-slate-600">
+            <div>Basin: <strong class="text-slate-900">${g.basin}</strong></div>
+            <div>Gauge Type: <strong class="text-slate-900">${g.type}</strong></div>
+            <div>River Bank: <strong class="text-slate-900">${g.bank || '—'}</strong></div>
+            <div>Catchment: <strong class="text-slate-900">${g.catchmentArea ? g.catchmentArea + ' km²' : '—'}</strong></div>
+            <div>Telemetry: <strong class="text-slate-900">${g.telemetric === true ? 'Automated' : g.telemetric === false ? 'Manual' : '—'}</strong></div>
+            <div>Coordinates: <strong class="text-slate-900">${g.lat ? g.lat.toFixed(3) + ', ' + g.lng.toFixed(3) : '—'}</strong></div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('detail-modal-footer').innerHTML = `
+        <a href="tel:1077" class="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition flex items-center gap-1.5">
+          📞 ${g.district} DEOC (1077)
+        </a>
+        <div class="flex items-center gap-2">
+          <button onclick="toggleWatchlist('${g.id}'); openGaugeDetailModal('${g.id}');" class="px-3 py-2 rounded-xl bg-slate-200/80 hover:bg-slate-300 text-slate-800 text-xs font-bold transition">
+            ${isPinned ? '★ Pinned' : '☆ Pin'}
+          </button>
+          <button onclick="closeGaugeDetailModal(); openShareImageModal('${g.id}');" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">
+            Share Card
+          </button>
+        </div>
+      `;
+
+      const modal = document.getElementById('gauge-detail-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeGaugeDetailModal() {
+      const modal = document.getElementById('gauge-detail-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function openShareImageModal(gaugeId) {
+      const g = ALL_GAUGES.find(item => item.id === gaugeId);
+      if (!g) return;
+      currentShareGauge = g;
+      currentShareFilename = `FloodWatch_${g.station.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+      document.getElementById('share-preview-img').src = generateGaugeShareCanvas(g);
+      const modal = document.getElementById('share-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeShareModal() {
+      const modal = document.getElementById('share-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function drawRoundedRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function generateGaugeShareCanvas(g) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 900;
+      canvas.height = 900;
+      const ctx = canvas.getContext('2d');
+      const st = getGaugeStatus(g);
+
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(0, 0, 900, 900);
+
+      ctx.fillStyle = '#071426';
+      ctx.fillRect(0, 0, 900, 165);
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = '800 22px Inter, system-ui, sans-serif';
+      ctx.fillText('FLOOD WATCH ASSAM  •  CWC LIVE GAUGE UPDATE', 48, 66);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 44px Inter, system-ui, sans-serif';
+      ctx.fillText(g.station, 48, 126);
+
+      ctx.fillStyle = '#e2e8f0';
+      ctx.fillRect(0, 165, 900, 56);
+      ctx.fillStyle = '#1e293b';
+      ctx.font = '700 22px Inter, system-ui, sans-serif';
+      ctx.fillText(`${g.river} River  •  ${g.district} District`, 48, 201);
+
+      drawRoundedRect(ctx, 40, 250, 820, 480, 28);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      const pillColors = {
+        danger: { bg: '#fee2e2', txt: '#b91c1c' },
+        warning: { bg: '#ffedd5', txt: '#c2410c' },
+        watch: { bg: '#fef3c7', txt: '#b45309' },
+        normal: { bg: '#d1fae5', txt: '#047857' }
+      }[st.key];
+
+      drawRoundedRect(ctx, 76, 290, 290, 54, 27);
+      ctx.fillStyle = pillColors.bg;
+      ctx.fill();
+      ctx.fillStyle = pillColors.txt;
+      ctx.font = '800 24px Inter, system-ui, sans-serif';
+      ctx.fillText(`●  ${st.label.toUpperCase()}`, 104, 325);
+
+      ctx.fillStyle = st.stroke;
+      ctx.font = '800 112px Inter, system-ui, sans-serif';
+      ctx.fillText(g.current.toFixed(2), 74, 472);
+      const numWidth = ctx.measureText(g.current.toFixed(2)).width;
+      ctx.fillStyle = '#64748b';
+      ctx.font = '700 38px Inter, system-ui, sans-serif';
+      ctx.fillText('meters', 88 + numWidth, 472);
+
+      ctx.fillStyle = '#475569';
+      ctx.font = '600 22px Inter, system-ui, sans-serif';
+      ctx.fillText(`CWC Reading: ${g.time ? g.time.replace('T', ' ') + ' IST' : g.updated}`, 76, 520);
+
+      drawRoundedRect(ctx, 76, 555, 748, 128, 20);
+      ctx.fillStyle = '#f8fafc';
+      ctx.fill();
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      const cols = [
+        { label: 'WARNING LEVEL (WL)', val: g.warning !== null ? `${g.warning.toFixed(2)} m` : '—', color: '#334155', x: 108 },
+        { label: 'DANGER LEVEL (DL)', val: g.danger !== null ? `${g.danger.toFixed(2)} m` : '—', color: '#dc2626', x: 365 },
+        { label: `RECORD HFL (${g.hflYear || '—'})`, val: g.hfl !== null ? `${g.hfl.toFixed(2)} m` : '—', color: '#0f172a', x: 615 }
+      ];
+      cols.forEach(c => {
+        ctx.fillStyle = '#64748b';
+        ctx.font = '700 16px Inter, system-ui, sans-serif';
+        ctx.fillText(c.label, c.x, 602);
+        ctx.fillStyle = c.color;
+        ctx.font = '800 32px Inter, system-ui, sans-serif';
+        ctx.fillText(c.val, c.x, 650);
+      });
+
+      drawRoundedRect(ctx, 40, 755, 820, 112, 22);
+      ctx.fillStyle = '#0e2240';
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '700 22px Inter, system-ui, sans-serif';
+      ctx.fillText('Assam Flood Helpline: 1070   •   District DEOC: 1077', 74, 804);
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '500 18px Inter, system-ui, sans-serif';
+      ctx.fillText('Source: Central Water Commission (CWC FFS). Follow official ASDMA advisories.', 74, 842);
+
+      canvas.toBlob(blob => { currentShareBlob = blob; }, 'image/png');
+      return canvas.toDataURL('image/png');
+    }
+
+    async function shareGeneratedImage() {
+      try {
+        if (currentShareBlob && navigator.canShare) {
+          const file = new File([currentShareBlob], currentShareFilename, { type: 'image/png' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: `Flood Watch Assam — ${currentShareGauge.station}`,
+              text: `${currentShareGauge.station} (${currentShareGauge.river}): ${currentShareGauge.current.toFixed(2)} m`,
+              files: [file]
+            });
+            return;
+          }
+        }
+        downloadGeneratedImage();
+      } catch (err) {
+        if (err.name !== 'AbortError') downloadGeneratedImage();
+      }
+    }
+
+    function downloadGeneratedImage() {
+      const img = document.getElementById('share-preview-img');
+      if (!img || !img.src) return;
+      const link = document.createElement('a');
+      link.download = currentShareFilename;
+      link.href = img.src;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast(`Saved ${currentShareFilename}`);
+    }
+
+    // =========================================================================
+    // 7. LIVE WEATHER (OPEN-METEO)
+    // =========================================================================
+    function weatherCodeToIcon(code) {
+      if (code >= 95) return { icon: '⛈️', label: 'Thunderstorm' };
+      if (code >= 65) return { icon: '🌧️', label: 'Heavy Rain' };
+      if (code >= 61) return { icon: '🌦️', label: 'Rain' };
+      if (code >= 51) return { icon: '🌦️', label: 'Drizzle' };
+      if (code >= 45) return { icon: '🌫️', label: 'Foggy' };
+      if (code >= 2) return { icon: '⛅', label: 'Partly Cloudy' };
+      return { icon: '☀️', label: 'Clear' };
+    }
+
+    async function loadWeatherForecast(cityKey) {
+      const city = cityKey === 'gps' && userLocation
+        ? { name: userLocation.name, lat: userLocation.lat, lng: userLocation.lng }
+        : (WEATHER_CITIES[cityKey] || WEATHER_CITIES.sivasagar);
+      const badge = document.getElementById('weather-source-badge');
+
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lng}&current=temperature_2m,relative_humidity_2m,rain,wind_speed_10m,weather_code&hourly=temperature_2m,rain,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,rain_sum,precipitation_probability_max&forecast_days=7&timezone=Asia%2FKolkata`;
+        const resp = await fetch(url);
+        if (!resp.ok) throw new Error('Weather API unavailable');
+        const data = await resp.json();
+        badge.textContent = `Open-Meteo Live • ${city.name}`;
+        renderWeatherUI(data, city.name);
+        weatherLoadedOnce = true;
+      } catch (err) {
+        badge.textContent = `Weather Offline • ${city.name}`;
+      }
+    }
+
+    function renderWeatherUI(data, cityName) {
+      const cur = data.current;
+      const curMeta = weatherCodeToIcon(cur.weather_code);
+      document.getElementById('weather-current-summary').innerHTML = `
+        <div class="rounded-2xl bg-slate-50 border border-slate-200/80 p-3.5">
+          <div class="text-[11px] font-semibold text-slate-400">Temperature (${cityName})</div>
+          <div class="text-2xl font-extrabold text-slate-900 mt-1">${Math.round(cur.temperature_2m)}°C <span class="text-lg">${curMeta.icon}</span></div>
+          <div class="text-xs text-slate-500 mt-0.5">${curMeta.label}</div>
+        </div>
+        <div class="rounded-2xl bg-sky-50 border border-sky-200/70 p-3.5">
+          <div class="text-[11px] font-semibold text-sky-700">Current Rain Rate</div>
+          <div class="text-2xl font-extrabold text-sky-700 mt-1">${Number(cur.rain || 0).toFixed(1)} <span class="text-xs font-semibold">mm/h</span></div>
+          <div class="text-xs text-sky-600 mt-0.5">Live precipitation</div>
+        </div>
+        <div class="rounded-2xl bg-slate-50 border border-slate-200/80 p-3.5">
+          <div class="text-[11px] font-semibold text-slate-400">Humidity</div>
+          <div class="text-2xl font-extrabold text-slate-900 mt-1">${cur.relative_humidity_2m}%</div>
+          <div class="text-xs text-slate-500 mt-0.5">Relative humidity</div>
+        </div>
+        <div class="rounded-2xl bg-slate-50 border border-slate-200/80 p-3.5">
+          <div class="text-[11px] font-semibold text-slate-400">Wind Speed</div>
+          <div class="text-2xl font-extrabold text-slate-900 mt-1">${Math.round(cur.wind_speed_10m)} <span class="text-xs font-semibold">km/h</span></div>
+          <div class="text-xs text-slate-500 mt-0.5">Surface wind</div>
+        </div>
+      `;
+
+      const nowMs = Date.now();
+      let startIdx = data.hourly.time.findIndex(t => new Date(t).getTime() >= nowMs - 3600000);
+      if (startIdx < 0) startIdx = 0;
+
+      const hourlyHtml = [];
+      for (let i = startIdx; i < Math.min(startIdx + 24, data.hourly.time.length); i++) {
+        const dt = new Date(data.hourly.time[i]);
+        const hrLabel = dt.toLocaleTimeString('en-IN', { hour: 'numeric', hour12: true });
+        const rainMm = Number(data.hourly.rain[i] || 0).toFixed(1);
+        const prob = data.hourly.precipitation_probability[i] ?? 0;
+        const temp = Math.round(data.hourly.temperature_2m[i]);
+        const meta = weatherCodeToIcon(data.hourly.weather_code[i]);
+        hourlyHtml.push(`
+          <div class="w-20 shrink-0 rounded-2xl border ${rainMm > 2 ? 'border-blue-300 bg-blue-50/50' : 'border-slate-200 bg-slate-50'} p-2.5 text-center flex flex-col items-center">
+            <span class="text-[11px] font-semibold text-slate-500">${hrLabel}</span>
+            <span class="text-xl my-1">${meta.icon}</span>
+            <span class="text-xs font-extrabold text-slate-900">${temp}°C</span>
+            <span class="text-[11px] font-bold text-blue-600 mt-1">${rainMm} mm</span>
+            <span class="text-[10px] text-slate-400">${prob}%</span>
+          </div>
+        `);
+      }
+      document.getElementById('weather-hourly-strip').innerHTML = hourlyHtml.join('');
+
+      document.getElementById('weather-7day-list').innerHTML = data.daily.time.map((t, i) => {
+        const dt = new Date(t + 'T00:00:00');
+        const label = i === 0 ? 'Today' : dt.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+        const meta = weatherCodeToIcon(data.daily.weather_code[i]);
+        const rainSum = Number(data.daily.rain_sum[i] || 0).toFixed(1);
+        const prob = data.daily.precipitation_probability_max[i] ?? 0;
+        const rainMeta = getRainfallMeta(Number(rainSum));
+        return `
+          <div class="py-2.5 flex items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-2.5 min-w-[115px]">
+              <span class="text-lg">${meta.icon}</span>
+              <div>
+                <div class="font-bold text-slate-800">${label}</div>
+                <div class="text-[11px] text-slate-400">${prob}% rain chance</div>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${rainMeta.badge}">${rainSum} mm</span>
+            <div class="font-bold text-slate-700 text-right shrink-0">${Math.round(data.daily.temperature_2m_min[i])}° &ndash; ${Math.round(data.daily.temperature_2m_max[i])}°C</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // 8. NAVIGATION, CLOCK & INIT
+    // =========================================================================
+    function updateOnlineStatus() {
+      const banner = document.getElementById('offline-banner');
+      if (banner) banner.classList.toggle('hidden', navigator.onLine);
+    }
+
+    function switchTab(tabName) {
+      ['dashboard', 'rivers', 'weather', 'alerts', 'sos'].forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (el) el.classList.toggle('hidden', v !== tabName);
+      });
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const t = btn.getAttribute('data-tab');
+        const isActive = t === tabName;
+        if (t === 'sos') {
+          btn.className = isActive
+            ? 'nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2 bg-red-600 text-white'
+            : 'nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 text-red-200 hover:text-white hover:bg-red-500/20';
+        } else {
+          btn.className = isActive
+            ? 'nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 bg-blue-600 text-white'
+            : 'nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-white/10';
+        }
+      });
+
+      document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+        const t = btn.getAttribute('data-tab');
+        const isActive = t === tabName;
+        if (t === 'sos') {
+          btn.className = isActive
+            ? 'mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-white bg-red-600 font-bold text-[10px]'
+            : 'mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-red-600 font-semibold text-[10px]';
+        } else {
+          btn.className = isActive
+            ? 'mobile-nav-btn relative flex flex-col items-center justify-center py-1.5 rounded-xl text-blue-600 bg-blue-50 font-semibold text-[10px]'
+            : 'mobile-nav-btn relative flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium text-[10px]';
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (tabName === 'dashboard' && assamMap && !isLiteMode) setTimeout(() => assamMap.invalidateSize(), 150);
+      if (tabName === 'weather' && !weatherLoadedOnce) {
+        const select = document.getElementById('weather-city-select');
+        if (userLocation && select && select.querySelector('option[value="gps"]')) select.value = 'gps';
+        loadWeatherForecast(select ? select.value : 'sivasagar');
+      }
+    }
+
+    function updateClock() {
+      const formatted = new Date().toLocaleString('en-IN', {
+        day: '2-digit', month: 'short', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', hour12: true
+      });
+      document.getElementById('live-clock').textContent = `${formatted} IST`;
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').textContent = msg;
+      toast.classList.remove('opacity-0', 'translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2800);
+    }
+
+    ['watchlist-modal', 'share-modal', 'gauge-detail-modal'].forEach(id => {
+      document.getElementById(id).addEventListener('click', (e) => {
+        if (e.target.id === id) {
+          e.target.classList.add('hidden');
+          e.target.classList.remove('flex');
+        }
+      });
+    });
+
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateClock();
+      updateOnlineStatus();
+      updateUserLocationUI();
+      renderRainfall();
+      initAssamMap();
+      applyLiteMode();
+      loadLiveCwcData(false);
+      loadLiveAssamRainfall();
+    });
+  </script>
+</body>
+</html>
