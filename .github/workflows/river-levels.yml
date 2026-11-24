@@ -1,57 +1,55 @@
 name: Hourly River Levels (CWC Assam)
 
 on:
-schedule:
-# Runs every 1 hour at minute 5 past the hour
-- cron: "5 * * * *"
-workflow_dispatch:
-inputs:
-force_stations:
-description: "Force refresh data/stations.json (districts, rivers, basins)"
-type: boolean
-default: false
-force_update:
-description: "Force rewrite data/levels.json even if readings did not change"
-type: boolean
-default: false
+  schedule:
+    - cron: "5 * * * *"
+  workflow_dispatch:
+    inputs:
+      force_stations:
+        description: "Force refresh data/stations.json"
+        type: boolean
+        default: false
+      force_update:
+        description: "Force rewrite data/levels.json"
+        type: boolean
+        default: false
 
 permissions:
-contents: write
+  contents: write
 
 concurrency:
-group: river-levels-sync
-cancel-in-progress: false
+  group: river-levels-sync
+  cancel-in-progress: false
 
 jobs:
-fetch-cwc-data:
-runs-on: ubuntu-latest
-timeout-minutes: 5
+  fetch-cwc-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-steps:
-  - name: Check out repository
-    uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
-  - name: Set up Node.js
-    uses: actions/setup-node@v4
-    with:
-      node-version: "20"
+      - name: Fetch live CWC river levels
+        env:
+          RELAY_URL: ${{ vars.RELAY_URL || 'https://cwc-mumbai-relay.vercel.app' }}
+          RELAY_KEY: ${{ secrets.RELAY_KEY }}
+          FORCE_STATIONS: ${{ inputs.force_stations || false }}
+          FORCE_UPDATE: ${{ inputs.force_update || false }}
+        run: node scripts/fetch-data.mjs
 
-  - name: Fetch live CWC river levels & metadata
-    env:
-      RELAY_URL: ${{ vars.RELAY_URL || 'https://cwc-mumbai-relay.vercel.app' }}
-      RELAY_KEY: ${{ secrets.RELAY_KEY }}
-      FORCE_STATIONS: ${{ inputs.force_stations || false }}
-      FORCE_UPDATE: ${{ inputs.force_update || false }}
-    run: node scripts/fetch-data.mjs
-
-  - name: Commit and push only if data changed
-    run: |
-      git config user.name "floodwatch-bot"
-      git config user.email "actions@github.com"
-      git add data/
-      if git diff --quiet --cached; then
-        echo "No new river readings to commit."
-      else
-        git commit -m "Update CWC Assam river levels ($(date -u +'%Y-%m-%d %H:%M UTC'))"
-        git push
-      fi
+      - name: Commit and push if data changed
+        run: |
+          git config user.name "floodwatch-bot"
+          git config user.email "actions@github.com"
+          git add data/
+          if git diff --quiet --cached; then
+            echo "No new river readings to commit."
+          else
+            git commit -m "Update CWC Assam river levels ($(date -u +'%Y-%m-%d %H:%M UTC'))"
+            git push
+          fi
