@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="Real-time flood, river gauge, and rainfall monitoring dashboard for Assam powered by CWC & Open-Meteo." />
-  <title>Flood Watch Assam — Live CWC River &amp; Rainfall Monitor</title>
+  <title>Assam Flood Monitor — Live CWC River &amp; Rainfall Tracker</title>
 
   <!-- Google Font: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,6 +72,10 @@
       border-radius: 14px;
       box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.18);
     }
+    .cwc-legend-item.active-filter {
+      background-color: #eff6ff;
+      box-shadow: inset 0 0 0 1.5px #3b82f6;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col pb-20 md:pb-0">
@@ -95,7 +99,7 @@
           </div>
           <div class="leading-tight">
             <div class="font-extrabold tracking-tight text-sm sm:text-base lg:text-lg text-white flex items-center gap-1.5">
-              <span>FLOOD WATCH <span class="text-sky-400">ASSAM</span></span>
+              <span>ASSAM FLOOD <span class="text-sky-400">MONITOR</span></span>
             </div>
             <div class="text-[11px] sm:text-xs text-slate-300 hidden sm:block">
               Live CWC river gauges &amp; rainfall monitor
@@ -105,32 +109,36 @@
 
         <!-- Desktop Navigation Links -->
         <nav class="hidden md:flex items-center gap-1" aria-label="Primary Navigation">
-          <button data-tab="dashboard" onclick="switchTab('dashboard')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 bg-blue-600 text-white">
+          <button data-tab="dashboard" onclick="switchTab('dashboard')" class="nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 bg-blue-600 text-white">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
             Dashboard
           </button>
-          <button data-tab="rivers" onclick="switchTab('rivers')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-white/10">
+          <button data-tab="rivers" onclick="switchTab('rivers')" class="nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
             Gauges
             <span id="nav-gauge-count" class="ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-white/15 text-sky-200">--</span>
           </button>
-          <button data-tab="weather" onclick="switchTab('weather')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-white/10">
+          <button data-tab="weather" onclick="switchTab('weather')" class="nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 16.2A4.5 4.5 0 0017.5 8h-1.8A7 7 0 104 14.9M8 19v2m4-3v3m4-2v2"/></svg>
-            Live Weather
+            Weather
           </button>
-          <button data-tab="alerts" onclick="switchTab('alerts')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-white/10">
+          <button data-tab="alerts" onclick="switchTab('alerts')" class="nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
             Alerts
             <span id="nav-alert-count" class="ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500 text-white">0</span>
           </button>
-          <button data-tab="sos" onclick="switchTab('sos')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 text-red-200 hover:text-white hover:bg-red-500/20">
+          <button data-tab="about" onclick="switchTab('about')" class="nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            About
+          </button>
+          <button data-tab="sos" onclick="switchTab('sos')" class="nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-red-200 hover:text-white hover:bg-red-500/20">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
             SOS
           </button>
         </nav>
 
-        <!-- Right Status, Lite Mode & Refresh -->
-        <div class="flex items-center gap-2">
+        <!-- Right Status, Mobile About, Lite Mode & Refresh -->
+        <div class="flex items-center gap-1.5 sm:gap-2">
           <!-- Live Feed Status Pill -->
           <div
             id="data-source-pill"
@@ -139,6 +147,16 @@
             <span id="data-source-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-soft"></span>
             <span id="data-source-label">Loading...</span>
           </div>
+
+          <!-- Mobile About Button -->
+          <button
+            onclick="switchTab('about')"
+            title="About Assam Flood Monitor"
+            class="md:hidden p-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100"
+            aria-label="About"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </button>
 
           <!-- 2G / Low-Bandwidth Lite Mode Toggle -->
           <button
@@ -265,9 +283,9 @@
         </div>
       </section>
 
-      <!-- LEVEL 3: INTERACTIVE ASSAM FLOOD & GAUGE MAP -->
+      <!-- LEVEL 3: INTERACTIVE ASSAM FLOOD & GAUGE MAP (CWC-STYLE) -->
       <section id="assam-map-section" class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-3">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 mb-3">
           <div>
             <h2 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
               <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -275,32 +293,121 @@
               </svg>
               Assam Live CWC Gauge Map
             </h2>
-            <p class="text-xs text-slate-500 mt-0.5">Tap any marker to view live CWC level, pin to watchlist, or share a WhatsApp card.</p>
+            <p class="text-xs text-slate-500 mt-0.5">Search any Assam CWC station, filter by CWC legend, or switch Terrain &amp; Satellite views.</p>
           </div>
 
           <div class="flex flex-wrap items-center gap-1.5">
+            <!-- Data Layer Toggle -->
             <div class="inline-flex rounded-xl bg-slate-100 p-0.5 text-xs font-semibold">
-              <button id="map-layer-gauges" onclick="setMapLayer('gauges')" class="px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition">
+              <button id="map-layer-gauges" onclick="setMapLayer('gauges')" class="px-2.5 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition">
                 Gauges
               </button>
-              <button id="map-layer-rainfall" onclick="setMapLayer('rainfall')" class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition">
+              <button id="map-layer-rainfall" onclick="setMapLayer('rainfall')" class="px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition">
                 Rainfall
               </button>
             </div>
-            <button onclick="focusMapRegion('upper')" class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold transition">
+
+            <!-- Base Map Tile Switcher -->
+            <div class="inline-flex rounded-xl bg-slate-100 p-0.5 text-xs font-semibold">
+              <button id="basemap-map" onclick="setBaseMap('map')" class="px-2.5 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition">
+                Map
+              </button>
+              <button id="basemap-terrain" onclick="setBaseMap('terrain')" class="px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition">
+                Terrain
+              </button>
+              <button id="basemap-satellite" onclick="setBaseMap('satellite')" class="px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition">
+                Satellite
+              </button>
+            </div>
+
+            <!-- Region Quick Zoom (Exact District Bounds) -->
+            <button onclick="focusMapRegion('upper')" title="Covers Tinsukia, Dibrugarh, Charaideo, Sivasagar, Jorhat, Majuli, Golaghat, Lakhimpur & Dhemaji" class="px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold transition">
               Upper Assam
             </button>
-            <button onclick="focusMapRegion('barak')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
-              Barak Valley
+            <button onclick="focusMapRegion('barak')" title="Covers Cachar, Sribhumi (Karimganj) & Hailakandi" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+              Barak
             </button>
-            <button onclick="focusMapRegion('all')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
-              All Assam
+            <button onclick="focusMapRegion('all')" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+              All
+            </button>
+
+            <!-- Expand Map Toggle -->
+            <button id="map-expand-btn" onclick="toggleExpandMap()" class="px-2.5 py-1.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-semibold transition flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+              <span id="map-expand-label">Expand</span>
             </button>
           </div>
         </div>
 
-        <div id="assam-map" class="w-full h-72 sm:h-80 lg:h-96 rounded-2xl border border-slate-200 overflow-hidden bg-slate-100"></div>
-        <div id="map-legend" class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600"></div>
+        <!-- Map Canvas + Floating CWC Legends & Search Overlay -->
+        <div id="assam-map-wrapper" class="relative w-full h-[400px] sm:h-[460px] lg:h-[520px] rounded-2xl border border-slate-200 overflow-hidden bg-slate-100 transition-all duration-300">
+          <div id="assam-map" class="w-full h-full"></div>
+
+          <!-- Top-Left Floating CWC Controls: Collapsible Legends + Search Stations -->
+          <div id="map-floating-controls" class="absolute top-3 left-3 right-3 sm:right-auto z-[500] flex flex-col sm:flex-row items-start gap-2 pointer-events-none">
+
+            <!-- 1. Floating Search Stations Box (CWC Style) -->
+            <div class="relative w-full sm:w-64 pointer-events-auto order-1 sm:order-2">
+              <div class="flex items-center bg-white/95 backdrop-blur rounded-xl shadow-md border border-slate-200/90 px-2.5 py-2 focus-within:ring-2 focus-within:ring-blue-500">
+                <svg class="w-4 h-4 text-slate-400 shrink-0 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <input
+                  id="map-station-search"
+                  type="text"
+                  autocomplete="off"
+                  onfocus="renderMapSearchResults()"
+                  oninput="renderMapSearchResults()"
+                  placeholder="Search Stations..."
+                  class="w-full bg-transparent text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none"
+                />
+                <button
+                  id="map-search-clear"
+                  onclick="clearMapSearch()"
+                  class="hidden p-0.5 text-slate-400 hover:text-slate-700 text-xs font-bold ml-1"
+                  aria-label="Clear search"
+                >&times;</button>
+                <button
+                  onclick="toggleMapSearchDropdown()"
+                  class="p-0.5 text-slate-400 hover:text-slate-700 ml-1 border-l border-slate-200 pl-1.5"
+                  aria-label="Toggle station list"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+              </div>
+
+              <!-- Autocomplete Results Dropdown -->
+              <div
+                id="map-search-results"
+                class="hidden mt-1.5 w-full max-h-60 overflow-y-auto bg-white/98 backdrop-blur rounded-xl shadow-xl border border-slate-200 divide-y divide-slate-100"
+              ></div>
+            </div>
+
+            <!-- 2. Collapsible CWC Map Legends Card -->
+            <div id="cwc-legend-card" class="w-full sm:w-64 bg-white/95 backdrop-blur rounded-xl shadow-md border border-slate-200/90 overflow-hidden pointer-events-auto order-2 sm:order-1">
+              <button
+                onclick="toggleCwcLegend()"
+                class="w-full px-3 py-2.5 flex items-center justify-between text-left hover:bg-slate-50 transition"
+                aria-expanded="true"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold text-slate-900">Legends</span>
+                  <span id="cwc-legend-subtitle" class="text-[11px] text-slate-400 font-medium">Map legends</span>
+                </div>
+                <svg id="cwc-legend-chevron" class="w-4 h-4 text-slate-500 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
+                </svg>
+              </button>
+
+              <div id="cwc-legend-body" class="px-2 pb-2 pt-0.5 border-t border-slate-100 space-y-0.5 text-[11px]">
+                <!-- Populated dynamically with live counts & click-to-filter -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div id="map-legend" class="mt-2.5 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500"></div>
       </section>
 
       <!-- LEVEL 4: UPSTREAM-TO-DOWNSTREAM FLOW CHAIN -->
@@ -369,7 +476,10 @@
                 <span class="text-emerald-600 text-base leading-none mt-0.5">🛡️</span>
                 <div>
                   <div class="font-bold text-slate-800">Official Data Pipeline</div>
-                  <div class="text-[11px] text-slate-500">Central Water Commission (CWC FFS) &bull; Open-Meteo Weather &bull; Hourly Sync</div>
+                  <div class="text-[11px] text-slate-500">
+                    Central Water Commission (CWC FFS) &bull; Open-Meteo Weather &bull;
+                    <button onclick="switchTab('about')" class="text-blue-600 font-semibold hover:underline">About this project &rarr;</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -444,12 +554,16 @@
               onchange="loadWeatherForecast(this.value)"
               class="px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
+              <option value="sonari">Sonari (Charaideo)</option>
               <option value="sivasagar">Sivasagar</option>
               <option value="bihubar">Bihubar</option>
               <option value="nazira">Nazira</option>
               <option value="jorhat">Jorhat</option>
+              <option value="golaghat">Golaghat</option>
               <option value="dibrugarh">Dibrugarh</option>
               <option value="tinsukia">Tinsukia</option>
+              <option value="lakhimpur">North Lakhimpur</option>
+              <option value="dhemaji">Dhemaji</option>
               <option value="guwahati">Guwahati</option>
               <option value="silchar">Silchar</option>
             </select>
@@ -506,6 +620,86 @@
         <h1 class="text-lg font-bold text-slate-900 mb-1">Live River &amp; Flood Alerts</h1>
         <p class="text-xs text-slate-500 mb-4">Automatically generated from active CWC Assam stations crossing Warning or Danger thresholds.</p>
         <div id="alerts-full-list" class="space-y-3"></div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------------- -->
+    <!-- VIEW: ABOUT ME & DATA SOURCES                                       -->
+    <!-- ------------------------------------------------------------------- -->
+    <div id="view-about" class="hidden space-y-5">
+      <div class="bg-white rounded-2xl p-5 sm:p-7 shadow-sm border border-slate-200/80 max-w-3xl mx-auto space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
+          <div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-sky-50 text-sky-700 border border-sky-200 mb-2">
+              Community Project &bull; Charaideo, Assam
+            </span>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900">About Assam Flood Monitor</h1>
+          </div>
+          <button onclick="switchTab('dashboard')" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
+            &larr; Back to Dashboard
+          </button>
+        </div>
+
+        <!-- Personal Story -->
+        <div class="space-y-3 text-sm text-slate-700 leading-relaxed">
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <span>👋</span> Who built this &amp; why?
+          </h2>
+          <p>
+            Hi, I'm <strong>Bijay</strong> from <strong>Charaideo, Assam</strong>. I'm not a flood expert or a hydrologist — just someone from Assam who built this site hoping that people across our state find it genuinely useful when the monsoon hits.
+          </p>
+          <p>
+            I was one of the many people who went through and suffered during the <strong>devastating Assam floods of 2026</strong>. When water rises quickly in the middle of the night, checking slow portals or waiting for scattered updates is stressful. I wanted a single, fast, mobile-friendly place where anyone — even on weak mobile internet — can quickly check nearby river gauges, see upstream water levels, and share clear updates with family and neighbours on WhatsApp.
+          </p>
+        </div>
+
+        <!-- Data Sources Breakdown -->
+        <div class="space-y-3 pt-2 border-t border-slate-100">
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <span>📡</span> Where does the data come from?
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
+              <div class="font-bold text-slate-900 text-sm">Central Water Commission (CWC)</div>
+              <p class="text-slate-600 leading-relaxed">
+                All river water levels, Warning Levels (WL), Danger Levels (DL), and Highest Flood Levels (HFL) are fetched from the official <strong>CWC Flood Forecasting System (FFS)</strong> and synced automatically every hour.
+              </p>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
+              <div class="font-bold text-slate-900 text-sm">Open-Meteo &amp; Windy Radar</div>
+              <p class="text-slate-600 leading-relaxed">
+                Hourly precipitation, 24-hour town rainfall estimates, and 7-day forecasts are powered by <strong>Open-Meteo</strong>, paired with <strong>Windy</strong> live cloud &amp; rain radar for tracking storms over Assam and the upstream hills.
+              </p>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
+              <div class="font-bold text-slate-900 text-sm">Map Tiles (Esri / OpenStreetMap)</div>
+              <p class="text-slate-600 leading-relaxed">
+                Interactive Street, Terrain, and Satellite map views are rendered using <strong>Leaflet</strong> and free public <strong>Esri</strong> basemaps.
+              </p>
+            </div>
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
+              <div class="font-bold text-slate-900 text-sm">Emergency Helplines</div>
+              <p class="text-slate-600 leading-relaxed">
+                Quick-dial numbers for <strong>ASDMA (1070)</strong>, <strong>District DEOC (1077)</strong>, <strong>Assam SDRF</strong>, <strong>108</strong>, and <strong>NDRF</strong> are built directly into the site so they remain accessible even offline.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Note on Update Timing & Disclaimer -->
+        <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs text-amber-950 space-y-1.5 leading-relaxed">
+          <div class="font-bold">Important Note &amp; Disclaimer</div>
+          <p>
+            During peak monsoon, CWC telemetric gauges usually report every hour; during dry months, some stations post once a day. Every card displays the exact CWC reading date &amp; time so you always know how fresh a measurement is.
+          </p>
+          <p>
+            <strong>Assam Flood Monitor</strong> is an independent, non-commercial community tool and is not affiliated with any government agency. Always follow official advisories and evacuation orders from <strong>ASDMA</strong>, <strong>CWC</strong>, and your local <strong>District Administration</strong>.
+          </p>
+        </div>
+
+        <div class="pt-2 text-center text-xs font-semibold text-slate-500">
+          Made with <span class="text-red-500">❤️</span> by <span class="text-slate-800">Bijay</span> &bull; Charaideo, Assam
+        </div>
       </div>
     </div>
 
@@ -580,8 +774,12 @@
       <div>
         <strong class="text-slate-700">DISCLAIMER:</strong> For monitoring purposes only. Always follow official ASDMA / CWC / District Administration warnings.
       </div>
-      <div class="shrink-0 font-medium text-slate-600">
-        Flood Watch Assam &bull; Built for Assam
+      <div class="shrink-0 flex items-center gap-3 font-medium text-slate-600">
+        <button onclick="switchTab('about')" class="text-blue-600 hover:underline font-semibold">About</button>
+        <span class="text-slate-300">&bull;</span>
+        <button onclick="switchTab('about')" class="hover:text-slate-900 transition">
+          Made with <span class="text-red-500">❤️</span> by <strong class="text-slate-800">Bijay</strong>
+        </button>
       </div>
     </div>
   </footer>
@@ -664,7 +862,7 @@
         </button>
       </div>
       <div class="p-4 bg-slate-100 flex items-center justify-center overflow-y-auto">
-        <img id="share-preview-img" alt="Flood Watch Assam Status Card" class="w-full max-w-[340px] rounded-2xl shadow-lg border border-slate-200 bg-white" />
+        <img id="share-preview-img" alt="Assam Flood Monitor Status Card" class="w-full max-w-[340px] rounded-2xl shadow-lg border border-slate-200 bg-white" />
       </div>
       <div class="p-4 border-t border-slate-100 bg-white grid grid-cols-2 gap-2.5">
         <button onclick="shareGeneratedImage()" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
@@ -707,7 +905,7 @@
   </div>
 
   <!-- ===================================================================== -->
-  <!-- APPLICATION LOGIC (GITHUB PAGES LIVE CWC + OPEN-METEO)                -->
+  <!-- APPLICATION LOGIC (LIVE CWC + OPEN-METEO + CWC-STYLE MAP)             -->
   <!-- ===================================================================== -->
   <script>
     const MAX_WATCHLIST = 3;
@@ -726,24 +924,37 @@
     ];
 
     const RAINFALL_STATIONS = [
+      { name: 'Sonari (Charaideo)', district: 'Charaideo', mm: 0, lat: 27.024, lng: 95.016 },
       { name: 'Sivasagar', district: 'Sivasagar', mm: 0, lat: 26.984, lng: 94.637 },
       { name: 'Bihubar', district: 'Sivasagar', mm: 0, lat: 26.853, lng: 94.801 },
       { name: 'Dibrugarh', district: 'Dibrugarh', mm: 0, lat: 27.473, lng: 94.912 },
+      { name: 'Tinsukia', district: 'Tinsukia', mm: 0, lat: 27.492, lng: 95.359 },
       { name: 'Jorhat', district: 'Jorhat', mm: 0, lat: 26.751, lng: 94.203 },
-      { name: 'Tezpur', district: 'Sonitpur', mm: 0, lat: 26.652, lng: 92.792 },
       { name: 'Guwahati', district: 'Kamrup (M)', mm: 0, lat: 26.144, lng: 91.736 },
       { name: 'Silchar', district: 'Cachar', mm: 0, lat: 24.833, lng: 92.779 }
     ];
 
     const WEATHER_CITIES = {
+      sonari: { name: 'Sonari (Charaideo)', lat: 27.024, lng: 95.016 },
       sivasagar: { name: 'Sivasagar', lat: 26.984, lng: 94.637 },
       bihubar: { name: 'Bihubar', lat: 26.853, lng: 94.801 },
       nazira: { name: 'Nazira', lat: 26.915, lng: 94.732 },
       jorhat: { name: 'Jorhat', lat: 26.751, lng: 94.203 },
+      golaghat: { name: 'Golaghat', lat: 26.524, lng: 93.962 },
       dibrugarh: { name: 'Dibrugarh', lat: 27.473, lng: 94.912 },
       tinsukia: { name: 'Tinsukia', lat: 27.492, lng: 95.359 },
+      lakhimpur: { name: 'North Lakhimpur', lat: 27.236, lng: 94.104 },
+      dhemaji: { name: 'Dhemaji', lat: 27.482, lng: 94.558 },
       guwahati: { name: 'Guwahati', lat: 26.144, lng: 91.736 },
       silchar: { name: 'Silchar', lat: 24.833, lng: 92.779 }
+    };
+
+    // Exact geographic bounding boxes for Assam regions
+    // Upper Assam covers all 9 districts: Tinsukia, Dibrugarh, Charaideo, Sivasagar, Jorhat, Majuli, Golaghat, Lakhimpur & Dhemaji
+    const REGION_BOUNDS = {
+      upper: [[26.05, 93.40], [27.95, 96.02]],
+      barak: [[24.15, 92.15], [25.15, 93.25]],
+      all:   [[24.10, 89.70], [28.00, 96.05]]
     };
 
     // Runtime state
@@ -755,22 +966,82 @@
     let isLiteMode = loadLiteMode();
     let userLocation = loadUserLocation();
     let activeMapLayer = 'gauges';
+    let activeBaseMap = 'map';
+    let activeLegendFilter = null;
+    let isMapExpanded = false;
+    let isLegendOpen = window.innerWidth >= 640;
     let assamMap = null;
+    let baseTileLayer = null;
     let mapMarkersLayer = null;
+    let markerById = {};
     let weatherLoadedOnce = false;
     let toastTimer = null;
     let currentShareGauge = null;
     let currentShareBlob = null;
-    let currentShareFilename = 'floodwatch-assam.png';
+    let currentShareFilename = 'assamfloodmonitor.png';
+
+    // CWC-style map legend categories
+    const CWC_LEGEND_ITEMS = [
+      { key: 'level',        label: 'Level forecast station',          color: '#15803d' },
+      { key: 'base',         label: 'Flood Monitoring Station (Base)', color: '#5b4b8a' },
+      { key: 'above_normal', label: 'Above normal flood (Warning)',    color: '#eab308' },
+      { key: 'severe',       label: 'Severe flood (Above Danger)',     color: '#f97316' },
+      { key: 'extreme',      label: 'Extreme flood (Near/Above HFL)',  color: '#ef4444' }
+    ];
+
+    // 100% Free, No-API-Key Tile Layers (Esri Street, Esri Topo Terrain, Esri Satellite)
+    const BASE_TILE_LAYERS = {
+      map: {
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+        attribution: 'Tiles &copy; Esri &mdash; World Street Map',
+        maxZoom: 18
+      },
+      terrain: {
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+        attribution: 'Tiles &copy; Esri &mdash; World Topographic Map',
+        maxZoom: 17
+      },
+      satellite: {
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        attribution: 'Tiles &copy; Esri &mdash; World Imagery',
+        maxZoom: 17
+      }
+    };
 
     // =========================================================================
-    // 1. CWC DATA NORMALIZER & GITHUB PAGES REPO LOADER
+    // 1. TIME FORMATTERS & CWC DATA NORMALIZER
     // =========================================================================
-    function formatAge(ageHours) {
-      if (ageHours == null || isNaN(ageHours)) return 'No timestamp';
-      if (ageHours < 1) return `${Math.max(1, Math.round(ageHours * 60))} mins ago`;
-      if (ageHours < 48) return `${Math.round(ageHours)}h ago`;
-      return `${Math.round(ageHours / 24)}d ago`;
+    // Formats CWC reading time (e.g. "2026-11-23T13:00:00") into "23 Nov, 1:00 PM IST"
+    function formatCwcReadingTime(timeStr) {
+      if (!timeStr) return 'Time unavailable';
+      // CWC timestamps are already in IST without timezone suffix
+      const normalized = String(timeStr).includes('+') || String(timeStr).endsWith('Z')
+        ? String(timeStr)
+        : String(timeStr) + '+05:30';
+      const dt = new Date(normalized);
+      if (isNaN(dt.getTime())) return String(timeStr).replace('T', ' ');
+      return dt.toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        day: '2-digit',
+        month: 'short',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      }) + ' IST';
+    }
+
+    function formatSyncTime(isoStr) {
+      if (!isoStr) return '';
+      const dt = new Date(isoStr);
+      if (isNaN(dt.getTime())) return '';
+      return dt.toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        day: '2-digit',
+        month: 'short',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      }) + ' IST';
     }
 
     function normalizeCwcStation(raw) {
@@ -805,13 +1076,12 @@
         stale: Boolean(raw.stale),
         ageHours: raw.ageHours ?? null,
         time: raw.time || null,
-        updated: formatAge(raw.ageHours),
+        updated: formatCwcReadingTime(raw.time),
         pastFloodNote: raw.pastFloodNote || null
       };
     }
 
     function applyCwcDataset(rawList, modeLabel, fetchedAtIso) {
-      // Include all Assam stations with an active numeric reading (exclude offline)
       const normalized = rawList
         .map(normalizeCwcStation)
         .filter(g => g.inAssam && g.current !== null && g.cwcStatus !== 'offline');
@@ -884,7 +1154,6 @@
             (st.stations || []).map(s => [String(s.code).toLowerCase(), s])
           );
 
-          // Merge live readings with clean station metadata (district, river, basin, inAssam)
           const merged = (lv.stations || []).map(l => {
             const m = metaByCode[String(l.code).toLowerCase()] || {};
             return {
@@ -909,9 +1178,7 @@
           if (icon) icon.classList.remove('animate-spin');
           return;
         }
-      } catch (e) {
-        // Fallback below if opened locally without ./data/levels.json
-      }
+      } catch (e) {}
 
       applyCwcDataset(FALLBACK_CWC_SNAPSHOT, 'snapshot', '2026-11-24T09:00:00Z');
       if (manualRefresh) showToast('Could not reach ./data/levels.json — showing cached snapshot');
@@ -927,20 +1194,18 @@
       document.getElementById('nav-gauge-count').textContent = ALL_GAUGES.length;
       document.getElementById('home-all-count').textContent = ALL_GAUGES.length;
 
-      const syncedTime = lastFetchedAt
-        ? new Date(lastFetchedAt).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: true })
-        : '';
+      const syncedTime = formatSyncTime(lastFetchedAt);
 
       if (dataSourceMode === 'live-repo') {
         pill.className = 'px-2.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[11px] font-bold flex items-center gap-1.5';
         dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse-soft';
         label.textContent = `Live CWC (${ALL_GAUGES.length})`;
-        syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ${ALL_GAUGES.length} active Assam CWC stations &bull; Last synced ${syncedTime} IST`;
+        syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ${ALL_GAUGES.length} active Assam CWC stations &bull; Last synced ${syncedTime}`;
       } else {
         pill.className = 'px-2.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-200 text-[11px] font-bold flex items-center gap-1.5';
         dot.className = 'w-2 h-2 rounded-full bg-amber-400';
         label.textContent = `Cached (${ALL_GAUGES.length})`;
-        syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Preview mode — live ./data/levels.json loads automatically on GitHub Pages`;
+        syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Preview mode — live ./data/levels.json loads automatically on deployment`;
       }
     }
 
@@ -1256,7 +1521,7 @@
                 <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">${a.source}</span>
               </div>
               <p class="text-xs text-slate-600 mt-1">${a.detail}</p>
-              <div class="text-[11px] text-slate-400 mt-1">Reading ${a.time}</div>
+              <div class="text-[11px] text-slate-400 mt-1">CWC Reading: ${a.time}</div>
             </div>
           </div>
         `).join('');
@@ -1341,10 +1606,10 @@
           </div>
 
           <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-            <span class="text-[10px] text-slate-400">CWC &bull; ${g.updated}</span>
+            <span class="text-[10px] text-slate-400 truncate" title="Latest CWC reading timestamp">CWC &bull; ${g.updated}</span>
             <button
               onclick="event.stopPropagation(); openShareImageModal('${g.id}')"
-              class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/80 text-[11px] font-bold active:scale-95 transition"
+              class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/80 text-[11px] font-bold active:scale-95 transition shrink-0"
             >
               Share Card
             </button>
@@ -1419,7 +1684,7 @@
       const nodes = chains[basin];
       container.innerHTML = nodes.map((n, idx) => `
         <div class="flex items-center shrink-0">
-          <div class="w-48 sm:w-52 rounded-xl border ${n.color} p-3 flex flex-col justify-between min-h-[120px]">
+          <div class="w-52 sm:w-56 rounded-xl border ${n.color} p-3 flex flex-col justify-between min-h-[120px]">
             <div>
               <div class="flex items-center justify-between gap-1">
                 <span class="text-[10px] font-bold uppercase tracking-wide text-slate-400">${n.role}</span>
@@ -1427,7 +1692,7 @@
               </div>
               <div class="font-bold text-sm text-slate-900 mt-1 truncate">${n.name}</div>
               <div class="text-sm font-extrabold ${n.text} mt-1">${n.metric}</div>
-              <div class="text-[11px] font-medium text-slate-600 mt-0.5 truncate">${n.status}</div>
+              <div class="text-[10px] font-medium text-slate-600 mt-0.5 truncate">${n.status}</div>
             </div>
             ${n.gaugeId ? `
               <button
@@ -1521,7 +1786,7 @@
             onclick="focusRainfallStation(${r.lat}, ${r.lng}, '${r.name}', ${r.mm})"
             class="w-full py-2.5 flex items-center justify-between gap-3 hover:bg-slate-50 px-1.5 rounded-lg transition text-left"
           >
-            <div class="min-w-[115px] flex items-center gap-2">
+            <div class="min-w-[135px] flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full ${meta.dot} shrink-0"></span>
               <span class="text-xs sm:text-sm font-semibold text-slate-800 truncate">${r.name}</span>
               ${nearestBadge}
@@ -1536,72 +1801,306 @@
     }
 
     // =========================================================================
-    // 5. INTERACTIVE ASSAM MAP (LEAFLET)
+    // 5. INTERACTIVE ASSAM MAP (CWC-STYLE LEAFLET WITH SEARCH & LEGENDS)
     // =========================================================================
+    function getCwcMapCategory(g) {
+      if (g.hfl !== null && g.current >= g.hfl) return 'extreme';
+      if (g.cwcStatus === 'flood' || (g.danger !== null && g.current >= g.danger)) return 'severe';
+      if (g.cwcStatus === 'warning' || (g.warning !== null && g.current >= g.warning)) return 'above_normal';
+      if (String(g.type || '').toLowerCase() === 'base') return 'base';
+      return 'level';
+    }
+
+    function getCwcCategoryColor(catKey) {
+      return CWC_LEGEND_ITEMS.find(i => i.key === catKey)?.color || '#15803d';
+    }
+
     function initAssamMap() {
       try {
         if (typeof L === 'undefined') return;
-        assamMap = L.map('assam-map', { center: [26.65, 93.35], zoom: 7, scrollWheelZoom: false });
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-          attribution: '&copy; OpenStreetMap &copy; CARTO',
-          maxZoom: 18
-        }).addTo(assamMap);
+        assamMap = L.map('assam-map', {
+          center: [26.55, 93.15],
+          zoom: 7,
+          scrollWheelZoom: false,
+          zoomControl: false
+        });
+
+        L.control.zoom({ position: 'bottomright' }).addTo(assamMap);
+
+        setBaseMap('map', true);
         mapMarkersLayer = L.layerGroup().addTo(assamMap);
+
+        const overlay = document.getElementById('map-floating-controls');
+        if (overlay && L.DomEvent) {
+          L.DomEvent.disableClickPropagation(overlay);
+          L.DomEvent.disableScrollPropagation(overlay);
+        }
+
+        applyLegendCollapseState();
         renderMapMarkers();
       } catch (err) {}
+    }
+
+    function setBaseMap(styleKey, silent = false) {
+      if (!assamMap || !BASE_TILE_LAYERS[styleKey]) return;
+      activeBaseMap = styleKey;
+      const cfg = BASE_TILE_LAYERS[styleKey];
+
+      if (baseTileLayer) assamMap.removeLayer(baseTileLayer);
+      baseTileLayer = L.tileLayer(cfg.url, {
+        attribution: cfg.attribution,
+        maxZoom: cfg.maxZoom
+      }).addTo(assamMap);
+
+      ['map', 'terrain', 'satellite'].forEach(k => {
+        const btn = document.getElementById(`basemap-${k}`);
+        if (!btn) return;
+        btn.className = k === styleKey
+          ? 'px-2.5 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition'
+          : 'px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition';
+      });
+      if (!silent) showToast(`Switched map to ${styleKey.charAt(0).toUpperCase() + styleKey.slice(1)} view`);
+    }
+
+    function toggleExpandMap() {
+      isMapExpanded = !isMapExpanded;
+      const wrapper = document.getElementById('assam-map-wrapper');
+      const label = document.getElementById('map-expand-label');
+      if (isMapExpanded) {
+        wrapper.classList.remove('h-[400px]', 'sm:h-[460px]', 'lg:h-[520px]');
+        wrapper.classList.add('h-[75vh]');
+        label.textContent = 'Collapse';
+      } else {
+        wrapper.classList.remove('h-[75vh]');
+        wrapper.classList.add('h-[400px]', 'sm:h-[460px]', 'lg:h-[520px]');
+        label.textContent = 'Expand';
+      }
+      if (assamMap) setTimeout(() => assamMap.invalidateSize(), 320);
+    }
+
+    function toggleCwcLegend() {
+      isLegendOpen = !isLegendOpen;
+      applyLegendCollapseState();
+    }
+
+    function applyLegendCollapseState() {
+      const body = document.getElementById('cwc-legend-body');
+      const chev = document.getElementById('cwc-legend-chevron');
+      if (!body || !chev) return;
+      body.classList.toggle('hidden', !isLegendOpen);
+      chev.style.transform = isLegendOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
+
+    function toggleLegendFilter(catKey) {
+      activeLegendFilter = activeLegendFilter === catKey ? null : catKey;
+      renderMapMarkers();
+    }
+
+    function renderCwcLegendPanel() {
+      const body = document.getElementById('cwc-legend-body');
+      const card = document.getElementById('cwc-legend-card');
+      const subtitle = document.getElementById('cwc-legend-subtitle');
+      if (!body || !card) return;
+
+      if (activeMapLayer !== 'gauges') {
+        card.classList.add('hidden');
+        return;
+      }
+      card.classList.remove('hidden');
+
+      const counts = { level: 0, base: 0, above_normal: 0, severe: 0, extreme: 0 };
+      const mapped = ALL_GAUGES.filter(g => g.lat !== null && g.lng !== null);
+      mapped.forEach(g => { counts[getCwcMapCategory(g)]++; });
+
+      subtitle.textContent = activeLegendFilter ? 'Filtered' : `${mapped.length} stations`;
+
+      let html = CWC_LEGEND_ITEMS.map(item => {
+        const isActive = activeLegendFilter === item.key;
+        const count = counts[item.key] || 0;
+        return `
+          <button
+            onclick="toggleLegendFilter('${item.key}')"
+            class="cwc-legend-item ${isActive ? 'active-filter' : 'hover:bg-slate-50'} w-full px-2 py-1.5 rounded-lg flex items-center justify-between gap-2 text-left transition"
+            title="Click to filter ${item.label}"
+          >
+            <span class="text-slate-700 font-medium leading-tight truncate">${item.label}</span>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10px] font-bold text-slate-400">${count}</span>
+              <span class="w-3.5 h-3.5 rounded-full border border-black/10 shadow-sm shrink-0" style="background-color: ${item.color};"></span>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      if (activeLegendFilter) {
+        html += `
+          <button
+            onclick="toggleLegendFilter('${activeLegendFilter}')"
+            class="w-full mt-1 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-[10px] transition"
+          >
+            Show All Stations (${mapped.length})
+          </button>
+        `;
+      }
+      body.innerHTML = html;
+    }
+
+    function renderMapSearchResults() {
+      const input = document.getElementById('map-station-search');
+      const dropdown = document.getElementById('map-search-results');
+      const clearBtn = document.getElementById('map-search-clear');
+      if (!input || !dropdown) return;
+
+      const q = input.value.trim().toLowerCase();
+      clearBtn.classList.toggle('hidden', q.length === 0);
+
+      const candidates = ALL_GAUGES.filter(g => g.lat !== null && g.lng !== null).filter(g => {
+        if (!q) return true;
+        return (
+          g.station.toLowerCase().includes(q) ||
+          g.river.toLowerCase().includes(q) ||
+          g.district.toLowerCase().includes(q) ||
+          g.code.toLowerCase().includes(q)
+        );
+      });
+
+      if (candidates.length === 0) {
+        dropdown.innerHTML = `<div class="px-3 py-3 text-xs text-slate-400 text-center">No Assam station matching "${q}"</div>`;
+      } else {
+        dropdown.innerHTML = candidates.slice(0, 25).map(g => {
+          const cat = getCwcMapCategory(g);
+          const color = getCwcCategoryColor(cat);
+          return `
+            <button
+              onclick="selectMapSearchStation('${g.id}')"
+              class="w-full px-3 py-2 flex items-center justify-between gap-2 hover:bg-blue-50/70 text-left transition"
+            >
+              <div class="min-w-0">
+                <div class="text-xs font-bold text-slate-900 truncate">${g.station}</div>
+                <div class="text-[10px] text-slate-500 truncate">${g.river} &bull; ${g.district}</div>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <span class="text-[11px] font-extrabold text-slate-700">${g.current.toFixed(2)} m</span>
+                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${color};"></span>
+              </div>
+            </button>
+          `;
+        }).join('');
+      }
+      dropdown.classList.remove('hidden');
+    }
+
+    function toggleMapSearchDropdown() {
+      const dropdown = document.getElementById('map-search-results');
+      if (!dropdown) return;
+      if (dropdown.classList.contains('hidden')) {
+        renderMapSearchResults();
+      } else {
+        dropdown.classList.add('hidden');
+      }
+    }
+
+    function clearMapSearch() {
+      const input = document.getElementById('map-station-search');
+      const dropdown = document.getElementById('map-search-results');
+      const clearBtn = document.getElementById('map-search-clear');
+      if (input) input.value = '';
+      if (dropdown) dropdown.classList.add('hidden');
+      if (clearBtn) clearBtn.classList.add('hidden');
+    }
+
+    function selectMapSearchStation(gaugeId) {
+      const g = ALL_GAUGES.find(item => item.id === gaugeId);
+      if (!g || g.lat === null || g.lng === null) return;
+
+      if (activeMapLayer !== 'gauges') setMapLayer('gauges');
+      if (activeLegendFilter && getCwcMapCategory(g) !== activeLegendFilter) {
+        activeLegendFilter = null;
+        renderMapMarkers();
+      }
+
+      const input = document.getElementById('map-station-search');
+      const dropdown = document.getElementById('map-search-results');
+      const clearBtn = document.getElementById('map-search-clear');
+      if (input) input.value = g.station;
+      if (clearBtn) clearBtn.classList.remove('hidden');
+      if (dropdown) dropdown.classList.add('hidden');
+
+      if (assamMap) {
+        assamMap.flyTo([g.lat, g.lng], 11, { duration: 0.75 });
+        const marker = markerById[g.id];
+        if (marker) {
+          setTimeout(() => marker.openPopup(), 450);
+        }
+      }
     }
 
     function renderMapMarkers() {
       if (!assamMap || !mapMarkersLayer) return;
       mapMarkersLayer.clearLayers();
+      markerById = {};
       const legendEl = document.getElementById('map-legend');
+      renderCwcLegendPanel();
 
       if (activeMapLayer === 'gauges') {
-        ALL_GAUGES.filter(g => g.lat !== null && g.lng !== null).forEach(g => {
+        const mapped = ALL_GAUGES.filter(g => g.lat !== null && g.lng !== null);
+        const visible = activeLegendFilter
+          ? mapped.filter(g => getCwcMapCategory(g) === activeLegendFilter)
+          : mapped;
+
+        visible.forEach(g => {
           const st = getGaugeStatus(g);
+          const cat = getCwcMapCategory(g);
+          const fillHex = getCwcCategoryColor(cat);
           const isPinned = watchlistIds.includes(g.id);
+
           const marker = L.circleMarker([g.lat, g.lng], {
-            radius: isPinned ? 10 : 7.5,
-            fillColor: st.stroke,
+            radius: isPinned ? 9.5 : 7,
+            fillColor: fillHex,
             color: isPinned ? '#071426' : '#ffffff',
-            weight: isPinned ? 2.5 : 2,
+            weight: isPinned ? 2.5 : 1.8,
             opacity: 1,
-            fillOpacity: 0.92
+            fillOpacity: 0.94
           });
 
           marker.bindPopup(`
-            <div style="min-width: 210px;">
-              <div style="font-weight: 800; font-size: 14px; color: #0f172a;">${g.station}</div>
+            <div style="min-width: 220px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                <div style="font-weight: 800; font-size: 14px; color: #0f172a;">${g.station}</div>
+                <span style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; background: #f1f5f9; color: #334155;">${g.type}</span>
+              </div>
               <div style="font-size: 11px; color: #64748b; margin-bottom: 6px;">${g.river} River &bull; ${g.district}</div>
               <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px;">
-                <span style="font-size: 18px; font-weight: 800; color: ${st.stroke};">${g.current.toFixed(2)} m</span>
+                <span style="font-size: 18px; font-weight: 800; color: ${fillHex};">${g.current.toFixed(2)} m</span>
                 <span style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; background: #f1f5f9; color: #334155;">${st.label}</span>
               </div>
-              <div style="font-size: 11px; color: #475569; margin-bottom: 10px;">
+              <div style="font-size: 11px; color: #475569; margin-bottom: 4px;">
                 WL: <strong>${g.warning !== null ? g.warning.toFixed(2) + ' m' : '—'}</strong> &bull; DL: <strong style="color:#dc2626;">${g.danger !== null ? g.danger.toFixed(2) + ' m' : '—'}</strong>
+              </div>
+              <div style="font-size: 10px; color: #64748b; margin-bottom: 10px;">
+                CWC Reading: <strong>${g.updated}</strong>
               </div>
               <div style="display: flex; gap: 6px;">
                 <button onclick="toggleWatchlist('${g.id}')" style="flex: 1; padding: 6px 8px; border-radius: 8px; border: none; background: ${isPinned ? '#fef3c7' : '#071426'}; color: ${isPinned ? '#92400e' : '#ffffff'}; font-size: 11px; font-weight: 700; cursor: pointer;">
                   ${isPinned ? '★ Pinned' : '☆ Pin'}
                 </button>
-                <button onclick="openShareImageModal('${g.id}')" style="flex: 1; padding: 6px 8px; border-radius: 8px; border: 1px solid #a7f3d0; background: #ecfdf5; color: #047857; font-size: 11px; font-weight: 700; cursor: pointer;">
-                  Share Card
+                <button onclick="openGaugeDetailModal('${g.id}')" style="flex: 1; padding: 6px 8px; border-radius: 8px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; font-size: 11px; font-weight: 700; cursor: pointer;">
+                  Details
+                </button>
+                <button onclick="openShareImageModal('${g.id}')" style="padding: 6px 8px; border-radius: 8px; border: 1px solid #a7f3d0; background: #ecfdf5; color: #047857; font-size: 11px; font-weight: 700; cursor: pointer;">
+                  Share
                 </button>
               </div>
             </div>
           `);
           marker.bindTooltip(`${g.station} (${g.current.toFixed(2)}m)`, { direction: 'top', offset: [0, -8] });
           marker.addTo(mapMarkersLayer);
+          markerById[g.id] = marker;
         });
 
         legendEl.innerHTML = `
-          <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5">
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>Normal</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>Warning</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>Danger</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>Base Gauge</span>
-          </div>
-          <span class="text-[11px] text-slate-400">Dark ring = Pinned in Watchlist</span>
+          <span>Showing <strong>${visible.length}</strong> of ${mapped.length} geolocated Assam CWC stations &bull; Tap any legend item to filter</span>
+          <span class="text-slate-400">Dark ring = Pinned in Watchlist</span>
         `;
       } else {
         RAINFALL_STATIONS.forEach(r => {
@@ -1617,7 +2116,7 @@
           marker.bindPopup(`<strong>${r.name}</strong><br/>${r.mm} mm (${meta.label})`);
           marker.addTo(mapMarkersLayer);
         });
-        legendEl.innerHTML = `<span class="text-[11px] text-slate-500">24h live Open-Meteo rainfall estimates across Assam towns</span>`;
+        legendEl.innerHTML = `<span>24h live Open-Meteo rainfall estimates across Assam towns</span>`;
       }
     }
 
@@ -1626,20 +2125,19 @@
       const gBtn = document.getElementById('map-layer-gauges');
       const rBtn = document.getElementById('map-layer-rainfall');
       if (layer === 'gauges') {
-        gBtn.className = 'px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition';
-        rBtn.className = 'px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition';
+        gBtn.className = 'px-2.5 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition';
+        rBtn.className = 'px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition';
       } else {
-        rBtn.className = 'px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition';
-        gBtn.className = 'px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition';
+        rBtn.className = 'px-2.5 py-1.5 rounded-lg bg-white text-slate-900 shadow-sm transition';
+        gBtn.className = 'px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition';
       }
       renderMapMarkers();
     }
 
     function focusMapRegion(region) {
       if (!assamMap) return;
-      if (region === 'upper') assamMap.flyTo([27.05, 94.75], 9, { duration: 0.7 });
-      else if (region === 'barak') assamMap.flyTo([24.82, 92.65], 10, { duration: 0.7 });
-      else assamMap.flyTo([26.55, 93.25], 7, { duration: 0.7 });
+      const bounds = REGION_BOUNDS[region] || REGION_BOUNDS.all;
+      assamMap.flyToBounds(bounds, { padding: [24, 24], duration: 0.75 });
     }
 
     function focusRainfallStation(lat, lng, name, mm) {
@@ -1747,6 +2245,7 @@
       const isPinned = watchlistIds.includes(g.id);
       const toDanger = g.danger !== null ? (g.danger - g.current).toFixed(2) : null;
       const toHfl = g.hfl !== null ? (g.hfl - g.current).toFixed(2) : null;
+      const syncedStr = formatSyncTime(lastFetchedAt);
 
       document.getElementById('detail-station-name').textContent = g.station;
       document.getElementById('detail-river-subtitle').textContent = `${g.river} River • ${g.district} District • Code: ${g.code.toUpperCase()}`;
@@ -1761,7 +2260,8 @@
             <div class="text-3xl font-extrabold ${st.textClass} mt-0.5">${g.current.toFixed(2)} <span class="text-sm font-semibold text-slate-400">m</span></div>
           </div>
           <div class="text-right">
-            <div class="text-xs font-bold text-slate-700">${g.time ? g.time.replace('T', ' ') + ' IST' : g.updated}</div>
+            <div class="text-xs font-bold text-slate-700">Reading: ${g.updated}</div>
+            ${syncedStr ? `<div class="text-[10px] text-slate-400 mt-0.5">Last synced: ${syncedStr}</div>` : ''}
             <div class="text-[11px] text-slate-500 mt-0.5">
               ${toDanger !== null ? (Number(toDanger) >= 0 ? `${toDanger} m below Danger Level` : `${Math.abs(toDanger).toFixed(2)} m ABOVE Danger Level`) : 'Base reference station'}
             </div>
@@ -1826,7 +2326,7 @@
       const g = ALL_GAUGES.find(item => item.id === gaugeId);
       if (!g) return;
       currentShareGauge = g;
-      currentShareFilename = `FloodWatch_${g.station.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+      currentShareFilename = `AssamFloodMonitor_${g.station.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
       document.getElementById('share-preview-img').src = generateGaugeShareCanvas(g);
       const modal = document.getElementById('share-modal');
       modal.classList.remove('hidden');
@@ -1867,7 +2367,7 @@
       ctx.fillRect(0, 0, 900, 165);
       ctx.fillStyle = '#38bdf8';
       ctx.font = '800 22px Inter, system-ui, sans-serif';
-      ctx.fillText('FLOOD WATCH ASSAM  •  CWC LIVE GAUGE UPDATE', 48, 66);
+      ctx.fillText('ASSAM FLOOD MONITOR  •  CWC LIVE GAUGE UPDATE', 48, 66);
       ctx.fillStyle = '#ffffff';
       ctx.font = '800 44px Inter, system-ui, sans-serif';
       ctx.fillText(g.station, 48, 126);
@@ -1909,7 +2409,7 @@
 
       ctx.fillStyle = '#475569';
       ctx.font = '600 22px Inter, system-ui, sans-serif';
-      ctx.fillText(`CWC Reading: ${g.time ? g.time.replace('T', ' ') + ' IST' : g.updated}`, 76, 520);
+      ctx.fillText(`CWC Reading: ${g.updated}`, 76, 520);
 
       drawRoundedRect(ctx, 76, 555, 748, 128, 20);
       ctx.fillStyle = '#f8fafc';
@@ -1940,7 +2440,7 @@
       ctx.fillText('Assam Flood Helpline: 1070   •   District DEOC: 1077', 74, 804);
       ctx.fillStyle = '#94a3b8';
       ctx.font = '500 18px Inter, system-ui, sans-serif';
-      ctx.fillText('Source: Central Water Commission (CWC FFS). Follow official ASDMA advisories.', 74, 842);
+      ctx.fillText('assamfloodmonitor.vercel.app  •  Made with ❤️ by Bijay (Source: CWC FFS)', 74, 842);
 
       canvas.toBlob(blob => { currentShareBlob = blob; }, 'image/png');
       return canvas.toDataURL('image/png');
@@ -1952,7 +2452,7 @@
           const file = new File([currentShareBlob], currentShareFilename, { type: 'image/png' });
           if (navigator.canShare({ files: [file] })) {
             await navigator.share({
-              title: `Flood Watch Assam — ${currentShareGauge.station}`,
+              title: `Assam Flood Monitor — ${currentShareGauge.station}`,
               text: `${currentShareGauge.station} (${currentShareGauge.river}): ${currentShareGauge.current.toFixed(2)} m`,
               files: [file]
             });
@@ -1993,7 +2493,7 @@
     async function loadWeatherForecast(cityKey) {
       const city = cityKey === 'gps' && userLocation
         ? { name: userLocation.name, lat: userLocation.lat, lng: userLocation.lng }
-        : (WEATHER_CITIES[cityKey] || WEATHER_CITIES.sivasagar);
+        : (WEATHER_CITIES[cityKey] || WEATHER_CITIES.sonari);
       const badge = document.getElementById('weather-source-badge');
 
       try {
@@ -2091,7 +2591,7 @@
     }
 
     function switchTab(tabName) {
-      ['dashboard', 'rivers', 'weather', 'alerts', 'sos'].forEach(v => {
+      ['dashboard', 'rivers', 'weather', 'alerts', 'about', 'sos'].forEach(v => {
         const el = document.getElementById(`view-${v}`);
         if (el) el.classList.toggle('hidden', v !== tabName);
       });
@@ -2101,12 +2601,12 @@
         const isActive = t === tabName;
         if (t === 'sos') {
           btn.className = isActive
-            ? 'nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2 bg-red-600 text-white'
-            : 'nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 text-red-200 hover:text-white hover:bg-red-500/20';
+            ? 'nav-btn px-3 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-1.5 bg-red-600 text-white'
+            : 'nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-red-200 hover:text-white hover:bg-red-500/20';
         } else {
           btn.className = isActive
-            ? 'nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 bg-blue-600 text-white'
-            : 'nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-white/10';
+            ? 'nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 bg-blue-600 text-white'
+            : 'nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10';
         }
       });
 
@@ -2129,12 +2629,13 @@
       if (tabName === 'weather' && !weatherLoadedOnce) {
         const select = document.getElementById('weather-city-select');
         if (userLocation && select && select.querySelector('option[value="gps"]')) select.value = 'gps';
-        loadWeatherForecast(select ? select.value : 'sivasagar');
+        loadWeatherForecast(select ? select.value : 'sonari');
       }
     }
 
     function updateClock() {
       const formatted = new Date().toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
         day: '2-digit', month: 'short', year: 'numeric',
         hour: '2-digit', minute: '2-digit', hour12: true
       });
@@ -2164,6 +2665,16 @@
 
     window.addEventListener('online', updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
+
+    document.addEventListener('click', (e) => {
+      const searchBox = document.getElementById('map-station-search');
+      const dropdown = document.getElementById('map-search-results');
+      if (dropdown && !dropdown.classList.contains('hidden')) {
+        if (!dropdown.contains(e.target) && e.target !== searchBox && !e.target.closest('[aria-label="Toggle station list"]')) {
+          dropdown.classList.add('hidden');
+        }
+      }
+    });
 
     window.addEventListener('DOMContentLoaded', () => {
       updateClock();
