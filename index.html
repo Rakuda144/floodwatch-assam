@@ -7,6 +7,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="Real-time flood, river gauge, and rainfall monitoring dashboard for Assam powered by CWC & Open-Meteo." />
+  <meta property="og:title" content="Assam Flood Monitor — Live CWC River &amp; Rainfall Tracker" />
+  <meta property="og:description" content="Live CWC river water levels, rate-of-rise trends, interactive station map, and rainfall alerts across Assam." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://assamfloodmonitor.vercel.app/" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23071426'/%3E%3Cpath d='M4 19c2.5-2 5-2 7.5 0s5 2 7.5 0 5-2 7.5 0M4 24c2.5-2 5-2 7.5 0s5 2 7.5 0 5-2 7.5 0' stroke='%2338bdf8' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M7 14l9-7 9 7' stroke='%23ffffff' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
   <title>Assam Flood Monitor — Live CWC River &amp; Rainfall Tracker</title>
 
   <!-- Google Font: Inter -->
@@ -110,10 +116,10 @@
   <!-- ===================================================================== -->
   <header class="bg-navy-900 text-white sticky top-0 z-40 shadow-md border-b border-white/10">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16 gap-3">
+      <div class="flex items-center justify-between h-16 gap-2 sm:gap-3">
 
         <!-- Brand Identity -->
-        <button onclick="switchTab('dashboard')" class="flex items-center gap-2.5 sm:gap-3 text-left focus:outline-none group">
+        <button onclick="switchTab('dashboard')" class="flex items-center gap-2.5 text-left focus:outline-none group shrink-0">
           <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-500/15 border border-blue-400/30 flex items-center justify-center shrink-0 group-hover:bg-blue-500/25 transition">
             <svg class="w-6 h-6 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 10.5L12 3l9 7.5" class="text-white" stroke="currentColor"/>
@@ -122,54 +128,54 @@
               <path d="M2 21c1.5-1.2 3-1.2 4.5 0s3 1.2 4.5 0 3-1.2 4.5 0 3 1.2 4.5 0" class="text-sky-400" stroke="currentColor"/>
             </svg>
           </div>
-          <div class="leading-tight">
-            <div class="font-extrabold tracking-tight text-sm sm:text-base lg:text-lg text-white flex items-center gap-1.5">
-              <span>ASSAM FLOOD <span class="text-sky-400">MONITOR</span></span>
+          <div class="leading-tight whitespace-nowrap">
+            <div class="font-extrabold tracking-tight text-sm sm:text-base text-white">
+              ASSAM FLOOD <span class="text-sky-400">MONITOR</span>
             </div>
-            <div class="text-[11px] sm:text-xs text-slate-300 hidden sm:block">
-              Live CWC river gauges &amp; rainfall monitor
+            <div class="text-[11px] text-slate-300 hidden lg:block">
+              Live CWC river &amp; rainfall tracker
             </div>
           </div>
         </button>
 
         <!-- Desktop Navigation Links -->
         <nav class="hidden md:flex items-center gap-1" aria-label="Primary Navigation">
-          <button data-tab="dashboard" onclick="switchTab('dashboard')" class="nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 bg-blue-600 text-white">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+          <button data-tab="dashboard" onclick="switchTab('dashboard')" class="nav-btn px-2.5 lg:px-3 py-2 rounded-xl text-xs lg:text-sm font-medium transition flex items-center gap-1.5 bg-blue-600 text-white whitespace-nowrap">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
             Dashboard
           </button>
-          <button data-tab="rivers" onclick="switchTab('rivers')" class="nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
+          <button data-tab="rivers" onclick="switchTab('rivers')" class="nav-btn px-2.5 lg:px-3 py-2 rounded-xl text-xs lg:text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10 whitespace-nowrap">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
             Gauges
             <span id="nav-gauge-count" class="ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-white/15 text-sky-200">--</span>
           </button>
-          <button data-tab="weather" onclick="switchTab('weather')" class="nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 16.2A4.5 4.5 0 0017.5 8h-1.8A7 7 0 104 14.9M8 19v2m4-3v3m4-2v2"/></svg>
+          <button data-tab="weather" onclick="switchTab('weather')" class="nav-btn px-2.5 lg:px-3 py-2 rounded-xl text-xs lg:text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10 whitespace-nowrap">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 16.2A4.5 4.5 0 0017.5 8h-1.8A7 7 0 104 14.9M8 19v2m4-3v3m4-2v2"/></svg>
             Weather
           </button>
-          <button data-tab="alerts" onclick="switchTab('alerts')" class="nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <button data-tab="alerts" onclick="switchTab('alerts')" class="nav-btn px-2.5 lg:px-3 py-2 rounded-xl text-xs lg:text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10 whitespace-nowrap">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
             Alerts
-            <span id="nav-alert-count" class="ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500 text-white">0</span>
+            <span id="nav-alert-count" class="ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-slate-600 text-white">—</span>
           </button>
-          <button data-tab="about" onclick="switchTab('about')" class="nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <button data-tab="about" onclick="switchTab('about')" class="nav-btn px-2.5 lg:px-3 py-2 rounded-xl text-xs lg:text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10 whitespace-nowrap">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             About
           </button>
-          <button data-tab="sos" onclick="switchTab('sos')" class="nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-red-200 hover:text-white hover:bg-red-500/20">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          <button data-tab="sos" onclick="switchTab('sos')" class="nav-btn px-2.5 lg:px-3 py-2 rounded-xl text-xs lg:text-sm font-medium transition flex items-center gap-1.5 text-red-200 hover:text-white hover:bg-red-500/20 whitespace-nowrap">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
             SOS
           </button>
         </nav>
 
         <!-- Right Status, Mobile About, Lite Mode & Refresh -->
-        <div class="flex items-center gap-1.5 sm:gap-2">
+        <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <!-- Live Feed Status Pill -->
           <div
             id="data-source-pill"
-            class="px-2.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[11px] font-bold flex items-center gap-1.5"
+            class="px-2.5 py-1.5 rounded-xl bg-slate-700/70 border border-slate-500/40 text-slate-200 text-[11px] font-bold flex items-center gap-1.5 whitespace-nowrap"
           >
-            <span id="data-source-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-soft"></span>
+            <span id="data-source-dot" class="w-2 h-2 rounded-full bg-slate-400 animate-pulse-soft shrink-0"></span>
             <span id="data-source-label">Loading...</span>
           </div>
 
@@ -188,7 +194,7 @@
             id="lite-mode-btn"
             onclick="toggleLiteMode()"
             title="Toggle 2G Low-Bandwidth Lite Mode"
-            class="px-2.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100 text-xs font-bold flex items-center gap-1"
+            class="px-2.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
             aria-label="Toggle 2G Lite Mode"
           >
             <span>⚡</span>
@@ -210,15 +216,20 @@
   <div class="bg-navy-800 text-slate-200 text-[11px] px-4 py-1.5 border-b border-white/10">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
       <span id="sync-status-text" class="flex items-center gap-1.5 font-medium text-sky-300">
-        Loading live CWC Assam data...
+        Checking CWC Assam readings...
       </span>
       <span id="live-clock" class="text-slate-300 font-medium">IST</span>
     </div>
   </div>
 
+  <!-- Data Health / Stale / Unavailable Warning Banner -->
+  <div id="data-health-banner" class="hidden bg-amber-500 text-slate-950 text-xs font-bold px-4 py-2.5 text-center shadow-sm border-b border-amber-600/30">
+    <span id="data-health-banner-text"></span>
+  </div>
+
   <!-- Offline Mode Banner -->
   <div id="offline-banner" class="hidden bg-amber-500 text-slate-950 text-xs font-semibold px-4 py-2 text-center shadow-sm">
-    <span>⚠️ You are currently offline — showing last cached readings &amp; emergency numbers.</span>
+    <span>⚠️ You are currently offline — check CWC or ASDMA directly and use emergency numbers below.</span>
   </div>
 
   <!-- 2G / Low-Bandwidth Lite Mode Banner -->
@@ -238,10 +249,10 @@
     <div id="view-dashboard" class="space-y-5">
 
       <!-- LEVEL 1: DYNAMIC FLOOD STATUS + SCROLLING ALERT TICKER -->
-      <section id="status-ticker-bar" class="bg-white rounded-2xl shadow-sm border border-emerald-200/90 overflow-hidden flex items-stretch">
-        <div id="status-pill-left" class="bg-gradient-to-r from-emerald-600 to-teal-500 text-white px-3 sm:px-4 py-2.5 flex items-center gap-2 shrink-0">
+      <section id="status-ticker-bar" class="bg-white rounded-2xl shadow-sm border border-slate-200/90 overflow-hidden flex items-stretch">
+        <div id="status-pill-left" class="bg-slate-600 text-white px-3 sm:px-4 py-2.5 flex items-center gap-2 shrink-0">
           <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-          <span id="status-pill-text" class="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider whitespace-nowrap">Normal Flow</span>
+          <span id="status-pill-text" class="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider whitespace-nowrap">Checking...</span>
         </div>
 
         <div class="alert-ticker-wrapper flex-1 overflow-hidden relative py-2.5 bg-slate-50/70">
@@ -249,11 +260,12 @@
         </div>
 
         <button
+          id="ticker-alerts-btn"
           onclick="switchTab('alerts')"
           class="px-3 sm:px-4 py-2.5 bg-white hover:bg-slate-50 border-l border-slate-200 text-xs font-bold text-blue-600 hover:text-blue-700 shrink-0 transition whitespace-nowrap flex items-center gap-1"
         >
-          Alerts
-          <span id="ticker-alert-count" class="hidden sm:inline">(0)</span>
+          <span id="ticker-alerts-label">Alerts</span>
+          <span id="ticker-alert-count" class="hidden sm:inline">(—)</span>
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
         </button>
       </section>
@@ -270,10 +282,10 @@
                 My Watchlist
               </h2>
               <span id="watchlist-count-badge" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200/80">
-                3 / 3 Pinned
+                0 / 3 Pinned
               </span>
             </div>
-            <p class="text-xs text-slate-500 mt-0.5">Tap any gauge card for details &amp; thresholds, or pin up to 3 Assam CWC stations.</p>
+            <p class="text-xs text-slate-500 mt-0.5">Tap any gauge card for details &amp; trend history, or pin up to 3 Assam CWC stations.</p>
           </div>
 
           <div class="flex flex-wrap items-center gap-2 self-start sm:self-auto">
@@ -493,7 +505,7 @@
                   <div class="text-[11px] text-slate-600">
                     State Helpline: <a href="tel:1070" class="font-bold text-red-600 hover:underline">1070</a> &bull;
                     District DEOC: <a href="tel:1077" class="font-bold text-red-600 hover:underline">1077</a> &bull;
-                    SDRF: <a href="tel:03612237219" class="font-semibold text-blue-700 hover:underline">0361-2237219</a>
+                    ASDMA SEOC: <a href="tel:03612237219" class="font-semibold text-blue-700 hover:underline">0361-2237219</a>
                   </div>
                 </div>
               </div>
@@ -687,7 +699,7 @@
             <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
               <div class="font-bold text-slate-900 text-sm">Central Water Commission (CWC)</div>
               <p class="text-slate-600 leading-relaxed">
-                All river water levels, Warning Levels (WL), Danger Levels (DL), and Highest Flood Levels (HFL) are fetched from the official <strong>CWC Flood Forecasting System (FFS)</strong> and synced automatically every hour.
+                All river water levels, Warning Levels (WL), Danger Levels (DL), and Highest Flood Levels (HFL) are fetched from the official <strong>CWC Flood Forecasting System (FFS)</strong>. Updated every few hours. CWC posts many gauges once a day, and each reading shows its own time.
               </p>
             </div>
             <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
@@ -705,7 +717,7 @@
             <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
               <div class="font-bold text-slate-900 text-sm">Emergency Helplines</div>
               <p class="text-slate-600 leading-relaxed">
-                Quick-dial numbers for <strong>ASDMA (1070)</strong>, <strong>District DEOC (1077)</strong>, <strong>Assam SDRF</strong>, <strong>108</strong>, and <strong>NDRF</strong> are built directly into the site so they remain accessible even offline.
+                Quick-dial numbers for <strong>ASDMA (1070)</strong>, <strong>District DEOC (1077)</strong>, <strong>ASDMA SEOC</strong>, <strong>108</strong>, and <strong>NDRF</strong> are built directly into the site so they remain accessible even offline.
               </p>
             </div>
           </div>
@@ -715,11 +727,27 @@
         <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs text-amber-950 space-y-1.5 leading-relaxed">
           <div class="font-bold">Important Note &amp; Disclaimer</div>
           <p>
-            During peak monsoon, CWC telemetric gauges usually report every hour; during dry months, some stations post once a day. Every card displays the exact CWC reading date &amp; time so you always know how fresh a measurement is.
+            Updated every few hours. CWC posts many gauges once a day, and each reading shows its own time so you always know how fresh a measurement is.
           </p>
           <p>
             <strong>Assam Flood Monitor</strong> is an independent, non-commercial community tool and is not affiliated with any government agency. Always follow official advisories and evacuation orders from <strong>ASDMA</strong>, <strong>CWC</strong>, and your local <strong>District Administration</strong>.
           </p>
+        </div>
+
+        <!-- Community Feedback & Local Reporting -->
+        <div class="p-4 rounded-2xl bg-sky-50/70 border border-sky-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div class="font-bold text-slate-900 text-xs sm:text-sm">Spotted an issue or want a local gauge added?</div>
+            <p class="text-[11px] text-slate-600 mt-0.5">Share feedback or report local waterlogging updates from your district in Assam.</p>
+          </div>
+          <a
+            href="https://github.com/Rakuda144/floodwatch-assam/issues/new?title=Assam%20Flood%20Monitor%20Feedback&body=District%2FTown%3A%20%0AFeedback%20or%20Local%20Update%3A%20"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-3.5 py-2 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-bold transition shrink-0 text-center"
+          >
+            Send Feedback &rarr;
+          </a>
         </div>
 
         <div class="pt-2 text-center text-xs font-semibold text-slate-500">
@@ -737,7 +765,7 @@
           <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
           Assam Flood Emergency Helplines
         </h1>
-        <p class="text-xs text-slate-500 mb-4">Tap any card below to dial immediately. Available offline.</p>
+        <p class="text-xs text-slate-500 mb-4">Tap any card below to dial immediately. Verified against ASDMA &amp; NDRF directories.</p>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           <a href="tel:1070" class="p-4 rounded-2xl bg-red-50 hover:bg-red-100 border border-red-200 transition flex items-center justify-between">
             <div>
@@ -757,9 +785,9 @@
           </a>
           <a href="tel:03612237219" class="p-4 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 transition flex items-center justify-between">
             <div>
-              <div class="text-xs font-bold uppercase text-blue-800">Assam SDRF Rescue</div>
+              <div class="text-xs font-bold uppercase text-blue-800">ASDMA State Control Room</div>
               <div class="text-xl font-extrabold text-blue-700 mt-0.5">0361-2237219</div>
-              <div class="text-[11px] text-slate-600 mt-0.5">State Disaster Response Force</div>
+              <div class="text-[11px] text-slate-600 mt-0.5">State Emergency Operation Centre (Dispur)</div>
             </div>
             <span class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg shrink-0">🚤</span>
           </a>
@@ -781,12 +809,62 @@
           </a>
           <a href="tel:9711077372" class="p-4 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition flex items-center justify-between">
             <div>
-              <div class="text-xs font-bold uppercase text-slate-700">NDRF Control Room</div>
+              <div class="text-xs font-bold uppercase text-slate-700">NDRF HQ Control Room</div>
               <div class="text-lg font-extrabold text-slate-900 mt-0.5">97110-77372</div>
-              <div class="text-[11px] text-slate-500 mt-0.5">National Disaster Response Force</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">Alt: 011-23438091 (24&times;7 Control Room)</div>
             </div>
             <span class="w-11 h-11 rounded-xl bg-slate-800 text-white flex items-center justify-center text-lg shrink-0">🛟</span>
           </a>
+        </div>
+      </div>
+
+      <!-- Flood Safety Checklist -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
+          <div class="inline-flex px-2.5 py-1 rounded-lg bg-amber-100 text-amber-800 text-xs font-bold mb-3">1. Before Flood Waters Rise</div>
+          <ul class="space-y-2 text-xs text-slate-600 list-disc pl-4 leading-relaxed">
+            <li>Keep Aadhaar, land records, and medical prescriptions inside a sealed waterproof pouch.</li>
+            <li>Charge phones &amp; power banks; keep torches, ORS packets, dry food, and drinking water ready.</li>
+            <li>Move cattle, goats, and vehicles to higher ground early when upstream gauges begin rising.</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
+          <div class="inline-flex px-2.5 py-1 rounded-lg bg-red-100 text-red-800 text-xs font-bold mb-3">2. During Flooding</div>
+          <ul class="space-y-2 text-xs text-slate-600 list-disc pl-4 leading-relaxed">
+            <li><strong>Turn off the main electrical breaker</strong> and gas regulator if water enters your courtyard or home.</li>
+            <li>Never walk, swim, or drive across fast-flowing floodwater or submerged culverts.</li>
+            <li>Stay alert for snakes and snapped power lines around flooded compounds at night.</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
+          <div class="inline-flex px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 text-xs font-bold mb-3">3. After Water Recedes</div>
+          <ul class="space-y-2 text-xs text-slate-600 list-disc pl-4 leading-relaxed">
+            <li>Boil or chlorinate all drinking water before use to prevent waterborne illnesses.</li>
+            <li>Inspect damp electrical switches and wiring before switching mains power back on.</li>
+            <li>Report embankment breaches or stranded families to District DEOC <strong>1077</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Key Assam Ferry & Road Advisories -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
+        <h2 class="text-sm font-bold text-slate-900 mb-3">Key Assam Ferry &amp; Highway Advisories</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div class="p-3.5 rounded-xl bg-sky-50/70 border border-sky-200/80">
+            <div class="font-bold text-slate-900">Neamatighat &ndash; Majuli Ferry</div>
+            <div class="text-sky-700 font-semibold mt-0.5">Check Brahmaputra Gauge</div>
+            <p class="text-slate-600 mt-1">IWT Assam suspends ferry crossings when Neamatighat approaches Danger Level or strong currents.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+            <div class="font-bold text-slate-900">NH-37 (Kaziranga Corridor)</div>
+            <div class="text-emerald-700 font-semibold mt-0.5">Wildlife Crossing Zone</div>
+            <p class="text-slate-600 mt-1">Follow speed restrictions during monsoon when animals cross toward Karbi Anglong hills.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+            <div class="font-bold text-slate-900">Upper Assam Embankment Roads</div>
+            <div class="text-amber-700 font-semibold mt-0.5">Dikhow, Desang &amp; Buridehing</div>
+            <p class="text-slate-600 mt-1">Watch low-lying culverts around Sivasagar, Nazira, Bihubar, and Khowang during peak inflow.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -863,7 +941,7 @@
       <div id="modal-gauge-list" class="flex-1 overflow-y-auto px-5 py-2 space-y-2"></div>
 
       <div class="px-5 py-3.5 border-t border-slate-100 bg-slate-50 flex items-center justify-between gap-3">
-        <div class="text-xs text-slate-600">Selected: <strong id="modal-counter" class="text-blue-700">3 / 3</strong></div>
+        <div class="text-xs text-slate-600">Selected: <strong id="modal-counter" class="text-blue-700">0 / 3</strong></div>
         <div class="flex items-center gap-2">
           <button onclick="resetDefaultWatchlist()" class="px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-200 transition">Reset Default</button>
           <button onclick="closeWatchlistModal()" class="px-4 py-2 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-semibold transition">Done</button>
@@ -908,10 +986,10 @@
       <div class="px-5 py-4 bg-navy-900 text-white flex items-start justify-between gap-3">
         <div>
           <div class="flex items-center gap-2 flex-wrap">
-            <h3 id="detail-station-name" class="text-lg font-extrabold leading-tight">Bihubar</h3>
+            <h3 id="detail-station-name" class="text-lg font-extrabold leading-tight">Station</h3>
             <span id="detail-status-pill" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">Normal</span>
           </div>
-          <p id="detail-river-subtitle" class="text-xs text-slate-300 mt-0.5">Dikhow River &bull; Sivasagar District</p>
+          <p id="detail-river-subtitle" class="text-xs text-slate-300 mt-0.5">Assam CWC Station</p>
         </div>
         <button onclick="closeGaugeDetailModal()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -930,7 +1008,7 @@
   </div>
 
   <!-- ===================================================================== -->
-  <!-- APPLICATION LOGIC (LIVE CWC + OPEN-METEO + CWC-STYLE MAP)             -->
+  <!-- APPLICATION LOGIC (LIVE CWC + HISTORY.CSV + OPEN-METEO + CWC MAP)     -->
   <!-- ===================================================================== -->
   <script>
     const MAX_WATCHLIST = 3;
@@ -940,13 +1018,6 @@
 
     // Default 3 pinned gauges: Bihubar (Dikhow), Sivasagar (Dikhow), Nanglamoraghat (Desang)
     const DEFAULT_WATCHLIST = ['017-ubddib', '018-ubddib', '016-ubddib'];
-
-    // Offline/preview fallback snapshot if ./data/levels.json cannot be reached
-    const FALLBACK_CWC_SNAPSHOT = [
-      { code: '017-ubddib', inAssam: true, type: 'Base', name: 'Bihubar', river: 'Dikhow', basin: 'Brahmaputra', district: 'Sivasagar', bank: 'Right', catchmentArea: 3012, telemetric: true, lat: 26.8533, lon: 94.8006, status: 'normal', level: 93.80, warningLevel: 102.77, dangerLevel: 103.77, highestLevel: 105.30, highestLevelDate: '2026-07-20', ageHours: 26.1, time: '2026-11-23T13:00:00' },
-      { code: '018-ubddib', inAssam: true, type: 'Level', name: 'Sivasagar', river: 'Dikhow', basin: 'Brahmaputra', district: 'Sivasagar', bank: 'Left', catchmentArea: 3425, telemetric: true, lat: 26.9817, lon: 94.5792, status: 'normal', level: 87.18, warningLevel: 91.40, dangerLevel: 92.40, highestLevel: 94.68, highestLevelDate: '2026-07-20', ageHours: 26.1, time: '2026-11-23T13:00:00' },
-      { code: '016-ubddib', inAssam: true, type: 'Level', name: 'Nanglamoraghat', river: 'Desang', basin: 'Brahmaputra', district: 'Sivasagar', bank: 'Right', catchmentArea: 2894, telemetric: true, lat: 26.9850, lon: 94.7767, status: 'normal', level: 88.50, warningLevel: 93.46, dangerLevel: 94.46, highestLevel: 96.60, highestLevelDate: '2026-07-21', ageHours: 29.8, time: '2026-11-23T08:00:00' }
-    ];
 
     const RAINFALL_STATIONS = [
       { name: 'Sonari (Charaideo)', district: 'Charaideo', mm: 0, lat: 27.024, lng: 95.016 },
@@ -982,19 +1053,49 @@
       all:   [[24.10, 89.70], [28.00, 96.05]]
     };
 
+    // CWC Map Legend Categories
+    const CWC_LEGEND_ITEMS = [
+      { key: 'level',        label: 'Level forecast station',            color: '#15803d' },
+      { key: 'base',         label: 'Flood Monitoring Station (Base)',   color: '#4c3f78' },
+      { key: 'above_normal', label: 'Above normal flood (Warning)',      color: '#eab308' },
+      { key: 'severe',       label: 'Severe flood (Above Danger)',       color: '#f97316' },
+      { key: 'extreme',      label: 'Extreme flood (Near/Above HFL)',    color: '#ef4444' }
+    ];
+
+    // Free, no-API-key Esri basemap tile layers
+    const BASE_TILE_LAYERS = {
+      map: {
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom',
+        maxZoom: 18
+      },
+      terrain: {
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+        attribution: 'Tiles &copy; Esri',
+        maxZoom: 18
+      },
+      satellite: {
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        attribution: 'Tiles &copy; Esri',
+        maxZoom: 18
+      }
+    };
+
     // Runtime state
     let ALL_GAUGES = [];
     let ALERTS_DATA = [];
-    let dataSourceMode = 'loading';
+    let HISTORY_BY_CODE = {};
+    let dataSourceMode = 'loading'; // 'loading' | 'live-repo' | 'unavailable'
     let lastFetchedAt = null;
+    let feedAgeHours = null;
     let watchlistIds = loadWatchlist();
     let isLiteMode = loadLiteMode();
     let userLocation = loadUserLocation();
     let activeMapLayer = 'gauges';
     let activeBaseMap = 'map';
     let activeLegendFilter = null;
+    let isLegendOpen = true;
     let isMapExpanded = false;
-    let isLegendOpen = window.innerWidth >= 640;
     let assamMap = null;
     let baseTileLayer = null;
     let mapMarkersLayer = null;
@@ -1005,45 +1106,102 @@
     let currentShareBlob = null;
     let currentShareFilename = 'assamfloodmonitor.png';
 
-    // CWC-style map legend categories
-    const CWC_LEGEND_ITEMS = [
-      { key: 'level',        label: 'Level forecast station',          color: '#15803d' },
-      { key: 'base',         label: 'Flood Monitoring Station (Base)', color: '#5b4b8a' },
-      { key: 'above_normal', label: 'Above normal flood (Warning)',    color: '#eab308' },
-      { key: 'severe',       label: 'Severe flood (Above Danger)',     color: '#f97316' },
-      { key: 'extreme',      label: 'Extreme flood (Near/Above HFL)',  color: '#ef4444' }
-    ];
-    // 100% Free, No-API-Key Tile Layers (Esri Street, Esri Topo Terrain, Esri Satellite)
-    // Works reliably in Brave, Safari, and embedded previews without Referer/403 blocks
-    const BASE_TILE_LAYERS = {
-      map: {
-        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
-        attribution: 'Tiles &copy; Esri &mdash; World Street Map',
-        maxZoom: 18
-      },
-      terrain: {
-        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
-        attribution: 'Tiles &copy; Esri &mdash; World Topographic Map',
-        maxZoom: 17
-      },
-      satellite: {
-        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        attribution: 'Tiles &copy; Esri &mdash; World Imagery',
-        maxZoom: 17
+    // =========================================================================
+    // 1. BANNER & DATA AVAILABILITY HELPERS
+    // =========================================================================
+    function showBanner(msg, level = 'warning') {
+      const banner = document.getElementById('data-health-banner');
+      const textEl = document.getElementById('data-health-banner-text');
+      if (!banner || !textEl) return;
+      if (!msg) {
+        banner.classList.add('hidden');
+        return;
       }
-    };
+      textEl.textContent = `⚠️ ${msg}`;
+      banner.className = level === 'error'
+        ? 'bg-red-600 text-white text-xs font-bold px-4 py-2.5 text-center shadow-sm border-b border-red-700'
+        : 'bg-amber-500 text-slate-950 text-xs font-bold px-4 py-2.5 text-center shadow-sm border-b border-amber-600/30';
+    }
+
+    function hideBanner() {
+      const banner = document.getElementById('data-health-banner');
+      if (banner) banner.classList.add('hidden');
+    }
 
     // =========================================================================
-    // 1. TIME FORMATTERS & CWC DATA NORMALIZER
+    // 2. CWC DATA NORMALIZER, HISTORY.CSV PARSER & DATA LOADER
     // =========================================================================
-    // Formats CWC reading time (e.g. "2026-11-23T13:00:00") into "23 Nov, 1:00 PM IST"
-    function formatCwcReadingTime(timeStr) {
-      if (!timeStr) return 'Time unavailable';
-      // CWC timestamps are already in IST without timezone suffix
+    function parseCwcTimestampMs(timeStr) {
+      if (!timeStr) return NaN;
       const normalized = String(timeStr).includes('+') || String(timeStr).endsWith('Z')
         ? String(timeStr)
         : String(timeStr) + '+05:30';
-      const dt = new Date(normalized);
+      return new Date(normalized).getTime();
+    }
+
+    function parseHistoryCsv(csvText) {
+      const map = {};
+      if (!csvText) return map;
+      const lines = csvText.split(/\r?\n/);
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        const [rawCode, rawTime, rawLevel] = line.split(',');
+        const code = String(rawCode || '').trim().toLowerCase();
+        const level = Number(rawLevel);
+        if (!code || !rawTime || isNaN(level)) continue;
+        if (!map[code]) map[code] = [];
+        map[code].push({
+          time: rawTime.trim(),
+          ts: parseCwcTimestampMs(rawTime.trim()),
+          level
+        });
+      }
+      Object.keys(map).forEach(code => {
+        map[code].sort((a, b) => (a.ts || 0) - (b.ts || 0));
+      });
+      return map;
+    }
+
+    function computeStationTrend(code, currentLevel, currentTime) {
+      const series = [...(HISTORY_BY_CODE[code] || [])];
+      if (currentLevel !== null && currentTime && !series.some(p => p.time === currentTime)) {
+        series.push({ time: currentTime, ts: parseCwcTimestampMs(currentTime), level: currentLevel });
+        series.sort((a, b) => (a.ts || 0) - (b.ts || 0));
+      }
+      const recent = series.slice(-24);
+      if (recent.length < 2) {
+        return { points: recent, rateCmHr: null, deltaCm: null, label: 'Collecting trend', direction: 'steady' };
+      }
+      const prev = recent[recent.length - 2];
+      const curr = recent[recent.length - 1];
+      const deltaCm = Math.round((curr.level - prev.level) * 100);
+      const dtHours = (!isNaN(curr.ts) && !isNaN(prev.ts) && curr.ts > prev.ts)
+        ? (curr.ts - prev.ts) / 3600000
+        : null;
+      const rateCmHr = (dtHours && dtHours > 0 && dtHours <= 6)
+        ? Math.round(deltaCm / dtHours)
+        : null;
+
+      let direction = 'steady';
+      if (deltaCm >= 2) direction = 'rising';
+      else if (deltaCm <= -2) direction = 'falling';
+
+      let label = '→ Steady (0 cm)';
+      if (rateCmHr !== null) {
+        if (rateCmHr > 0) label = `↑ +${rateCmHr} cm/hr`;
+        else if (rateCmHr < 0) label = `↓ ${rateCmHr} cm/hr`;
+        else label = '→ 0 cm/hr';
+      } else {
+        if (deltaCm > 0) label = `↑ +${deltaCm} cm`;
+        else if (deltaCm < 0) label = `↓ ${deltaCm} cm`;
+      }
+      return { points: recent, rateCmHr, deltaCm, label, direction };
+    }
+
+    function formatCwcReadingTime(timeStr) {
+      if (!timeStr) return 'Time unavailable';
+      const dt = new Date(parseCwcTimestampMs(timeStr));
       if (isNaN(dt.getTime())) return String(timeStr).replace('T', ' ');
       return dt.toLocaleString('en-IN', {
         timeZone: 'Asia/Kolkata',
@@ -1069,6 +1227,22 @@
       }) + ' IST';
     }
 
+    function formatReadingAge(raw) {
+      if (typeof raw.ageHours === 'number' && !isNaN(raw.ageHours)) {
+        if (raw.ageHours < 1) return `${Math.max(1, Math.round(raw.ageHours * 60))}m ago`;
+        if (raw.ageHours < 48) return `${Math.round(raw.ageHours)}h ago`;
+        return `${Math.round(raw.ageHours / 24)}d ago`;
+      }
+      const ts = parseCwcTimestampMs(raw.time);
+      if (!isNaN(ts)) {
+        const hrs = Math.max(0, (Date.now() - ts) / 36e5);
+        if (hrs < 1) return `${Math.max(1, Math.round(hrs * 60))}m ago`;
+        if (hrs < 48) return `${Math.round(hrs)}h ago`;
+        return `${Math.round(hrs / 24)}d ago`;
+      }
+      return 'Age unknown';
+    }
+
     function normalizeCwcStation(raw) {
       const code = String(raw.code || raw.stationCode || '').toLowerCase();
       const level = typeof raw.level === 'number' ? raw.level : null;
@@ -1076,6 +1250,10 @@
       const danger = typeof raw.dangerLevel === 'number' ? raw.dangerLevel : null;
       const hfl = typeof raw.highestLevel === 'number' ? raw.highestLevel : null;
       const hflYear = raw.highestLevelDate ? String(raw.highestLevelDate).slice(0, 4) : null;
+      const trendInfo = computeStationTrend(code, level, raw.time || null);
+      const rawStatus = String(raw.status || '').toLowerCase();
+      const isNoStatus = rawStatus === 'offline' || rawStatus === 'no-data' || level === null;
+      const isStale = Boolean(raw.stale);
 
       return {
         id: code,
@@ -1088,7 +1266,7 @@
         catchmentArea: raw.catchmentArea ?? null,
         type: raw.type || 'Level',
         telemetric: raw.telemetric ?? null,
-        inAssam: raw.inAssam !== false,
+        inAssam: raw.inAssam === true,
         lat: typeof raw.lat === 'number' ? raw.lat : null,
         lng: typeof raw.lon === 'number' ? raw.lon : (typeof raw.lng === 'number' ? raw.lng : null),
         current: level,
@@ -1097,26 +1275,56 @@
         hfl,
         hflYear,
         hflDate: raw.highestLevelDate || null,
-        cwcStatus: raw.status || 'normal',
-        stale: Boolean(raw.stale),
+        cwcStatus: rawStatus || 'normal',
+        isNoStatus,
+        stale: isStale,
         ageHours: raw.ageHours ?? null,
+        ageLabel: formatReadingAge(raw),
         time: raw.time || null,
         updated: formatCwcReadingTime(raw.time),
+        trendInfo,
         pastFloodNote: raw.pastFloodNote || null
       };
     }
 
+    function handleUnavailableData(reasonMsg) {
+      ALL_GAUGES = [];
+      ALERTS_DATA = [];
+      dataSourceMode = 'unavailable';
+      lastFetchedAt = null;
+      feedAgeHours = null;
+
+      showBanner('Data unavailable. Check CWC or ASDMA directly.', 'error');
+      updateDataSourceUI();
+      renderAlertsAndTicker();
+      renderWatchlist();
+      renderFlowChain('dikhow');
+      renderAllGaugesDirectory();
+      renderNetworkSummary();
+      renderMapMarkers();
+    }
+
     function applyCwcDataset(rawList, modeLabel, fetchedAtIso) {
+      // Strictly keep only inAssam stations that aren't offline or no-data
       const normalized = rawList
         .map(normalizeCwcStation)
-        .filter(g => g.inAssam && g.current !== null && g.cwcStatus !== 'offline');
+        .filter(g => g.inAssam && !['offline', 'no-data'].includes(g.cwcStatus) && g.current !== null);
 
-      const rank = { flood: 0, warning: 1, normal: 2, 'no-data': 3 };
-      normalized.sort((a, b) => (rank[a.cwcStatus] ?? 4) - (rank[b.cwcStatus] ?? 4) || a.station.localeCompare(b.station));
+      const rank = { flood: 0, warning: 1, normal: 2 };
+      normalized.sort((a, b) => (rank[a.cwcStatus] ?? 3) - (rank[b.cwcStatus] ?? 3) || a.station.localeCompare(b.station));
 
       ALL_GAUGES = normalized;
-      lastFetchedAt = fetchedAtIso || new Date().toISOString();
+      lastFetchedAt = fetchedAtIso || null;
       dataSourceMode = modeLabel;
+
+      const parsedSyncMs = lastFetchedAt ? new Date(lastFetchedAt).getTime() : NaN;
+      feedAgeHours = !isNaN(parsedSyncMs) ? (Date.now() - parsedSyncMs) / 36e5 : null;
+
+      if (feedAgeHours !== null && feedAgeHours > 6) {
+        showBanner(`Data last updated ${Math.round(feedAgeHours)} hours ago`, 'warning');
+      } else {
+        hideBanner();
+      }
 
       const validPinned = watchlistIds.filter(id => ALL_GAUGES.some(g => g.id === id));
       if (validPinned.length === 0) {
@@ -1141,6 +1349,7 @@
     function buildLiveAlertsFromGauges() {
       const alerts = [];
       ALL_GAUGES.forEach(g => {
+        if (g.isNoStatus) return;
         if (g.cwcStatus === 'flood' || (g.danger !== null && g.current >= g.danger)) {
           alerts.push({
             severity: 'high',
@@ -1166,47 +1375,48 @@
       const icon = document.getElementById('refresh-icon');
       if (icon) icon.classList.add('animate-spin');
 
-      try {
-        const [lvRes, stRes] = await Promise.all([
-          fetch('./data/levels.json', { cache: 'no-store' }),
-          fetch('./data/stations.json', { cache: 'no-store' }).catch(() => null)
-        ]);
+      const [data, st, csvText] = await Promise.all([
+        fetch('data/levels.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch('data/stations.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch('data/history.csv', { cache: 'no-store' }).then(r => r.ok ? r.text() : null).catch(() => null)
+      ]);
 
-        if (lvRes.ok) {
-          const lv = await lvRes.json();
-          const st = stRes && stRes.ok ? await stRes.json() : { stations: [] };
-          const metaByCode = Object.fromEntries(
-            (st.stations || []).map(s => [String(s.code).toLowerCase(), s])
-          );
+      if (csvText) {
+        HISTORY_BY_CODE = parseHistoryCsv(csvText);
+      }
 
-          const merged = (lv.stations || []).map(l => {
-            const m = metaByCode[String(l.code).toLowerCase()] || {};
-            return {
-              ...l,
-              name: m.name || l.name,
-              river: m.river || l.river || null,
-              basin: m.basin || l.basin || null,
-              district: m.district || l.district || null,
-              state: m.state || l.state || null,
-              inAssam: m.inAssam ?? l.inAssam,
-              lat: m.lat ?? l.lat,
-              lon: m.lon ?? l.lon,
-              bank: m.bank || l.bank || null,
-              catchmentArea: m.catchmentArea ?? l.catchmentArea ?? null,
-              telemetric: m.telemetric ?? l.telemetric ?? null,
-              operational: m.operational ?? l.operational ?? null
-            };
-          });
+      if (!data || !Array.isArray(data.stations)) {
+        handleUnavailableData('Data unavailable. Check CWC or ASDMA directly.');
+        if (manualRefresh) showToast('Data unavailable — check CWC or ASDMA directly');
+        if (icon) icon.classList.remove('animate-spin');
+        return;
+      }
 
-          applyCwcDataset(merged, 'live-repo', lv.fetchedAt);
-          if (manualRefresh) showToast(`Synced ${ALL_GAUGES.length} live Assam CWC gauges`);
-          if (icon) icon.classList.remove('animate-spin');
-          return;
-        }
-      } catch (e) {}
+      const metaByCode = Object.fromEntries(
+        ((st && Array.isArray(st.stations) ? st.stations : [])).map(s => [String(s.code).toLowerCase(), s])
+      );
 
-      applyCwcDataset(FALLBACK_CWC_SNAPSHOT, 'snapshot', '2026-11-24T09:00:00Z');
-      if (manualRefresh) showToast('Could not reach ./data/levels.json — showing cached snapshot');
+      const merged = data.stations.map(l => {
+        const m = metaByCode[String(l.code).toLowerCase()] || {};
+        return {
+          ...l,
+          name: m.name || l.name,
+          river: m.river || l.river || null,
+          basin: m.basin || l.basin || null,
+          district: m.district || l.district || null,
+          state: m.state || l.state || null,
+          inAssam: m.inAssam ?? l.inAssam,
+          lat: m.lat ?? l.lat,
+          lon: m.lon ?? l.lon,
+          bank: m.bank || l.bank || null,
+          catchmentArea: m.catchmentArea ?? l.catchmentArea ?? null,
+          telemetric: m.telemetric ?? l.telemetric ?? null,
+          operational: m.operational ?? l.operational ?? null
+        };
+      });
+
+      applyCwcDataset(merged, 'live-repo', data.fetchedAt);
+      if (manualRefresh) showToast(`Synced ${ALL_GAUGES.length} Assam CWC gauges`);
       if (icon) icon.classList.remove('animate-spin');
     }
 
@@ -1216,26 +1426,31 @@
       const label = document.getElementById('data-source-label');
       const syncText = document.getElementById('sync-status-text');
 
-      document.getElementById('nav-gauge-count').textContent = ALL_GAUGES.length;
-      document.getElementById('home-all-count').textContent = ALL_GAUGES.length;
+      document.getElementById('nav-gauge-count').textContent = dataSourceMode === 'unavailable' ? '—' : ALL_GAUGES.length;
+      document.getElementById('home-all-count').textContent = dataSourceMode === 'unavailable' ? '—' : ALL_GAUGES.length;
 
       const syncedTime = formatSyncTime(lastFetchedAt);
 
-      if (dataSourceMode === 'live-repo') {
-        pill.className = 'px-2.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[11px] font-bold flex items-center gap-1.5';
-        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse-soft';
-        label.textContent = `Live CWC (${ALL_GAUGES.length})`;
-        syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ${ALL_GAUGES.length} active Assam CWC stations &bull; Last synced ${syncedTime}`;
+      if (dataSourceMode === 'unavailable') {
+        pill.className = 'px-2.5 py-1.5 rounded-xl bg-red-500/20 border border-red-400/40 text-red-200 text-[11px] font-bold flex items-center gap-1.5 whitespace-nowrap';
+        dot.className = 'w-2 h-2 rounded-full bg-red-400 shrink-0';
+        label.textContent = 'Data Unavailable';
+        syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> Data unavailable. Check CWC or ASDMA directly.`;
+      } else if (feedAgeHours !== null && feedAgeHours > 6) {
+        pill.className = 'px-2.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-200 text-[11px] font-bold flex items-center gap-1.5 whitespace-nowrap';
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400 shrink-0';
+        label.textContent = `Updated ${Math.round(feedAgeHours)}h ago`;
+        syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> ${ALL_GAUGES.length} Assam CWC stations &bull; Data last updated ${Math.round(feedAgeHours)} hours ago (${syncedTime})`;
       } else {
-        pill.className = 'px-2.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-200 text-[11px] font-bold flex items-center gap-1.5';
-        dot.className = 'w-2 h-2 rounded-full bg-amber-400';
-        label.textContent = `Cached (${ALL_GAUGES.length})`;
-        syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Preview mode — live ./data/levels.json loads automatically on deployment`;
+        pill.className = 'px-2.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[11px] font-bold flex items-center gap-1.5 whitespace-nowrap';
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse-soft shrink-0';
+        label.textContent = `CWC Assam (${ALL_GAUGES.length})`;
+        syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ${ALL_GAUGES.length} Assam CWC stations &bull; Last synced ${syncedTime}`;
       }
     }
 
     // =========================================================================
-    // 2. LIVE OPEN-METEO RAINFALL FOR HOME LIST
+    // 3. LIVE OPEN-METEO RAINFALL FOR HOME LIST
     // =========================================================================
     async function loadLiveAssamRainfall() {
       try {
@@ -1257,7 +1472,7 @@
     }
 
     // =========================================================================
-    // 3. STORAGE & LOCATION HELPERS
+    // 4. STORAGE & LOCATION HELPERS
     // =========================================================================
     function loadWatchlist() {
       try {
@@ -1293,8 +1508,8 @@
       const radarPlaceholder = document.getElementById('windy-radar-lite-placeholder');
       if (btn) {
         btn.className = isLiteMode
-          ? 'px-2.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 transition text-white text-xs font-bold flex items-center gap-1 shadow-sm'
-          : 'px-2.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100 text-xs font-bold flex items-center gap-1';
+          ? 'px-2.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 transition text-white text-xs font-bold flex items-center gap-1 shadow-sm whitespace-nowrap'
+          : 'px-2.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100 text-xs font-bold flex items-center gap-1 whitespace-nowrap';
       }
       if (banner) banner.classList.toggle('hidden', !isLiteMode);
       if (mapSection) mapSection.classList.toggle('hidden', isLiteMode);
@@ -1374,6 +1589,10 @@
     function applyNearestThreeGauges() {
       if (!userLocation) return;
       const withCoords = ALL_GAUGES.filter(g => g.lat !== null && g.lng !== null);
+      if (withCoords.length === 0) {
+        showToast('Station data unavailable right now');
+        return;
+      }
       const sorted = [...withCoords].sort((a, b) =>
         distanceKm(userLocation.lat, userLocation.lng, a.lat, a.lng) -
         distanceKm(userLocation.lat, userLocation.lng, b.lat, b.lng)
@@ -1436,9 +1655,13 @@
     }
 
     // =========================================================================
-    // 4. STATUS & RENDERING
+    // 5. STATUS, SPARKLINES & RENDERING
     // =========================================================================
     function getGaugeStatus(g) {
+      // If station is offline or no-data, do not show a status badge at all
+      if (g.isNoStatus) {
+        return { key: 'none', label: null, textClass: 'text-slate-400', badgeBg: '', barColor: 'bg-slate-300', stroke: '#94a3b8' };
+      }
       if (g.cwcStatus === 'flood' || (g.danger !== null && g.current >= g.danger)) {
         return { key: 'danger', label: 'Above Danger', textClass: 'text-red-600', badgeBg: 'bg-red-100 text-red-700', barColor: 'bg-red-500', stroke: '#dc2626' };
       }
@@ -1470,6 +1693,105 @@
       return { label: 'Dry', text: 'text-slate-500', dot: 'bg-slate-300', bar: 'bg-slate-300', badge: 'bg-slate-100 text-slate-600', hex: '#94a3b8' };
     }
 
+    function getTrendPillMeta(trendInfo) {
+      if (!trendInfo || trendInfo.points.length < 2) {
+        return { text: 'Collecting trend', cls: 'bg-slate-50 text-slate-400 border-slate-200/80' };
+      }
+      if (trendInfo.direction === 'rising') {
+        const fast = (trendInfo.rateCmHr !== null && trendInfo.rateCmHr >= 10) || (trendInfo.deltaCm !== null && trendInfo.deltaCm >= 25);
+        return {
+          text: trendInfo.label,
+          cls: fast ? 'bg-red-50 text-red-700 border-red-200' : 'bg-amber-50 text-amber-800 border-amber-200'
+        };
+      }
+      if (trendInfo.direction === 'falling') {
+        return { text: trendInfo.label, cls: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
+      }
+      return { text: trendInfo.label, cls: 'bg-slate-100 text-slate-600 border-slate-200' };
+    }
+
+    function buildSparklineSVG(points, strokeColor) {
+      if (!points || points.length < 2) {
+        return `
+          <div class="h-7 flex items-center justify-between px-2 rounded-lg bg-slate-50/80 border border-dashed border-slate-200 text-[10px] text-slate-400">
+            <span>Trend sparkline fills as readings log</span>
+            <span>1 pt</span>
+          </div>
+        `;
+      }
+      const values = points.map(p => p.level);
+      const w = 180, h = 28, pad = 3;
+      const min = Math.min(...values) - 0.05;
+      const max = Math.max(...values) + 0.05;
+      const range = max - min || 1;
+      const pts = values.map((v, i) => {
+        const x = pad + (i / (values.length - 1)) * (w - pad * 2);
+        const y = h - pad - ((v - min) / range) * (h - pad * 2);
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      });
+      const lastPt = pts[pts.length - 1].split(',');
+      return `
+        <svg viewBox="0 0 ${w} ${h}" class="w-full h-7 overflow-visible" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M ${pts.join(' L ')}" fill="none" stroke="${strokeColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="${lastPt[0]}" cy="${lastPt[1]}" r="2.6" fill="${strokeColor}" />
+        </svg>
+      `;
+    }
+
+    function buildHistoryChartSVG(g) {
+      const pts = g.trendInfo?.points || [];
+      if (pts.length < 2) {
+        return `
+          <div class="py-6 px-4 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-center text-xs text-slate-500">
+            Only 1 reading recorded in <code>history.csv</code> so far (${g.current.toFixed(2)} m at ${g.updated}).<br/>
+            <span class="text-[11px] text-slate-400">As new CWC updates log, the full water-level curve will appear here automatically.</span>
+          </div>
+        `;
+      }
+      const vals = pts.map(p => p.level);
+      const boundsVals = [...vals];
+      if (g.warning !== null && Math.abs(g.warning - g.current) <= 4) boundsVals.push(g.warning);
+      if (g.danger !== null && Math.abs(g.danger - g.current) <= 4) boundsVals.push(g.danger);
+      const minV = Math.min(...boundsVals) - 0.15;
+      const maxV = Math.max(...boundsVals) + 0.15;
+      const range = maxV - minV || 1;
+
+      const W = 480, H = 165, padL = 46, padR = 14, padT = 16, padB = 24;
+      const plotW = W - padL - padR;
+      const plotH = H - padT - padB;
+      const xFor = (i) => padL + (i / (pts.length - 1)) * plotW;
+      const yFor = (v) => padT + plotH - ((v - minV) / range) * plotH;
+
+      const coords = pts.map((p, i) => [xFor(i), yFor(p.level)]);
+      const linePath = `M ${coords.map(c => c.map(n => n.toFixed(1)).join(',')).join(' L ')}`;
+      const areaPath = `${linePath} L ${coords[coords.length - 1][0].toFixed(1)},${padT + plotH} L ${padL},${padT + plotH} Z`;
+      const firstLbl = formatCwcReadingTime(pts[0].time).replace(' IST', '');
+      const lastLbl = formatCwcReadingTime(pts[pts.length - 1].time).replace(' IST', '');
+
+      let threshLines = '';
+      if (g.warning !== null && g.warning >= minV && g.warning <= maxV) {
+        const wy = yFor(g.warning).toFixed(1);
+        threshLines += `<line x1="${padL}" y1="${wy}" x2="${W - padR}" y2="${wy}" stroke="#f97316" stroke-width="1.2" stroke-dasharray="4 4"/><text x="${padL - 5}" y="${Number(wy) + 3}" text-anchor="end" fill="#ea580c" font-size="9" font-weight="700">WL</text>`;
+      }
+      if (g.danger !== null && g.danger >= minV && g.danger <= maxV) {
+        const dy = yFor(g.danger).toFixed(1);
+        threshLines += `<line x1="${padL}" y1="${dy}" x2="${W - padR}" y2="${dy}" stroke="#ef4444" stroke-width="1.2" stroke-dasharray="4 4"/><text x="${padL - 5}" y="${Number(dy) + 3}" text-anchor="end" fill="#dc2626" font-size="9" font-weight="700">DL</text>`;
+      }
+
+      return `
+        <svg viewBox="0 0 ${W} ${H}" class="w-full h-40 overflow-visible" role="img" aria-label="Observed CWC water level history">
+          ${threshLines}
+          <text x="${padL - 5}" y="${padT + 4}" text-anchor="end" fill="#64748b" font-size="9">${maxV.toFixed(1)}m</text>
+          <text x="${padL - 5}" y="${padT + plotH}" text-anchor="end" fill="#64748b" font-size="9">${minV.toFixed(1)}m</text>
+          <path d="${areaPath}" fill="rgba(14, 165, 233, 0.14)" />
+          <path d="${linePath}" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          ${coords.map(([cx, cy]) => `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="3" fill="#0284c7" stroke="#ffffff" stroke-width="1.5" />`).join('')}
+          <text x="${padL}" y="${H - 5}" fill="#64748b" font-size="9" font-weight="600">${firstLbl}</text>
+          <text x="${W - padR}" y="${H - 5}" text-anchor="end" fill="#0f172a" font-size="9" font-weight="700">${lastLbl}</text>
+        </svg>
+      `;
+    }
+
     function renderAlertsAndTicker() {
       const tickerTrack = document.getElementById('alert-ticker-track');
       const fullList = document.getElementById('alerts-full-list');
@@ -1479,6 +1801,42 @@
       const navCount = document.getElementById('nav-alert-count');
       const tickerCount = document.getElementById('ticker-alert-count');
 
+      // 1. NEVER show "all clear" / "Alerts (0)" when data is missing or failed to load
+      if (dataSourceMode === 'unavailable') {
+        navCount.textContent = '—';
+        navCount.className = 'ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-red-500 text-white';
+        tickerCount.textContent = '';
+
+        statusBar.className = 'bg-white rounded-2xl shadow-sm border border-red-200/90 overflow-hidden flex items-stretch';
+        pillLeft.className = 'bg-gradient-to-r from-red-700 to-rose-600 text-white px-3 sm:px-4 py-2.5 flex items-center gap-2 shrink-0';
+        pillText.textContent = 'Data Unavailable';
+
+        const unavailItems = `
+          <span class="inline-flex items-center gap-2 text-xs text-red-700 whitespace-nowrap">
+            <span class="w-2 h-2 rounded-full bg-red-600 shrink-0"></span>
+            <span class="font-bold">Data unavailable. Check CWC or ASDMA directly</span>
+          </span>
+          <span class="text-slate-300 select-none">|</span>
+          <span class="inline-flex items-center gap-2 text-xs text-slate-700 whitespace-nowrap">
+            <span>Official portals: <strong>ffs.india-water.gov.in</strong> &bull; <strong>asdma.gov.in</strong> &bull; Helpline: <strong>1070 / 1077</strong></span>
+          </span>
+          <span class="text-slate-300 select-none">|</span>
+        `;
+        tickerTrack.innerHTML = unavailItems + unavailItems;
+
+        fullList.innerHTML = `
+          <div class="p-6 rounded-2xl border border-red-200 bg-red-50/70 text-center space-y-2">
+            <div class="text-2xl">⚠️</div>
+            <div class="text-sm font-extrabold text-red-900">Data unavailable. Check CWC or ASDMA directly.</div>
+            <p class="text-xs text-red-800 max-w-md mx-auto">
+              Live river level data could not be loaded right now. Do not assume rivers are normal — verify directly with CWC FFS or call ASDMA at <strong>1070</strong> / DEOC <strong>1077</strong>.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      const isFeedStale = feedAgeHours !== null && feedAgeHours > 6;
       navCount.textContent = ALERTS_DATA.length;
       tickerCount.textContent = `(${ALERTS_DATA.length})`;
 
@@ -1495,6 +1853,11 @@
         pillLeft.className = 'bg-gradient-to-r from-orange-600 to-amber-500 text-white px-3 sm:px-4 py-2.5 flex items-center gap-2 shrink-0';
         pillText.textContent = 'Flood Watch';
         navCount.className = 'ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-orange-500 text-white';
+      } else if (isFeedStale) {
+        statusBar.className = 'bg-white rounded-2xl shadow-sm border border-amber-200/90 overflow-hidden flex items-stretch';
+        pillLeft.className = 'bg-gradient-to-r from-amber-600 to-amber-500 text-white px-3 sm:px-4 py-2.5 flex items-center gap-2 shrink-0';
+        pillText.textContent = `Updated ${Math.round(feedAgeHours)}h Ago`;
+        navCount.className = 'ml-0.5 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-amber-500 text-white';
       } else {
         statusBar.className = 'bg-white rounded-2xl shadow-sm border border-emerald-200/90 overflow-hidden flex items-stretch';
         pillLeft.className = 'bg-gradient-to-r from-emerald-600 to-teal-500 text-white px-3 sm:px-4 py-2.5 flex items-center gap-2 shrink-0';
@@ -1503,24 +1866,31 @@
       }
 
       if (ALERTS_DATA.length === 0) {
+        const staleNote = isFeedStale ? ` (Data last updated ${Math.round(feedAgeHours)} hours ago — verify with CWC/ASDMA)` : '';
         const calmItems = `
           <span class="inline-flex items-center gap-2 text-xs text-slate-700 whitespace-nowrap">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span class="font-bold">All ${ALL_GAUGES.length} monitored Assam CWC gauges are currently below Warning Level</span>
+            <span class="w-2 h-2 rounded-full ${isFeedStale ? 'bg-amber-500' : 'bg-emerald-500'}"></span>
+            <span class="font-bold">All ${ALL_GAUGES.length} reporting Assam CWC gauges below Warning Level${staleNote}</span>
           </span>
           <span class="text-slate-300 select-none">|</span>
           <span class="inline-flex items-center gap-2 text-xs text-slate-600 whitespace-nowrap">
             <span class="w-2 h-2 rounded-full bg-sky-500"></span>
-            <span>Automated hourly sync active for Brahmaputra, Dikhow, Desang, Subansiri &amp; Barak basins</span>
+            <span>Updated every few hours &bull; Each gauge card displays its exact CWC reading time</span>
           </span>
           <span class="text-slate-300 select-none">|</span>
         `;
         tickerTrack.innerHTML = calmItems + calmItems;
         fullList.innerHTML = `
-          <div class="p-6 rounded-2xl border border-emerald-200 bg-emerald-50/60 text-center">
-            <div class="text-2xl mb-1">✅</div>
-            <div class="text-sm font-bold text-emerald-900">No Active River Flood Alerts in Assam</div>
-            <p class="text-xs text-emerald-700 mt-1">All ${ALL_GAUGES.length} reporting CWC stations are safely below their Warning and Danger levels.</p>
+          <div class="p-6 rounded-2xl border ${isFeedStale ? 'border-amber-200 bg-amber-50/60' : 'border-emerald-200 bg-emerald-50/60'} text-center">
+            <div class="text-2xl mb-1">${isFeedStale ? '🕒' : '✅'}</div>
+            <div class="text-sm font-bold ${isFeedStale ? 'text-amber-900' : 'text-emerald-900'}">
+              ${isFeedStale ? `Data last updated ${Math.round(feedAgeHours)} hours ago` : 'No Active River Flood Alerts in Last Sync'}
+            </div>
+            <p class="text-xs ${isFeedStale ? 'text-amber-800' : 'text-emerald-700'} mt-1">
+              ${isFeedStale
+                ? 'Please check CWC or ASDMA directly for the latest readings.'
+                : `All ${ALL_GAUGES.length} reporting CWC stations were below their Warning and Danger levels at last check.`}
+            </p>
           </div>
         `;
       } else {
@@ -1555,6 +1925,7 @@
 
     function renderGaugeCard(g, isPinned) {
       const st = getGaugeStatus(g);
+      const trendPill = getTrendPillMeta(g.trendInfo);
       const pct = getDangerProgressPct(g);
       const distText = (userLocation && g.lat !== null && g.lng !== null)
         ? ` &bull; <span class="text-sky-600 font-semibold">${Math.round(distanceKm(userLocation.lat, userLocation.lng, g.lat, g.lng))} km</span>`
@@ -1569,12 +1940,24 @@
         ? `${(g.hfl - g.current).toFixed(2)} m below ${g.hflYear || 'Record'} HFL (${g.hfl.toFixed(2)} m)`
         : 'HFL record unavailable';
 
+      // Grey out card if station's stale === true, and show its age
+      const cardSurfaceClass = g.stale
+        ? 'border-slate-300 bg-slate-100/90 opacity-75 grayscale-[45%] hover:opacity-95'
+        : 'border-slate-200/90 bg-white hover:border-blue-400 hover:shadow-md';
+
+      // Hide status badge entirely if offline or no-data; show age badge if stale
+      const statusBadgeHtml = g.isNoStatus
+        ? ''
+        : g.stale
+          ? `<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-200 text-slate-700" title="Stale reading">Stale &bull; ${g.ageLabel}</span>`
+          : `<span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${st.badgeBg}">${st.label}</span>`;
+
       return `
         <div
           onclick="openGaugeDetailModal('${g.id}')"
           role="button"
           tabindex="0"
-          class="cursor-pointer rounded-2xl border border-slate-200/90 bg-white hover:border-blue-400 hover:shadow-md transition p-4 flex flex-col justify-between text-left"
+          class="cursor-pointer rounded-2xl border ${cardSurfaceClass} transition p-4 flex flex-col justify-between text-left"
         >
           <div>
             <div class="flex items-start justify-between gap-2">
@@ -1585,7 +1968,7 @@
               <button
                 onclick="event.stopPropagation(); toggleWatchlist('${g.id}')"
                 title="${isPinned ? 'Remove from Home Watchlist' : 'Pin to Home Watchlist'}"
-                class="p-1.5 rounded-lg hover:bg-slate-100 active:scale-90 transition shrink-0"
+                class="p-1.5 rounded-lg hover:bg-slate-200/60 active:scale-90 transition shrink-0"
               >
                 <svg class="w-4 h-4 ${isPinned ? 'text-amber-500 fill-amber-400' : 'text-slate-300 hover:text-amber-400'}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
@@ -1594,22 +1977,22 @@
             </div>
 
             <div class="mt-2.5 flex items-baseline justify-between gap-2">
-              <div class="text-2xl font-extrabold tracking-tight ${st.textClass}">
+              <div class="text-2xl font-extrabold tracking-tight ${g.stale ? 'text-slate-600' : st.textClass}">
                 ${g.current.toFixed(2)} <span class="text-xs font-semibold text-slate-400">m</span>
               </div>
-              <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${st.badgeBg}">
-                ${st.label}
-              </span>
+              ${statusBadgeHtml}
             </div>
 
-            <div class="mt-1.5 flex items-center justify-between gap-2 text-[10px]">
-              <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-semibold border border-slate-200">
+            <div class="mt-1.5 flex items-center justify-between gap-1.5 text-[10px]">
+              <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-semibold border border-slate-200 truncate">
                 ${marginText}
               </span>
-              <span class="text-slate-400 font-medium">${g.type} ${g.telemetric ? '• Auto' : ''}</span>
+              <span class="px-2 py-0.5 rounded-md border font-bold shrink-0 ${trendPill.cls}">
+                ${trendPill.text}
+              </span>
             </div>
 
-            <div class="mt-2 grid grid-cols-2 gap-1.5 text-[11px] bg-slate-50 rounded-xl p-2 border border-slate-100">
+            <div class="mt-2 grid grid-cols-2 gap-1.5 text-[11px] bg-slate-50/90 rounded-xl p-2 border border-slate-200/60">
               <div>
                 <span class="text-slate-400">WL:</span>
                 <span class="font-semibold text-slate-700">${g.warning !== null ? g.warning.toFixed(2) + ' m' : '—'}</span>
@@ -1625,13 +2008,19 @@
               <span class="truncate">${hflText}</span>
             </div>
 
-            <div class="mt-2 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-              <div class="h-full rounded-full ${st.barColor} transition-all duration-500" style="width: ${pct}%"></div>
+            <div class="mt-2 h-1.5 w-full bg-slate-200/70 rounded-full overflow-hidden">
+              <div class="h-full rounded-full ${g.stale ? 'bg-slate-400' : st.barColor} transition-all duration-500" style="width: ${pct}%"></div>
+            </div>
+
+            <div class="mt-2">
+              ${buildSparklineSVG(g.trendInfo?.points, g.stale ? '#64748b' : st.stroke)}
             </div>
           </div>
 
-          <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-            <span class="text-[10px] text-slate-400 truncate" title="Latest CWC reading timestamp">CWC &bull; ${g.updated}</span>
+          <div class="mt-2.5 pt-2 border-t border-slate-200/70 flex items-center justify-between gap-2">
+            <span class="text-[10px] ${g.stale ? 'text-amber-800 font-bold' : 'text-slate-400'} truncate" title="Latest CWC reading timestamp">
+              ${g.stale ? `Stale (${g.ageLabel}) &bull; ${g.updated}` : `CWC &bull; ${g.updated}`}
+            </span>
             <button
               onclick="event.stopPropagation(); openShareImageModal('${g.id}')"
               class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/80 text-[11px] font-bold active:scale-95 transition shrink-0"
@@ -1646,9 +2035,21 @@
     function renderWatchlist() {
       const container = document.getElementById('watchlist-grid');
       const badge = document.getElementById('watchlist-count-badge');
-      badge.textContent = `${watchlistIds.length} / ${MAX_WATCHLIST} Pinned`;
+
+      if (dataSourceMode === 'unavailable') {
+        badge.textContent = 'Unavailable';
+        container.innerHTML = `
+          <div class="col-span-full rounded-2xl border border-red-200 bg-red-50/60 p-6 text-center space-y-2">
+            <div class="text-sm font-extrabold text-red-900">Data unavailable. Check CWC or ASDMA directly.</div>
+            <p class="text-xs text-red-700">Unable to load <code>data/levels.json</code>. Tap the refresh button at top-right to retry, or open SOS for emergency helplines.</p>
+          </div>
+        `;
+        return;
+      }
 
       const pinnedGauges = watchlistIds.map(id => ALL_GAUGES.find(g => g.id === id)).filter(Boolean);
+      badge.textContent = `${pinnedGauges.length} / ${MAX_WATCHLIST} Pinned`;
+
       let html = pinnedGauges.map(g => renderGaugeCard(g, true)).join('');
 
       if (pinnedGauges.length < MAX_WATCHLIST) {
@@ -1685,11 +2086,18 @@
       const makeNode = (code, fallbackName, role, eta) => {
         const g = byCode(code);
         if (!g) {
-          return { name: fallbackName, role, metric: 'No live reading', status: 'Monitoring', color: 'border-slate-200 bg-slate-50', dot: 'bg-slate-400', text: 'text-slate-600', eta };
+          return { name: fallbackName, role, metric: dataSourceMode === 'unavailable' ? 'Data unavailable' : 'No live reading', status: 'Check CWC directly', color: 'border-slate-200 bg-slate-50', dot: 'bg-slate-400', text: 'text-slate-500', eta };
         }
         const st = getGaugeStatus(g);
-        const bg = st.key === 'danger' ? 'border-red-300 bg-red-50/60' : st.key === 'warning' ? 'border-orange-300 bg-orange-50/60' : 'border-emerald-200 bg-emerald-50/40';
-        return { name: g.station, gaugeId: g.id, role, metric: `${g.current.toFixed(2)} m`, status: `${st.label} • ${g.updated}`, color: bg, dot: st.barColor, text: st.textClass, eta };
+        const bg = g.stale
+          ? 'border-slate-300 bg-slate-100/80 opacity-80'
+          : st.key === 'danger' ? 'border-red-300 bg-red-50/60' : st.key === 'warning' ? 'border-orange-300 bg-orange-50/60' : 'border-emerald-200 bg-emerald-50/40';
+        const statusText = g.isNoStatus
+          ? g.updated
+          : g.stale
+            ? `Stale (${g.ageLabel}) • ${g.updated}`
+            : `${st.label} • ${g.updated}`;
+        return { name: g.station, gaugeId: g.id, role, metric: `${g.current.toFixed(2)} m`, status: statusText, color: bg, dot: g.stale ? 'bg-slate-400' : st.barColor, text: g.stale ? 'text-slate-600' : st.textClass, eta };
       };
 
       const chains = {
@@ -1741,10 +2149,19 @@
     }
 
     function renderNetworkSummary() {
-      const floodCount = ALL_GAUGES.filter(g => g.cwcStatus === 'flood').length;
-      const warnCount = ALL_GAUGES.filter(g => g.cwcStatus === 'warning').length;
-      const normCount = ALL_GAUGES.length - floodCount - warnCount;
-      document.getElementById('network-summary-cards').innerHTML = `
+      const container = document.getElementById('network-summary-cards');
+      if (dataSourceMode === 'unavailable') {
+        container.innerHTML = `
+          <div class="col-span-3 rounded-xl bg-red-50 border border-red-200 p-3 text-center text-xs font-bold text-red-800">
+            Data unavailable. Check CWC or ASDMA directly.
+          </div>
+        `;
+        return;
+      }
+      const floodCount = ALL_GAUGES.filter(g => !g.isNoStatus && g.cwcStatus === 'flood').length;
+      const warnCount = ALL_GAUGES.filter(g => !g.isNoStatus && g.cwcStatus === 'warning').length;
+      const normCount = ALL_GAUGES.filter(g => !g.isNoStatus).length - floodCount - warnCount;
+      container.innerHTML = `
         <div class="rounded-xl bg-emerald-50 border border-emerald-200/80 p-3 text-center">
           <div class="text-xl font-extrabold text-emerald-700">${normCount}</div>
           <div class="text-[10px] font-bold uppercase text-emerald-600 mt-0.5">Normal</div>
@@ -1771,6 +2188,12 @@
     }
 
     function renderAllGaugesDirectory() {
+      const grid = document.getElementById('all-gauges-grid');
+      if (dataSourceMode === 'unavailable') {
+        grid.innerHTML = `<div class="col-span-full text-center py-8 text-sm font-bold text-red-700">Data unavailable. Check CWC or ASDMA directly.</div>`;
+        return;
+      }
+
       const query = (document.getElementById('river-search-input')?.value || '').trim().toLowerCase();
       const dist = document.getElementById('river-district-filter')?.value || '';
       const filtered = ALL_GAUGES.filter(g => {
@@ -1783,9 +2206,8 @@
         return matchDist && matchQ;
       });
 
-      const grid = document.getElementById('all-gauges-grid');
       if (filtered.length === 0) {
-        grid.innerHTML = `<div class="col-span-full text-center py-8 text-sm text-slate-500">No river gauges found matching your filter.</div>`;
+        grid.innerHTML = `<div class="col-span-full text-center py-8 text-sm text-slate-500">No Assam river gauges found matching your filter.</div>`;
         return;
       }
       grid.innerHTML = filtered.map(g => renderGaugeCard(g, watchlistIds.includes(g.id))).join('');
@@ -1826,7 +2248,7 @@
     }
 
     // =========================================================================
-    // 5. INTERACTIVE ASSAM MAP (CWC-STYLE LEAFLET WITH SEARCH & LEGENDS)
+    // 6. INTERACTIVE ASSAM MAP (CWC-STYLE LEAFLET WITH SEARCH & LEGENDS)
     // =========================================================================
     function getCwcMapCategory(g) {
       if (g.hfl !== null && g.current >= g.hfl) return 'extreme';
@@ -1864,7 +2286,6 @@
           L.DomEvent.disableScrollPropagation(overlay);
         }
 
-        // Ensure Leaflet always recalculates size after layout/CSS paint
         const wrapper = document.getElementById('assam-map-wrapper');
         if (wrapper && typeof ResizeObserver !== 'undefined') {
           new ResizeObserver(() => {
@@ -1892,7 +2313,6 @@
         maxZoom: cfg.maxZoom
       }).addTo(assamMap);
 
-      // Automatic fallback to Esri Terrain if Street/Satellite tiles fail to load
       if (styleKey !== 'terrain') {
         let errorCount = 0;
         baseTileLayer.on('tileerror', () => {
@@ -1957,7 +2377,9 @@
       const mapped = ALL_GAUGES.filter(g => g.lat !== null && g.lng !== null);
       mapped.forEach(g => { counts[getCwcMapCategory(g)]++; });
 
-      subtitle.textContent = activeLegendFilter ? 'Filtered' : `${mapped.length} stations`;
+      subtitle.textContent = dataSourceMode === 'unavailable'
+        ? 'Unavailable'
+        : activeLegendFilter ? 'Filtered' : `${mapped.length} stations`;
 
       let html = CWC_LEGEND_ITEMS.map(item => {
         const isActive = activeLegendFilter === item.key;
@@ -1999,6 +2421,12 @@
       const q = input.value.trim().toLowerCase();
       clearBtn.classList.toggle('hidden', q.length === 0);
 
+      if (dataSourceMode === 'unavailable') {
+        dropdown.innerHTML = `<div class="px-3 py-3 text-xs text-red-700 font-semibold text-center">Data unavailable. Check CWC or ASDMA directly.</div>`;
+        dropdown.classList.remove('hidden');
+        return;
+      }
+
       const candidates = ALL_GAUGES.filter(g => g.lat !== null && g.lng !== null).filter(g => {
         if (!q) return true;
         return (
@@ -2014,7 +2442,7 @@
       } else {
         dropdown.innerHTML = candidates.slice(0, 25).map(g => {
           const cat = getCwcMapCategory(g);
-          const color = getCwcCategoryColor(cat);
+          const color = g.stale ? '#94a3b8' : getCwcCategoryColor(cat);
           return `
             <button
               onclick="selectMapSearchStation('${g.id}')"
@@ -2022,7 +2450,7 @@
             >
               <div class="min-w-0">
                 <div class="text-xs font-bold text-slate-900 truncate">${g.station}</div>
-                <div class="text-[10px] text-slate-500 truncate">${g.river} &bull; ${g.district}</div>
+                <div class="text-[10px] text-slate-500 truncate">${g.river} &bull; ${g.district}${g.stale ? ` • Stale (${g.ageLabel})` : ''}</div>
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
                 <span class="text-[11px] font-extrabold text-slate-700">${g.current.toFixed(2)} m</span>
@@ -2088,6 +2516,11 @@
       renderCwcLegendPanel();
 
       if (activeMapLayer === 'gauges') {
+        if (dataSourceMode === 'unavailable') {
+          legendEl.innerHTML = `<span class="text-red-700 font-bold">Data unavailable. Check CWC or ASDMA directly.</span>`;
+          return;
+        }
+
         const mapped = ALL_GAUGES.filter(g => g.lat !== null && g.lng !== null);
         const visible = activeLegendFilter
           ? mapped.filter(g => getCwcMapCategory(g) === activeLegendFilter)
@@ -2096,7 +2529,7 @@
         visible.forEach(g => {
           const st = getGaugeStatus(g);
           const cat = getCwcMapCategory(g);
-          const fillHex = getCwcCategoryColor(cat);
+          const fillHex = g.stale ? '#94a3b8' : getCwcCategoryColor(cat);
           const isPinned = watchlistIds.includes(g.id);
 
           const marker = L.circleMarker([g.lat, g.lng], {
@@ -2105,8 +2538,14 @@
             color: isPinned ? '#071426' : '#ffffff',
             weight: isPinned ? 2.5 : 1.8,
             opacity: 1,
-            fillOpacity: 0.94
+            fillOpacity: g.stale ? 0.65 : 0.94
           });
+
+          const popupStatusPill = g.isNoStatus
+            ? ''
+            : g.stale
+              ? `<span style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; background: #e2e8f0; color: #334155;">Stale &bull; ${g.ageLabel}</span>`
+              : `<span style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; background: #f1f5f9; color: #334155;">${st.label}</span>`;
 
           marker.bindPopup(`
             <div style="min-width: 220px;">
@@ -2117,7 +2556,7 @@
               <div style="font-size: 11px; color: #64748b; margin-bottom: 6px;">${g.river} River &bull; ${g.district}</div>
               <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px;">
                 <span style="font-size: 18px; font-weight: 800; color: ${fillHex};">${g.current.toFixed(2)} m</span>
-                <span style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; background: #f1f5f9; color: #334155;">${st.label}</span>
+                ${popupStatusPill}
               </div>
               <div style="font-size: 11px; color: #475569; margin-bottom: 4px;">
                 WL: <strong>${g.warning !== null ? g.warning.toFixed(2) + ' m' : '—'}</strong> &bull; DL: <strong style="color:#dc2626;">${g.danger !== null ? g.danger.toFixed(2) + ' m' : '—'}</strong>
@@ -2144,8 +2583,8 @@
         });
 
         legendEl.innerHTML = `
-          <span>Showing <strong>${visible.length}</strong> of ${mapped.length} geolocated Assam CWC stations &bull; Tap any legend item to filter</span>
-          <span class="text-slate-400">Dark ring = Pinned in Watchlist</span>
+          <span>Showing <strong>${visible.length}</strong> of ${mapped.length} Assam CWC stations &bull; Tap any legend item to filter</span>
+          <span class="text-slate-400">Grey marker = Stale reading &bull; Dark ring = Pinned</span>
         `;
       } else {
         RAINFALL_STATIONS.forEach(r => {
@@ -2196,7 +2635,7 @@
     }
 
     // =========================================================================
-    // 6. WATCHLIST, DETAIL DRAWER & WHATSAPP SHARE CARD
+    // 7. WATCHLIST, DETAIL DRAWER & WHATSAPP SHARE CARD
     // =========================================================================
     function toggleWatchlist(gaugeId) {
       const gauge = ALL_GAUGES.find(g => g.id === gaugeId);
@@ -2255,6 +2694,11 @@
       const query = (document.getElementById('modal-gauge-search')?.value || '').trim().toLowerCase();
       counter.textContent = `${watchlistIds.length} / ${MAX_WATCHLIST}`;
 
+      if (dataSourceMode === 'unavailable') {
+        list.innerHTML = `<div class="py-8 text-center text-xs font-bold text-red-700">Data unavailable. Check CWC or ASDMA directly.</div>`;
+        return;
+      }
+
       const filtered = ALL_GAUGES.filter(g =>
         g.river.toLowerCase().includes(query) ||
         g.station.toLowerCase().includes(query) ||
@@ -2264,12 +2708,17 @@
       list.innerHTML = filtered.map(g => {
         const isPinned = watchlistIds.includes(g.id);
         const st = getGaugeStatus(g);
+        const badgeHtml = g.isNoStatus
+          ? ''
+          : g.stale
+            ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-700">Stale &bull; ${g.ageLabel}</span>`
+            : `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${st.badgeBg}">${st.label}</span>`;
         return `
           <div class="w-full p-3 rounded-xl border ${isPinned ? 'border-blue-400 bg-blue-50/50' : 'border-slate-200 hover:bg-slate-50'} flex items-center justify-between gap-2 transition">
             <button onclick="toggleWatchlist('${g.id}')" class="flex-1 min-w-0 text-left">
               <div class="flex items-center gap-2">
                 <span class="font-bold text-sm text-slate-900 truncate">${g.station}</span>
-                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${st.badgeBg}">${st.label}</span>
+                ${badgeHtml}
               </div>
               <div class="text-xs text-slate-500 mt-0.5">${g.river} River &bull; ${g.district} &bull; <strong>${g.current.toFixed(2)} m</strong></div>
             </button>
@@ -2295,17 +2744,26 @@
       document.getElementById('detail-station-name').textContent = g.station;
       document.getElementById('detail-river-subtitle').textContent = `${g.river} River • ${g.district} District • Code: ${g.code.toUpperCase()}`;
       const pill = document.getElementById('detail-status-pill');
-      pill.textContent = st.label;
-      pill.className = `px-2.5 py-0.5 rounded-full text-[11px] font-bold ${st.badgeBg}`;
+      if (g.isNoStatus) {
+        pill.classList.add('hidden');
+      } else if (g.stale) {
+        pill.classList.remove('hidden');
+        pill.textContent = `Stale • ${g.ageLabel}`;
+        pill.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-200 text-slate-800';
+      } else {
+        pill.classList.remove('hidden');
+        pill.textContent = st.label;
+        pill.className = `px-2.5 py-0.5 rounded-full text-[11px] font-bold ${st.badgeBg}`;
+      }
 
       document.getElementById('detail-modal-body').innerHTML = `
         <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 rounded-2xl p-4 border border-slate-200/80">
           <div>
             <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Latest CWC Water Level</div>
-            <div class="text-3xl font-extrabold ${st.textClass} mt-0.5">${g.current.toFixed(2)} <span class="text-sm font-semibold text-slate-400">m</span></div>
+            <div class="text-3xl font-extrabold ${g.stale ? 'text-slate-600' : st.textClass} mt-0.5">${g.current.toFixed(2)} <span class="text-sm font-semibold text-slate-400">m</span></div>
           </div>
           <div class="text-right">
-            <div class="text-xs font-bold text-slate-700">Reading: ${g.updated}</div>
+            <div class="text-xs font-bold text-slate-700">Reading: ${g.updated}${g.stale ? ` (${g.ageLabel})` : ''}</div>
             ${syncedStr ? `<div class="text-[10px] text-slate-400 mt-0.5">Last synced: ${syncedStr}</div>` : ''}
             <div class="text-[11px] text-slate-500 mt-0.5">
               ${toDanger !== null ? (Number(toDanger) >= 0 ? `${toDanger} m below Danger Level` : `${Math.abs(toDanger).toFixed(2)} m ABOVE Danger Level`) : 'Base reference station'}
@@ -2327,6 +2785,14 @@
             <div class="text-sm font-extrabold text-slate-900 mt-0.5">${g.hfl !== null ? g.hfl.toFixed(2) + ' m' : '—'}</div>
             <div class="text-[10px] text-slate-500">${toHfl !== null ? toHfl + ' m below' : ''}</div>
           </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 p-4 bg-white space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <div class="text-xs font-bold text-slate-800">Observed Water Level Trend</div>
+            <span class="text-[10px] font-semibold text-slate-400">${g.trendInfo?.points?.length || 1} reading(s) logged</span>
+          </div>
+          ${buildHistoryChartSVG(g)}
         </div>
 
         <div class="rounded-2xl border border-slate-200 p-4 bg-white space-y-2 text-xs">
@@ -2404,6 +2870,7 @@
       canvas.height = 900;
       const ctx = canvas.getContext('2d');
       const st = getGaugeStatus(g);
+      const trendPill = getTrendPillMeta(g.trendInfo);
 
       ctx.fillStyle = '#f8fafc';
       ctx.fillRect(0, 0, 900, 900);
@@ -2430,21 +2897,26 @@
       ctx.lineWidth = 3;
       ctx.stroke();
 
-      const pillColors = {
-        danger: { bg: '#fee2e2', txt: '#b91c1c' },
-        warning: { bg: '#ffedd5', txt: '#c2410c' },
-        watch: { bg: '#fef3c7', txt: '#b45309' },
-        normal: { bg: '#d1fae5', txt: '#047857' }
-      }[st.key];
+      if (!g.isNoStatus) {
+        const pillColors = g.stale
+          ? { bg: '#e2e8f0', txt: '#334155' }
+          : {
+              danger: { bg: '#fee2e2', txt: '#b91c1c' },
+              warning: { bg: '#ffedd5', txt: '#c2410c' },
+              watch: { bg: '#fef3c7', txt: '#b45309' },
+              normal: { bg: '#d1fae5', txt: '#047857' }
+            }[st.key];
 
-      drawRoundedRect(ctx, 76, 290, 290, 54, 27);
-      ctx.fillStyle = pillColors.bg;
-      ctx.fill();
-      ctx.fillStyle = pillColors.txt;
-      ctx.font = '800 24px Inter, system-ui, sans-serif';
-      ctx.fillText(`●  ${st.label.toUpperCase()}`, 104, 325);
+        const badgeText = g.stale ? `STALE (${g.ageLabel.toUpperCase()})` : st.label.toUpperCase();
+        drawRoundedRect(ctx, 76, 290, 320, 54, 27);
+        ctx.fillStyle = pillColors.bg;
+        ctx.fill();
+        ctx.fillStyle = pillColors.txt;
+        ctx.font = '800 22px Inter, system-ui, sans-serif';
+        ctx.fillText(`●  ${badgeText}`, 104, 325);
+      }
 
-      ctx.fillStyle = st.stroke;
+      ctx.fillStyle = g.stale ? '#475569' : st.stroke;
       ctx.font = '800 112px Inter, system-ui, sans-serif';
       ctx.fillText(g.current.toFixed(2), 74, 472);
       const numWidth = ctx.measureText(g.current.toFixed(2)).width;
@@ -2454,7 +2926,7 @@
 
       ctx.fillStyle = '#475569';
       ctx.font = '600 22px Inter, system-ui, sans-serif';
-      ctx.fillText(`CWC Reading: ${g.updated}`, 76, 520);
+      ctx.fillText(`CWC Reading: ${g.updated}  •  Trend: ${trendPill.text}`, 76, 520);
 
       drawRoundedRect(ctx, 76, 555, 748, 128, 20);
       ctx.fillStyle = '#f8fafc';
@@ -2485,7 +2957,7 @@
       ctx.fillText('Assam Flood Helpline: 1070   •   District DEOC: 1077', 74, 804);
       ctx.fillStyle = '#94a3b8';
       ctx.font = '500 18px Inter, system-ui, sans-serif';
-      ctx.fillText('assamfloodmonitor.vercel.app  •  Made with ❤️ by Bijay (Source: CWC FFS)', 74, 842);
+      ctx.fillText('assamfloodmonitor.vercel.app  •  Made with ❤️ by Bijay', 74, 842);
 
       canvas.toBlob(blob => { currentShareBlob = blob; }, 'image/png');
       return canvas.toDataURL('image/png');
@@ -2523,7 +2995,7 @@
     }
 
     // =========================================================================
-    // 7. LIVE WEATHER (OPEN-METEO)
+    // 8. LIVE WEATHER (OPEN-METEO)
     // =========================================================================
     function weatherCodeToIcon(code) {
       if (code >= 95) return { icon: '⛈️', label: 'Thunderstorm' };
@@ -2628,7 +3100,7 @@
     }
 
     // =========================================================================
-    // 8. NAVIGATION, CLOCK & INIT
+    // 9. NAVIGATION, CLOCK & INIT
     // =========================================================================
     function updateOnlineStatus() {
       const banner = document.getElementById('offline-banner');
@@ -2646,12 +3118,12 @@
         const isActive = t === tabName;
         if (t === 'sos') {
           btn.className = isActive
-            ? 'nav-btn px-3 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-1.5 bg-red-600 text-white'
-            : 'nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-red-200 hover:text-white hover:bg-red-500/20';
+            ? 'nav-btn px-2.5 lg:px-3 py-2 rounded-xl text-xs lg:text-sm font-semibold transition flex items-center gap-1.5 bg-red-600 text-white whitespace-nowrap'
+            : 'nav-btn px-2.5 lg:px-3 py-2 rounded-xl text-xs lg:text-sm font-medium transition flex items-center gap-1.5 text-red-200 hover:text-white hover:bg-red-500/20 whitespace-nowrap';
         } else {
           btn.className = isActive
-            ? 'nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 bg-blue-600 text-white'
-            : 'nav-btn px-3 py-2 rounded-xl text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10';
+            ? 'nav-btn px-2.5 lg:px-3 py-2 rounded-xl text-xs lg:text-sm font-medium transition flex items-center gap-1.5 bg-blue-600 text-white whitespace-nowrap'
+            : 'nav-btn px-2.5 lg:px-3 py-2 rounded-xl text-xs lg:text-sm font-medium transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-white/10 whitespace-nowrap';
         }
       });
 
@@ -2708,17 +3180,18 @@
       });
     });
 
+    document.addEventListener('click', (e) => {
+      const searchInput = document.getElementById('map-station-search');
+      const dropdown = document.getElementById('map-search-results');
+      if (searchInput && dropdown && !searchInput.parentElement.parentElement.contains(e.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
     window.addEventListener('online', updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
-
-    document.addEventListener('click', (e) => {
-      const searchBox = document.getElementById('map-station-search');
-      const dropdown = document.getElementById('map-search-results');
-      if (dropdown && !dropdown.classList.contains('hidden')) {
-        if (!dropdown.contains(e.target) && e.target !== searchBox && !e.target.closest('[aria-label="Toggle station list"]')) {
-          dropdown.classList.add('hidden');
-        }
-      }
+    window.addEventListener('load', () => {
+      if (assamMap) assamMap.invalidateSize();
     });
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -2730,11 +3203,6 @@
       applyLiteMode();
       loadLiveCwcData(false);
       loadLiveAssamRainfall();
-    });
-
-    window.addEventListener('load', () => {
-      if (!assamMap) initAssamMap();
-      if (assamMap && !isLiteMode) assamMap.invalidateSize();
     });
   </script>
 </body>
