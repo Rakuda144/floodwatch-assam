@@ -1654,14 +1654,20 @@
             distanceKm(lat, lng, a.lat, a.lng) - distanceKm(lat, lng, b.lat, b.lng)
           )[0];
           let placeName = nearestGauge ? `Near ${nearestGauge.station}` : 'Your Location';
+          let detectedDistrict = nearestGauge?.district && nearestGauge.district !== 'Assam' ? nearestGauge.district : null;
           try {
             const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`);
             if (res.ok) {
               const geo = await res.json();
               placeName = geo.locality || geo.city || geo.principalSubdivision || placeName;
+              const adminList = geo.localityInfo?.administrative || [];
+              const distEntry = adminList.find(a => /district/i.test(a.description || a.name || ''));
+              if (distEntry?.name) {
+                detectedDistrict = distEntry.name.replace(/\s*district$/i, '').trim();
+              }
             }
           } catch (e) {}
-          saveUserLocation({ name: placeName, lat, lng, source: 'gps' });
+          saveUserLocation({ name: placeName, district: detectedDistrict, lat, lng, source: 'gps' });
           updateUserLocationUI();
           renderWatchlist();
           renderAllGaugesDirectory();
@@ -1677,6 +1683,11 @@
         () => showToast('Location permission unavailable — pick your town manually.'),
         { enableHighAccuracy: false, timeout: 8000, maximumAge: 600000 }
       );
+    }
+
+    function getUserDeocLabel(fallbackDistrict = null) {
+      const dist = userLocation?.district || fallbackDistrict;
+      return dist && dist !== 'Assam' ? `${dist} DEOC (1077)` : 'District DEOC (1077)';
     }
 
     // =========================================================================
@@ -2943,7 +2954,7 @@
 
       document.getElementById('detail-modal-footer').innerHTML = `
         <a href="tel:1077" class="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition flex items-center gap-1.5">
-          📞 ${g.district} DEOC (1077)
+          📞 ${getUserDeocLabel(g.district)}
         </a>
         <div class="flex items-center gap-2">
           <button onclick="toggleWatchlist('${g.id}'); openGaugeDetailModal('${g.id}');" class="px-3 py-2 rounded-xl bg-slate-200/80 hover:bg-slate-300 text-slate-800 text-xs font-bold transition">
@@ -3000,34 +3011,42 @@
     function generateGaugeShareCanvas(g) {
       const canvas = document.createElement('canvas');
       canvas.width = 900;
-      canvas.height = 900;
+      canvas.height = 1140;
       const ctx = canvas.getContext('2d');
       const st = getGaugeStatus(g);
       const trendPill = getTrendPillMeta(g.trendInfo);
+      const syncedStr = formatSyncTime(lastFetchedAt);
+      const toDanger = g.danger !== null ? (g.danger - g.current).toFixed(2) : null;
+      const dangerMarginStr = toDanger !== null
+        ? (Number(toDanger) >= 0 ? `${toDanger} m below Danger Level` : `${Math.abs(toDanger).toFixed(2)} m ABOVE Danger Level`)
+        : 'Base reference station';
 
-      ctx.fillStyle = '#f8fafc';
-      ctx.fillRect(0, 0, 900, 900);
+      ctx.fillStyle = '#f1f5f9';
+      ctx.fillRect(0, 0, 900, 1140);
 
+      // Header Banner
       ctx.fillStyle = '#071426';
-      ctx.fillRect(0, 0, 900, 165);
+      ctx.fillRect(0, 0, 900, 152);
       ctx.fillStyle = '#38bdf8';
-      ctx.font = '800 22px Inter, system-ui, sans-serif';
-      ctx.fillText('ASSAM FLOOD MONITOR  •  CWC LIVE GAUGE UPDATE', 48, 66);
+      ctx.font = '800 20px Inter, system-ui, sans-serif';
+      ctx.fillText('ASSAM FLOOD MONITOR  •  CWC LIVE GAUGE UPDATE', 44, 58);
       ctx.fillStyle = '#ffffff';
-      ctx.font = '800 44px Inter, system-ui, sans-serif';
-      ctx.fillText(g.station, 48, 126);
+      ctx.font = '800 42px Inter, system-ui, sans-serif';
+      ctx.fillText(g.station, 44, 114);
 
+      // Sub-header with station code
       ctx.fillStyle = '#e2e8f0';
-      ctx.fillRect(0, 165, 900, 56);
+      ctx.fillRect(0, 152, 900, 50);
       ctx.fillStyle = '#1e293b';
-      ctx.font = '700 22px Inter, system-ui, sans-serif';
-      ctx.fillText(`${g.river} River  •  ${g.district} District`, 48, 201);
+      ctx.font = '700 20px Inter, system-ui, sans-serif';
+      ctx.fillText(`${g.river} River  •  ${g.district} District  •  Code: ${g.code.toUpperCase()}`, 44, 184);
 
-      drawRoundedRect(ctx, 40, 250, 820, 480, 28);
+      // Card 1: Water Level, Status, Margin & Thresholds
+      drawRoundedRect(ctx, 36, 224, 828, 376, 24);
       ctx.fillStyle = '#ffffff';
       ctx.fill();
-      ctx.strokeStyle = '#e2e8f0';
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 2;
       ctx.stroke();
 
       if (!g.isNoStatus) {
@@ -3041,27 +3060,41 @@
             }[st.key];
 
         const badgeText = g.stale ? `STALE (${g.ageLabel.toUpperCase()})` : st.label.toUpperCase();
-        drawRoundedRect(ctx, 76, 290, 320, 54, 27);
+        drawRoundedRect(ctx, 68, 254, 300, 46, 23);
         ctx.fillStyle = pillColors.bg;
         ctx.fill();
         ctx.fillStyle = pillColors.txt;
-        ctx.font = '800 22px Inter, system-ui, sans-serif';
-        ctx.fillText(`●  ${badgeText}`, 104, 325);
+        ctx.font = '800 20px Inter, system-ui, sans-serif';
+        ctx.fillText(`●  ${badgeText}`, 92, 284);
       }
 
+      // Right-aligned Danger Level Margin & Sync Time
+      ctx.textAlign = 'right';
+      ctx.fillStyle = Number(toDanger) < 0 ? '#dc2626' : '#334155';
+      ctx.font = '700 20px Inter, system-ui, sans-serif';
+      ctx.fillText(dangerMarginStr, 832, 282);
+      if (syncedStr) {
+        ctx.fillStyle = '#64748b';
+        ctx.font = '500 17px Inter, system-ui, sans-serif';
+        ctx.fillText(`Synced: ${syncedStr}`, 832, 310);
+      }
+      ctx.textAlign = 'left';
+
+      // Big Water Level Reading
       ctx.fillStyle = g.stale ? '#475569' : st.stroke;
-      ctx.font = '800 112px Inter, system-ui, sans-serif';
-      ctx.fillText(g.current.toFixed(2), 74, 472);
+      ctx.font = '800 96px Inter, system-ui, sans-serif';
+      ctx.fillText(g.current.toFixed(2), 66, 405);
       const numWidth = ctx.measureText(g.current.toFixed(2)).width;
       ctx.fillStyle = '#64748b';
-      ctx.font = '700 38px Inter, system-ui, sans-serif';
-      ctx.fillText('meters', 88 + numWidth, 472);
+      ctx.font = '700 34px Inter, system-ui, sans-serif';
+      ctx.fillText('m', 80 + numWidth, 405);
 
       ctx.fillStyle = '#475569';
-      ctx.font = '600 20px Inter, system-ui, sans-serif';
-      ctx.fillText(`CWC Reading: ${g.updated}  •  ${trendPill.text}`, 76, 520);
+      ctx.font = '600 19px Inter, system-ui, sans-serif';
+      ctx.fillText(`Reading: ${g.updated}  •  ${trendPill.text}`, 68, 444);
 
-      drawRoundedRect(ctx, 76, 555, 748, 128, 20);
+      // WL / DL / HFL Strip
+      drawRoundedRect(ctx, 68, 468, 764, 108, 18);
       ctx.fillStyle = '#f8fafc';
       ctx.fill();
       ctx.strokeStyle = '#e2e8f0';
@@ -3069,28 +3102,133 @@
       ctx.stroke();
 
       const cols = [
-        { label: 'WARNING LEVEL (WL)', val: g.warning !== null ? `${g.warning.toFixed(2)} m` : '—', color: '#334155', x: 108 },
-        { label: 'DANGER LEVEL (DL)', val: g.danger !== null ? `${g.danger.toFixed(2)} m` : '—', color: '#dc2626', x: 365 },
-        { label: `RECORD HFL (${g.hflYear || '—'})`, val: g.hfl !== null ? `${g.hfl.toFixed(2)} m` : '—', color: '#0f172a', x: 615 }
+        { label: 'WARNING (WL)', val: g.warning !== null ? `${g.warning.toFixed(2)} m` : '—', color: '#334155', x: 96 },
+        { label: 'DANGER (DL)', val: g.danger !== null ? `${g.danger.toFixed(2)} m` : '—', color: '#dc2626', x: 355 },
+        { label: `HFL (${g.hflYear || '—'})`, val: g.hfl !== null ? `${g.hfl.toFixed(2)} m` : '—', color: '#0f172a', x: 605 }
       ];
       cols.forEach(c => {
         ctx.fillStyle = '#64748b';
-        ctx.font = '700 16px Inter, system-ui, sans-serif';
-        ctx.fillText(c.label, c.x, 602);
+        ctx.font = '700 15px Inter, system-ui, sans-serif';
+        ctx.fillText(c.label, c.x, 508);
         ctx.fillStyle = c.color;
-        ctx.font = '800 32px Inter, system-ui, sans-serif';
-        ctx.fillText(c.val, c.x, 650);
+        ctx.font = '800 29px Inter, system-ui, sans-serif';
+        ctx.fillText(c.val, c.x, 550);
       });
 
-      drawRoundedRect(ctx, 40, 755, 820, 112, 22);
+      // Card 2: Observed Water Level Trend Graph
+      const pts = g.trendInfo?.points || [];
+      drawRoundedRect(ctx, 36, 616, 828, 210, 24);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '800 20px Inter, system-ui, sans-serif';
+      ctx.fillText('Observed Water Level Trend', 68, 654);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#64748b';
+      ctx.font = '600 17px Inter, system-ui, sans-serif';
+      ctx.fillText(`${pts.length || 1} reading(s) logged`, 832, 654);
+      ctx.textAlign = 'left';
+
+      if (pts.length >= 2) {
+        const vals = pts.map(p => p.level);
+        const minV = Math.min(...vals) - 0.12;
+        const maxV = Math.max(...vals) + 0.12;
+        const rng = maxV - minV || 1;
+        const gx = 135, gy = 678, gw = 690, gh = 104;
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '600 15px Inter, system-ui, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(`${maxV.toFixed(1)}m`, gx - 12, gy + 10);
+        ctx.fillText(`${minV.toFixed(1)}m`, gx - 12, gy + gh);
+        ctx.textAlign = 'left';
+
+        const coords = pts.map((p, i) => [
+          gx + (i / (pts.length - 1)) * gw,
+          gy + gh - ((p.level - minV) / rng) * gh
+        ]);
+
+        ctx.beginPath();
+        ctx.moveTo(coords[0][0], coords[0][1]);
+        coords.slice(1).forEach(([cx, cy]) => ctx.lineTo(cx, cy));
+        ctx.lineTo(coords[coords.length - 1][0], gy + gh);
+        ctx.lineTo(coords[0][0], gy + gh);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(14, 165, 233, 0.15)';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(coords[0][0], coords[0][1]);
+        coords.slice(1).forEach(([cx, cy]) => ctx.lineTo(cx, cy));
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 4.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+
+        coords.forEach(([cx, cy]) => {
+          ctx.beginPath();
+          ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+          ctx.fillStyle = '#0284c7';
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+        });
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '600 15px Inter, system-ui, sans-serif';
+        ctx.fillText(formatCwcReadingTime(pts[0].time).replace(' IST', ''), gx, gy + gh + 24);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#0f172a';
+        ctx.font = '700 15px Inter, system-ui, sans-serif';
+        ctx.fillText(formatCwcReadingTime(pts[pts.length - 1].time).replace(' IST', ''), gx + gw, gy + gh + 24);
+        ctx.textAlign = 'left';
+      } else {
+        ctx.fillStyle = '#64748b';
+        ctx.font = '500 18px Inter, system-ui, sans-serif';
+        ctx.fillText(`Latest reading: ${g.current.toFixed(2)} m at ${g.updated} (trend builds as readings log)`, 68, 740);
+      }
+
+      // Card 3: Station Metadata (CWC Official)
+      drawRoundedRect(ctx, 36, 842, 828, 162, 24);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '800 19px Inter, system-ui, sans-serif';
+      ctx.fillText('Station Metadata (CWC Official)', 68, 878);
+
+      const metaRows = [
+        [`Basin: ${g.basin}`, `Gauge Type: ${g.type}`],
+        [`River Bank: ${g.bank || '—'}`, `Catchment: ${g.catchmentArea ? g.catchmentArea + ' km²' : '—'}`],
+        [`Telemetry: ${g.telemetric === true ? 'Automated' : g.telemetric === false ? 'Manual' : '—'}`, `Coordinates: ${g.lat ? g.lat.toFixed(3) + ', ' + g.lng.toFixed(3) : '—'}`]
+      ];
+      metaRows.forEach((pair, rIdx) => {
+        const yPos = 914 + rIdx * 32;
+        ctx.fillStyle = '#334155';
+        ctx.font = '600 18px Inter, system-ui, sans-serif';
+        ctx.fillText(pair[0], 68, yPos);
+        ctx.fillText(pair[1], 465, yPos);
+      });
+
+      // Bottom Footer Helpline Strip
+      drawRoundedRect(ctx, 36, 1020, 828, 92, 20);
       ctx.fillStyle = '#0e2240';
       ctx.fill();
       ctx.fillStyle = '#ffffff';
-      ctx.font = '700 22px Inter, system-ui, sans-serif';
-      ctx.fillText('Assam Flood Helpline: 1070   •   District DEOC: 1077', 74, 804);
+      ctx.font = '700 20px Inter, system-ui, sans-serif';
+      ctx.fillText(`Assam Flood Helpline: 1070   •   ${getUserDeocLabel(g.district)}`, 68, 1060);
       ctx.fillStyle = '#94a3b8';
-      ctx.font = '500 18px Inter, system-ui, sans-serif';
-      ctx.fillText('assamfloodmonitor.vercel.app  •  Made with ❤️ by Bijay', 74, 842);
+      ctx.font = '500 16px Inter, system-ui, sans-serif';
+      ctx.fillText('assamfloodmonitor.vercel.app  •  Made with ❤️ by Bijay', 68, 1092);
 
       canvas.toBlob(blob => { currentShareBlob = blob; }, 'image/png');
       return canvas.toDataURL('image/png');
