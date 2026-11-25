@@ -752,14 +752,12 @@
               For website feedback only. <strong class="text-red-700">Not monitored for emergencies. Call 1070 / 1077.</strong>
             </p>
           </div>
-          <a
-            href="https://github.com/Rakuda144/floodwatch-assam/issues/new?title=Assam%20Flood%20Monitor%20Feedback&body=District%2FTown%3A%20%0AWebsite%20Feedback%3A%20"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onclick="openFeedbackModal()"
             class="px-3.5 py-2 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-bold transition shrink-0 text-center"
           >
             Send Feedback &rarr;
-          </a>
+          </button>
         </div>
 
         <div class="pt-2 text-center text-xs font-semibold text-slate-500">
@@ -1016,6 +1014,95 @@
     </div>
   </div>
 
+  <!-- ===================================================================== -->
+  <!-- MODAL: PRIVATE IN-APP FEEDBACK FORM (WEB3FORMS)                      -->
+  <!-- ===================================================================== -->
+  <div id="feedback-modal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-slate-900/65 backdrop-blur-sm p-0 sm:p-4">
+    <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl max-h-[92vh] flex flex-col overflow-hidden">
+      <div class="px-5 py-4 bg-navy-900 text-white flex items-start justify-between gap-3">
+        <div>
+          <h3 class="text-base font-extrabold leading-tight">Send Website Feedback</h3>
+          <p class="text-xs text-slate-300 mt-0.5">Private form &bull; No sign-in required &bull; Website feedback only</p>
+        </div>
+        <button onclick="closeFeedbackModal()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white" aria-label="Close feedback modal">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="feedback-form" onsubmit="submitFeedbackForm(event)" class="flex-1 overflow-y-auto p-5 space-y-3.5 text-xs">
+        <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 leading-relaxed">
+          <strong>Not monitored for emergencies.</strong> For urgent rescue or flood help, call <strong>1070</strong> or <strong>1077</strong>.
+        </div>
+
+        <div>
+          <label for="feedback-name" class="block font-bold text-slate-700 mb-1">Your Name (optional)</label>
+          <input
+            id="feedback-name"
+            type="text"
+            maxlength="80"
+            placeholder="e.g., Rituraj or leave blank"
+            class="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label for="feedback-district" class="block font-bold text-slate-700 mb-1">District / Town (optional)</label>
+          <input
+            id="feedback-district"
+            type="text"
+            maxlength="80"
+            placeholder="e.g., Charaideo, Sivasagar, Jorhat, Cachar"
+            class="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label for="feedback-category" class="block font-bold text-slate-700 mb-1">Topic</label>
+          <select
+            id="feedback-category"
+            class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="Suggestion / Feature Idea">Suggestion / Feature Idea</option>
+            <option value="Gauge or Map Issue">Gauge or Map Issue</option>
+            <option value="Mobile / Slow Network Experience">Mobile / Slow Network Experience</option>
+            <option value="General Note">General Note</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="feedback-message" class="block font-bold text-slate-700 mb-1">Message <span class="text-red-600">*</span></label>
+          <textarea
+            id="feedback-message"
+            rows="4"
+            required
+            maxlength="1000"
+            placeholder="Share a suggestion or let me know if something on the site looks off..."
+            class="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          ></textarea>
+        </div>
+
+        <div id="feedback-status-msg" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+        <div class="pt-2 flex items-center justify-end gap-2">
+          <button
+            type="button"
+            onclick="closeFeedbackModal()"
+            class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            id="feedback-submit-btn"
+            class="px-4 py-2 rounded-xl bg-navy-900 hover:bg-navy-800 text-white font-bold transition"
+          >
+            Submit Feedback
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- TOAST NOTIFICATION -->
   <div id="toast" class="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 translate-y-2">
     <div class="px-4 py-2.5 rounded-xl bg-navy-900 text-white text-xs sm:text-sm font-medium shadow-xl flex items-center gap-2 whitespace-nowrap">
@@ -1031,8 +1118,8 @@
     const STORAGE_KEY = 'floodwatch_assam_cwc_watchlist_v1';
     const LITE_MODE_KEY = 'floodwatch_assam_lite_mode_v1';
     const USER_LOC_KEY = 'floodwatch_assam_user_location_v1';
-
-    // Default 3 pinned gauges: Bihubar (Dikhow), Sivasagar (Dikhow), Nanglamoraghat (Desang)
+    const WEB3FORMS_ACCESS_KEY = '44c5927b-14ea-4415-a7f3-132b88ad90e4';
+    const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
     const DEFAULT_WATCHLIST = ['017-ubddib', '018-ubddib', '016-ubddib'];
 
     const RAINFALL_STATIONS = [
@@ -2975,6 +3062,78 @@
       modal.classList.remove('flex');
     }
 
+    function openFeedbackModal() {
+      const statusEl = document.getElementById('feedback-status-msg');
+      if (statusEl) {
+        statusEl.className = 'hidden p-3 rounded-xl text-xs font-semibold';
+        statusEl.textContent = '';
+      }
+      const modal = document.getElementById('feedback-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeFeedbackModal() {
+      const modal = document.getElementById('feedback-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    async function submitFeedbackForm(event) {
+      event.preventDefault();
+      const nameVal = (document.getElementById('feedback-name')?.value || '').trim();
+      const districtVal = (document.getElementById('feedback-district')?.value || '').trim();
+      const categoryVal = document.getElementById('feedback-category')?.value || 'General Note';
+      const messageVal = (document.getElementById('feedback-message')?.value || '').trim();
+      const statusEl = document.getElementById('feedback-status-msg');
+      const submitBtn = document.getElementById('feedback-submit-btn');
+
+      if (!messageVal) return;
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+      }
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_ACCESS_KEY,
+            subject: `Assam Flood Monitor Feedback: ${categoryVal}`,
+            from_name: nameVal || 'Anonymous Visitor',
+            visitor_name: nameVal || 'Not provided',
+            district_or_town: districtVal || 'Not specified',
+            category: categoryVal,
+            message: messageVal
+          })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          if (statusEl) {
+            statusEl.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200';
+            statusEl.textContent = 'Thank you! Your feedback has been sent.';
+          }
+          document.getElementById('feedback-form')?.reset();
+          showToast('Feedback sent — thank you!');
+          setTimeout(() => closeFeedbackModal(), 1100);
+        } else {
+          throw new Error(data.message || 'Submission failed');
+        }
+      } catch (err) {
+        if (statusEl) {
+          statusEl.className = 'p-3 rounded-xl text-xs font-semibold bg-red-50 text-red-800 border border-red-200';
+          statusEl.textContent = 'Could not send right now. Please try again shortly.';
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit Feedback';
+        }
+      }
+    }
+
     function openShareImageModal(gaugeId) {
       const g = ALL_GAUGES.find(item => item.id === gaugeId);
       if (!g) return;
@@ -3440,7 +3599,7 @@
       }, 2800);
     }
 
-    ['watchlist-modal', 'share-modal', 'gauge-detail-modal'].forEach(id => {
+    ['watchlist-modal', 'share-modal', 'gauge-detail-modal', 'feedback-modal'].forEach(id => {
       document.getElementById(id).addEventListener('click', (e) => {
         if (e.target.id === id) {
           e.target.classList.add('hidden');
