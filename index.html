@@ -46,7 +46,11 @@
   </script>
 
   <style>
-    html { scroll-behavior: smooth; }
+    html, body {
+      scroll-behavior: smooth;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       background-color: #f1f5f9;
@@ -114,22 +118,22 @@
   <!-- ===================================================================== -->
   <!-- TOP NAVIGATION BAR                                                    -->
   <!-- ===================================================================== -->
-  <header class="bg-navy-900 text-white sticky top-0 z-40 shadow-md border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16 gap-2 sm:gap-3">
+  <header class="bg-navy-900 text-white sticky top-0 z-40 shadow-md border-b border-white/10 w-full">
+    <div class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14 sm:h-16 gap-1.5 sm:gap-3">
 
         <!-- Brand Identity -->
-        <button onclick="switchTab('dashboard')" class="flex items-center gap-2.5 text-left focus:outline-none group shrink-0">
-          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-500/15 border border-blue-400/30 flex items-center justify-center shrink-0 group-hover:bg-blue-500/25 transition">
-            <svg class="w-6 h-6 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button onclick="switchTab('dashboard')" class="flex items-center gap-2 text-left focus:outline-none group min-w-0">
+          <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-500/15 border border-blue-400/30 flex items-center justify-center shrink-0 group-hover:bg-blue-500/25 transition">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 10.5L12 3l9 7.5" class="text-white" stroke="currentColor"/>
               <path d="M5.5 9.5V15h13V9.5" class="text-white" stroke="currentColor"/>
               <path d="M2 18c1.5-1.2 3-1.2 4.5 0s3 1.2 4.5 0 3-1.2 4.5 0 3 1.2 4.5 0" class="text-sky-400" stroke="currentColor"/>
               <path d="M2 21c1.5-1.2 3-1.2 4.5 0s3 1.2 4.5 0 3-1.2 4.5 0 3 1.2 4.5 0" class="text-sky-400" stroke="currentColor"/>
             </svg>
           </div>
-          <div class="leading-tight whitespace-nowrap">
-            <div class="font-extrabold tracking-tight text-sm sm:text-base text-white">
+          <div class="leading-tight min-w-0">
+            <div class="font-extrabold tracking-tight text-xs sm:text-base text-white truncate">
               ASSAM FLOOD <span class="text-sky-400">MONITOR</span>
             </div>
             <div class="text-[11px] text-slate-300 hidden lg:block">
@@ -168,40 +172,30 @@
           </button>
         </nav>
 
-        <!-- Right Status, Mobile About, Lite Mode & Refresh -->
-        <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <!-- Right Status, Lite Mode & Refresh -->
+        <div class="flex items-center gap-1 sm:gap-2 shrink-0">
           <!-- Live Feed Status Pill -->
           <div
             id="data-source-pill"
-            class="px-2.5 py-1.5 rounded-xl bg-slate-700/70 border border-slate-500/40 text-slate-200 text-[11px] font-bold flex items-center gap-1.5 whitespace-nowrap"
+            class="px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl bg-slate-700/70 border border-slate-500/40 text-slate-200 text-[10px] sm:text-[11px] font-bold flex items-center gap-1 sm:gap-1.5 whitespace-nowrap"
           >
-            <span id="data-source-dot" class="w-2 h-2 rounded-full bg-slate-400 animate-pulse-soft shrink-0"></span>
+            <span id="data-source-dot" class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-slate-400 animate-pulse-soft shrink-0"></span>
             <span id="data-source-label">Loading...</span>
           </div>
-
-          <!-- Mobile About Button -->
-          <button
-            onclick="switchTab('about')"
-            title="About Assam Flood Monitor"
-            class="md:hidden p-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100"
-            aria-label="About"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          </button>
 
           <!-- 2G / Low-Bandwidth Lite Mode Toggle -->
           <button
             id="lite-mode-btn"
             onclick="toggleLiteMode()"
             title="Toggle 2G Low-Bandwidth Lite Mode"
-            class="px-2.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
+            class="p-2 sm:px-2.5 sm:py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
             aria-label="Toggle 2G Lite Mode"
           >
             <span>⚡</span>
             <span class="hidden sm:inline">Lite</span>
           </button>
 
-          <button onclick="loadLiveCwcData(true)" title="Refresh live CWC data" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100" aria-label="Refresh Data">
+          <button onclick="loadLiveCwcData(true)" title="Refresh live CWC data" class="p-2 sm:p-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition text-slate-100" aria-label="Refresh Data">
             <svg id="refresh-icon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
             </svg>
@@ -906,27 +900,31 @@
   </footer>
 
   <!-- MOBILE BOTTOM NAVIGATION -->
-  <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t border-slate-200 shadow-lg" aria-label="Mobile Navigation">
-    <div class="grid grid-cols-5 gap-1 px-1.5 py-1.5">
-      <button data-tab="dashboard" onclick="switchTab('dashboard')" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-blue-600 bg-blue-50 font-semibold text-[10px]">
-        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
-        Home
+  <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t border-slate-200 shadow-lg w-full" aria-label="Mobile Navigation">
+    <div class="grid grid-cols-6 gap-1 px-2 py-1.5 max-w-full">
+      <button data-tab="dashboard" onclick="switchTab('dashboard')" class="mobile-nav-btn min-w-0 flex flex-col items-center justify-center py-1.5 px-0.5 rounded-xl text-blue-600 bg-blue-50 font-semibold text-[9.5px] leading-tight">
+        <svg class="w-4 h-4 mb-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+        <span class="truncate">Home</span>
       </button>
-      <button data-tab="rivers" onclick="switchTab('rivers')" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium text-[10px]">
-        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
-        Gauges
+      <button data-tab="rivers" onclick="switchTab('rivers')" class="mobile-nav-btn min-w-0 flex flex-col items-center justify-center py-1.5 px-0.5 rounded-xl text-slate-500 font-medium text-[9.5px] leading-tight">
+        <svg class="w-4 h-4 mb-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
+        <span class="truncate">Gauges</span>
       </button>
-      <button data-tab="weather" onclick="switchTab('weather')" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium text-[10px]">
-        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 16.2A4.5 4.5 0 0017.5 8h-1.8A7 7 0 104 14.9M8 19v2m4-3v3m4-2v2"/></svg>
-        Weather
+      <button data-tab="weather" onclick="switchTab('weather')" class="mobile-nav-btn min-w-0 flex flex-col items-center justify-center py-1.5 px-0.5 rounded-xl text-slate-500 font-medium text-[9.5px] leading-tight">
+        <svg class="w-4 h-4 mb-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 16.2A4.5 4.5 0 0017.5 8h-1.8A7 7 0 104 14.9M8 19v2m4-3v3m4-2v2"/></svg>
+        <span class="truncate">Weather</span>
       </button>
-      <button data-tab="alerts" onclick="switchTab('alerts')" class="mobile-nav-btn relative flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-medium text-[10px]">
-        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
-        Alerts
+      <button data-tab="alerts" onclick="switchTab('alerts')" class="mobile-nav-btn min-w-0 relative flex flex-col items-center justify-center py-1.5 px-0.5 rounded-xl text-slate-500 font-medium text-[9.5px] leading-tight">
+        <svg class="w-4 h-4 mb-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+        <span class="truncate">Alerts</span>
       </button>
-      <button data-tab="sos" onclick="switchTab('sos')" class="mobile-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-red-600 font-semibold text-[10px]">
-        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-        SOS
+      <button data-tab="about" onclick="switchTab('about')" class="mobile-nav-btn min-w-0 flex flex-col items-center justify-center py-1.5 px-0.5 rounded-xl text-slate-500 font-medium text-[9.5px] leading-tight">
+        <svg class="w-4 h-4 mb-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="truncate">About</span>
+      </button>
+      <button data-tab="sos" onclick="switchTab('sos')" class="mobile-nav-btn min-w-0 flex flex-col items-center justify-center py-1.5 px-0.5 rounded-xl text-red-600 font-semibold text-[9.5px] leading-tight">
+        <svg class="w-4 h-4 mb-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        <span class="truncate">SOS</span>
       </button>
     </div>
   </nav>
@@ -1113,7 +1111,7 @@
     let activeMapLayer = 'gauges';
     let activeBaseMap = 'map';
     let activeLegendFilter = null;
-    let isLegendOpen = true;
+    let isLegendOpen = typeof window !== 'undefined' ? window.innerWidth >= 640 : true;
     let isMapExpanded = false;
     let assamMap = null;
     let baseTileLayer = null;
@@ -1456,19 +1454,19 @@
       const syncedTime = formatSyncTime(lastFetchedAt);
 
       if (dataSourceMode === 'unavailable') {
-        pill.className = 'px-2.5 py-1.5 rounded-xl bg-red-500/20 border border-red-400/40 text-red-200 text-[11px] font-bold flex items-center gap-1.5 whitespace-nowrap';
-        dot.className = 'w-2 h-2 rounded-full bg-red-400 shrink-0';
-        label.textContent = 'Data Unavailable';
+        pill.className = 'px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl bg-red-500/20 border border-red-400/40 text-red-200 text-[10px] sm:text-[11px] font-bold flex items-center gap-1 sm:gap-1.5 whitespace-nowrap';
+        dot.className = 'w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-red-400 shrink-0';
+        label.textContent = 'Unavailable';
         syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> Data unavailable. Check CWC or ASDMA directly.`;
       } else if (feedAgeHours !== null && feedAgeHours > 6) {
-        pill.className = 'px-2.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-200 text-[11px] font-bold flex items-center gap-1.5 whitespace-nowrap';
-        dot.className = 'w-2 h-2 rounded-full bg-amber-400 shrink-0';
-        label.textContent = `Updated ${Math.round(feedAgeHours)}h ago`;
+        pill.className = 'px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-200 text-[10px] sm:text-[11px] font-bold flex items-center gap-1 sm:gap-1.5 whitespace-nowrap';
+        dot.className = 'w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-400 shrink-0';
+        label.textContent = `${Math.round(feedAgeHours)}h ago`;
         syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> ${ALL_GAUGES.length} Assam CWC stations &bull; Data last updated ${Math.round(feedAgeHours)} hours ago (${syncedTime})`;
       } else {
-        pill.className = 'px-2.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[11px] font-bold flex items-center gap-1.5 whitespace-nowrap';
-        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse-soft shrink-0';
-        label.textContent = `CWC Assam (${ALL_GAUGES.length})`;
+        pill.className = 'px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[10px] sm:text-[11px] font-bold flex items-center gap-1 sm:gap-1.5 whitespace-nowrap';
+        dot.className = 'w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 animate-pulse-soft shrink-0';
+        label.textContent = `Live (${ALL_GAUGES.length})`;
         syncText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ${ALL_GAUGES.length} Assam CWC stations &bull; Last synced ${syncedTime}`;
       }
     }
