@@ -69,3 +69,61 @@ self.addEventListener('fetch', (event) => {
       })
   );
 });
+
+// =========================================================================
+// WEB PUSH NOTIFICATIONS (WL / DL ALERTS FOR USER WATCHLIST)
+// =========================================================================
+self.addEventListener('push', (event) => {
+  let payload = {
+    title: 'Assam Flood Monitor Alert',
+    body: 'A gauge on your watchlist reported a new water level update.',
+    url: './',
+    tag: 'assam-flood-alert'
+  };
+
+  if (event.data) {
+    try {
+      const parsed = event.data.json();
+      payload = { ...payload, ...parsed };
+    } catch {
+      payload.body = event.data.text() || payload.body;
+    }
+  }
+
+  const options = {
+    body: payload.body,
+    tag: payload.tag || 'assam-flood-alert',
+    renotify: true,
+    requireInteraction: payload.severity === 'danger',
+    vibrate: payload.severity === 'danger' ? [250, 100, 250, 100, 350] : [200, 100, 200],
+    icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='44' fill='%23071426'/%3E%3Cpath d='M24 114c15-12 30-12 45 0s30 12 45 0 30-12 45 0M24 144c15-12 30-12 45 0s30 12 45 0 30-12 45 0' stroke='%2338bdf8' stroke-width='15' fill='none' stroke-linecap='round'/%3E%3Cpath d='M42 84l54-42 54 42' stroke='%23ffffff' stroke-width='14' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
+    badge: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' rx='24' fill='%23071426'/%3E%3Cpath d='M12 58c8-6 16-6 24 0s16 6 24 0 16-6 24 0' stroke='%2338bdf8' stroke-width='8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E",
+    data: {
+      url: payload.url || './',
+      gaugeId: payload.gaugeId || null
+    }
+  };
+
+  event.waitUntil(self.registration.showNotification(payload.title, options));
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const gaugeId = event.notification.data?.gaugeId;
+  const targetUrl = gaugeId ? `./?gauge=${encodeURIComponent(gaugeId)}` : (event.notification.data?.url || './');
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      for (const client of windowClients) {
+        if ('focus' in client) {
+          client.focus();
+          if (gaugeId) client.postMessage({ type: 'OPEN_GAUGE', gaugeId });
+          return;
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(targetUrl);
+      }
+    })
+  );
+});
