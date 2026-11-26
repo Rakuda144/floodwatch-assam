@@ -12,6 +12,8 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://assamfloodmonitor.vercel.app/" />
   <meta name="twitter:card" content="summary" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='44' fill='%23071426'/%3E%3Cpath d='M24 114c15-12 30-12 45 0s30 12 45 0 30-12 45 0M24 144c15-12 30-12 45 0s30 12 45 0 30-12 45 0' stroke='%2338bdf8' stroke-width='15' fill='none' stroke-linecap='round'/%3E%3Cpath d='M42 84l54-42 54 42' stroke='%23ffffff' stroke-width='14' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23071426'/%3E%3Cpath d='M4 19c2.5-2 5-2 7.5 0s5 2 7.5 0 5-2 7.5 0M4 24c2.5-2 5-2 7.5 0s5 2 7.5 0 5-2 7.5 0' stroke='%2338bdf8' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M7 14l9-7 9 7' stroke='%23ffffff' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
   <title>Assam Flood Monitor — Live CWC River &amp; Rainfall Tracker</title>
 
@@ -183,6 +185,18 @@
             <span id="data-source-label">Loading...</span>
           </div>
 
+          <!-- PWA Install App Button (Shown automatically when browser supports install) -->
+          <button
+            id="pwa-install-btn"
+            onclick="promptPwaInstall()"
+            title="Install Assam Flood Monitor App"
+            class="hidden px-2.5 py-1.5 sm:py-2 rounded-xl bg-sky-500 hover:bg-sky-400 active:scale-95 transition text-slate-950 text-[11px] sm:text-xs font-extrabold items-center gap-1 whitespace-nowrap shadow-sm"
+            aria-label="Install App"
+          >
+            <span>📲</span>
+            <span>Install</span>
+          </button>
+
           <!-- 2G / Low-Bandwidth Lite Mode Toggle -->
           <button
             id="lite-mode-btn"
@@ -223,7 +237,7 @@
 
   <!-- Offline Mode Banner -->
   <div id="offline-banner" class="hidden bg-amber-500 text-slate-950 text-xs font-semibold px-4 py-2 text-center shadow-sm">
-    <span>⚠️ You are currently offline — check CWC or ASDMA directly and use emergency numbers below.</span>
+    <span>⚠️ You are currently offline — showing cached readings (if available) &amp; emergency helplines below.</span>
   </div>
 
   <!-- 2G / Low-Bandwidth Lite Mode Banner -->
@@ -1208,7 +1222,7 @@
     let currentShareGauge = null;
     let currentShareBlob = null;
     let currentShareFilename = 'assamfloodmonitor.png';
-
+    let deferredInstallPrompt = null;
     // =========================================================================
     // 1. BANNER & DATA AVAILABILITY HELPERS
     // =========================================================================
@@ -3617,6 +3631,46 @@
 
     window.addEventListener('online', updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
+
+    // PWA Install Prompt & Offline Service Worker Registration
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const installBtn = document.getElementById('pwa-install-btn');
+      if (installBtn) {
+        installBtn.classList.remove('hidden');
+        installBtn.classList.add('inline-flex');
+      }
+    });
+
+    window.addEventListener('appinstalled', () => {
+      deferredInstallPrompt = null;
+      const installBtn = document.getElementById('pwa-install-btn');
+      if (installBtn) {
+        installBtn.classList.add('hidden');
+        installBtn.classList.remove('inline-flex');
+      }
+      showToast('Assam Flood Monitor installed on your home screen!');
+    });
+
+    async function promptPwaInstall() {
+      if (!deferredInstallPrompt) {
+        showToast('Open browser menu and tap "Install app" or "Add to Home screen"');
+        return;
+      }
+      deferredInstallPrompt.prompt();
+      const { outcome } = await deferredInstallPrompt.userChoice;
+      if (outcome === 'accepted') {
+        deferredInstallPrompt = null;
+      }
+    }
+
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
     window.addEventListener('load', () => {
       if (assamMap) assamMap.invalidateSize();
     });
