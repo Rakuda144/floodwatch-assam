@@ -1925,6 +1925,57 @@
       `;
     }
 
+    function buildHistoryTableHTML(g) {
+      const pts = g.trendInfo?.points || [];
+      if (pts.length === 0) {
+        return `<div class="text-[11px] text-slate-400 italic py-2">No past readings logged in history yet.</div>`;
+      }
+
+      // Build rows oldest-to-newest to compute exact delta from previous reading, then reverse to show newest first
+      const rows = pts.map((p, idx) => {
+        let deltaHtml = `<span class="text-slate-400 font-medium">Baseline</span>`;
+        if (idx > 0) {
+          const diffCm = Math.round((p.level - pts[idx - 1].level) * 100);
+          if (diffCm > 0) {
+            deltaHtml = `<span class="px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 font-bold">↑ +${diffCm} cm</span>`;
+          } else if (diffCm < 0) {
+            deltaHtml = `<span class="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold">↓ ${diffCm} cm</span>`;
+          } else {
+            deltaHtml = `<span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-semibold">→ 0 cm</span>`;
+          }
+        }
+        return {
+          timeLabel: formatCwcReadingTime(p.time),
+          level: p.level,
+          deltaHtml,
+          isLatest: idx === pts.length - 1
+        };
+      }).reverse();
+
+      return `
+        <div class="mt-3 pt-3 border-t border-slate-100">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-bold text-slate-700">Recorded Readings Log (Newest First)</span>
+            <span class="text-[10px] text-slate-400">From CWC history</span>
+          </div>
+          <div class="max-h-48 overflow-y-auto rounded-xl border border-slate-200/80 divide-y divide-slate-100 bg-slate-50/40">
+            ${rows.map(r => `
+              <div class="px-3 py-2 flex items-center justify-between gap-2 text-xs ${r.isLatest ? 'bg-sky-50/60' : ''}">
+                <div class="min-w-0">
+                  <span class="font-medium text-slate-700">${r.timeLabel}</span>
+                  ${r.isLatest ? `<span class="ml-1.5 px-1.5 py-0.2 rounded bg-sky-100 text-sky-700 text-[9px] font-bold uppercase">Latest</span>` : ''}
+                </div>
+                <div class="flex items-center gap-2.5 shrink-0">
+                  <span class="text-[11px]">${r.deltaHtml}</span>
+                  <span class="font-extrabold text-slate-900 w-16 text-right">${r.level.toFixed(2)} m</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
     function setAlertsSubTab(tab) {
       activeAlertsSubTab = tab;
       renderAlertsAndTicker();
@@ -3035,6 +3086,7 @@
             <span class="text-[10px] font-semibold text-slate-400">${g.trendInfo?.points?.length || 1} reading(s) logged</span>
           </div>
           ${buildHistoryChartSVG(g)}
+          ${buildHistoryTableHTML(g)}
         </div>
 
         <div class="rounded-2xl border border-slate-200 p-4 bg-white space-y-2 text-xs">
