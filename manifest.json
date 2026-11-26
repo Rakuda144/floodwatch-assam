@@ -1,0 +1,26 @@
+{
+"name": "Assam Flood Monitor",
+"short_name": "Assam Flood",
+"description": "Real-time CWC river water levels, rate-of-rise trends, interactive gauge map, and flood emergency helplines across Assam.",
+"start_url": "./",
+"scope": "./",
+"display": "standalone",
+"orientation": "portrait-primary",
+"background_color": "#071426",
+"theme_color": "#071426",
+"categories": ["weather", "utilities", "news"],
+"icons": [
+{
+"src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='44' fill='%23071426'/%3E%3Cpath d='M24 114c15-12 30-12 45 0s30 12 45 0 30-12 45 0M24 144c15-12 30-12 45 0s30 12 45 0 30-12 45 0' stroke='%2338bdf8' stroke-width='15' fill='none' stroke-linecap='round'/%3E%3Cpath d='M42 84l54-42 54 42' stroke='%23ffffff' stroke-width='14' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
+"sizes": "192x192",
+"type": "image/svg+xml",
+"purpose": "any maskable"
+},
+{
+"src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23071426'/%3E%3Cpath d='M64 304c40-32 80-32 120 0s80 32 120 0 80-32 120 0M64 384c40-32 80-32 120 0s80 32 120 0 80-32 120 0' stroke='%2338bdf8' stroke-width='40' fill='none' stroke-linecap='round'/%3E%3Cpath d='M112 224l144-112 144 112' stroke='%23ffffff' stroke-width='38' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
+"sizes": "512x512",
+"type": "image/svg+xml",
+"purpose": "any maskable"
+}
+]
+}
