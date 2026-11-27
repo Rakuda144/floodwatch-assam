@@ -1,5 +1,6 @@
 # .github/workflows/asdma-test.yml
-# Manual test: downloads one day's flood report (through the Mumbai relay) and attaches it to the run.
+# Manual test: downloads one day's flood report (through the Mumbai relay),
+# reads its tables, and attaches the results to the run.
 name: ASDMA report test
 
 on:
@@ -21,10 +22,32 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install poppler (pdftotext)
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+
       - name: Try to download the report
         env:
           RELAY_KEY: ${{ secrets.RELAY_KEY }}
         run: node scripts/fetch-asdma.mjs ${{ github.event.inputs.date }}
+
+      - name: Extract text and parse
+        run: |
+          shopt -s nullglob
+          pdfs=(out/Daily_Flood_Report_*.pdf)
+          if [ ${#pdfs[@]} -eq 0 ]; then
+            echo "No PDF downloaded, nothing to parse"
+            exit 0
+          fi
+          pdftotext -layout "${pdfs[0]}" out/report.txt
+          node scripts/parse-asdma.mjs out/report.txt out/asdma.json
+
+      - name: Save data only if all checks passed
+        if: success()
+        run: |
+          if [ -f out/asdma.json ]; then
+            mkdir -p data
+            cp out/asdma.json data/asdma.json
+          fi
 
       - name: Attach result (not committed to the repo)
         if: always()
