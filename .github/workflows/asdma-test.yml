@@ -1,5 +1,5 @@
 # .github/workflows/asdma-test.yml
-# Manual test: tries to download one day's flood report and attaches it to the run.
+# Manual test: downloads one day's flood report (through the Mumbai relay) and attaches it to the run.
 name: ASDMA report test
 
 on:
@@ -22,6 +22,8 @@ jobs:
           node-version: 20
 
       - name: Try to download the report
+        env:
+          RELAY_KEY: ${{ secrets.RELAY_KEY }}
         run: node scripts/fetch-asdma.mjs ${{ github.event.inputs.date }}
 
       - name: Attach result (not committed to the repo)
