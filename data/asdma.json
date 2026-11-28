@@ -1,0 +1,563 @@
+{
+  "reportDate": "21-07-2026",
+  "totals": {
+    "people": 566524,
+    "cropHa": 23931.16,
+    "villages": 873
+  },
+  "ok": true,
+  "warnings": [],
+  "checks": [
+    {
+      "district": "Biswanath",
+      "ok": true,
+      "people": "415 vs 415",
+      "cropHa": "32.500 vs 32.5",
+      "villages": "7 vs 7"
+    },
+    {
+      "district": "Bongaigaon",
+      "ok": true,
+      "people": "0 vs 0",
+      "cropHa": "0.000 vs 0",
+      "villages": "0 vs 0"
+    },
+    {
+      "district": "Charaideo",
+      "ok": true,
+      "people": "72646 vs 72646",
+      "cropHa": "1842.870 vs 1842.87",
+      "villages": "128 vs 128"
+    },
+    {
+      "district": "Dhemaji",
+      "ok": true,
+      "people": "2200 vs 2200",
+      "cropHa": "15.000 vs 15",
+      "villages": "3 vs 3"
+    },
+    {
+      "district": "Dibrugarh",
+      "ok": true,
+      "people": "20479 vs 20479",
+      "cropHa": "547.430 vs 547.43",
+      "villages": "104 vs 104"
+    },
+    {
+      "district": "Golaghat",
+      "ok": true,
+      "people": "16799 vs 16799",
+      "cropHa": "2826.080 vs 2826.08",
+      "villages": "133 vs 133"
+    },
+    {
+      "district": "Hojai",
+      "ok": true,
+      "people": "0 vs 0",
+      "cropHa": "206.300 vs 206.3",
+      "villages": "8 vs 8"
+    },
+    {
+      "district": "Jorhat",
+      "ok": true,
+      "people": "87662 vs 87662",
+      "cropHa": "5104.550 vs 5104.55",
+      "villages": "154 vs 154"
+    },
+    {
+      "district": "Kamrup",
+      "ok": true,
+      "people": "1600 vs 1600",
+      "cropHa": "20.400 vs 20.4",
+      "villages": "11 vs 11"
+    },
+    {
+      "district": "Kamrup (M)",
+      "ok": true,
+      "people": "576 vs 576",
+      "cropHa": "4.150 vs 4.15",
+      "villages": "6 vs 6"
+    },
+    {
+      "district": "Karbi Anglong",
+      "ok": true,
+      "people": "3810 vs 3810",
+      "cropHa": "0.000 vs 0",
+      "villages": "8 vs 8"
+    },
+    {
+      "district": "Lakhimpur",
+      "ok": true,
+      "people": "0 vs 0",
+      "cropHa": "0.000 vs 0",
+      "villages": "1 vs 1"
+    },
+    {
+      "district": "Nagaon",
+      "ok": true,
+      "people": "732 vs 732",
+      "cropHa": "77.000 vs 77",
+      "villages": "19 vs 19"
+    },
+    {
+      "district": "Sivasagar",
+      "ok": true,
+      "people": "359535 vs 359535",
+      "cropHa": "12674.610 vs 12674.61",
+      "villages": "268 vs 268"
+    },
+    {
+      "district": "Sonitpur",
+      "ok": true,
+      "people": "0 vs 0",
+      "cropHa": "4.270 vs 4.27",
+      "villages": "1 vs 1"
+    },
+    {
+      "district": "Tinsukia",
+      "ok": true,
+      "people": "70 vs 70",
+      "cropHa": "574.000 vs 574",
+      "villages": "21 vs 21"
+    },
+    {
+      "district": "Udalguri",
+      "ok": true,
+      "people": "0 vs 0",
+      "cropHa": "2.000 vs 2",
+      "villages": "1 vs 1"
+    }
+  ],
+  "districts": [
+    {
+      "name": "Biswanath",
+      "people": 415,
+      "cropHa": 32.5,
+      "circles": [
+        {
+          "name": "Halem",
+          "people": 415,
+          "cropHa": 0,
+          "villages": 2
+        },
+        {
+          "name": "Gohpur",
+          "people": 0,
+          "cropHa": 32.5,
+          "villages": 5
+        }
+      ],
+      "villages": 7
+    },
+    {
+      "name": "Bongaigaon",
+      "people": 0,
+      "cropHa": 0,
+      "circles": [
+        {
+          "name": "Srijangram",
+          "people": 0,
+          "cropHa": 0,
+          "villages": 0
+        },
+        {
+          "name": "Manikpur",
+          "people": 0,
+          "cropHa": 0,
+          "villages": 0
+        }
+      ],
+      "villages": 0
+    },
+    {
+      "name": "Charaideo",
+      "people": 72646,
+      "cropHa": 1842.87,
+      "circles": [
+        {
+          "name": "Mahmora",
+          "people": 13428,
+          "cropHa": 1012.87,
+          "villages": 32
+        },
+        {
+          "name": "Sapekhati",
+          "people": 13933,
+          "cropHa": 450,
+          "villages": 30
+        },
+        {
+          "name": "Sonari",
+          "people": 45285,
+          "cropHa": 380,
+          "villages": 66
+        }
+      ],
+      "villages": 128
+    },
+    {
+      "name": "Dhemaji",
+      "people": 2200,
+      "cropHa": 15,
+      "circles": [
+        {
+          "name": "Jonai",
+          "people": 1210,
+          "cropHa": 0,
+          "villages": 2
+        },
+        {
+          "name": "Dhemaji",
+          "people": 990,
+          "cropHa": 15,
+          "villages": 1
+        }
+      ],
+      "villages": 3
+    },
+    {
+      "name": "Dibrugarh",
+      "people": 20479,
+      "cropHa": 547.43,
+      "circles": [
+        {
+          "name": "Dibrugarh East",
+          "people": 13,
+          "cropHa": 6.5,
+          "villages": 5
+        },
+        {
+          "name": "Tengakhat",
+          "people": 6930,
+          "cropHa": 52.18,
+          "villages": 24
+        },
+        {
+          "name": "Chabua",
+          "people": 3857,
+          "cropHa": 69.33,
+          "villages": 19
+        },
+        {
+          "name": "Naharkatia",
+          "people": 1943,
+          "cropHa": 180.1,
+          "villages": 19
+        },
+        {
+          "name": "Tingkhong",
+          "people": 401,
+          "cropHa": 77,
+          "villages": 6
+        },
+        {
+          "name": "Moran",
+          "people": 4409,
+          "cropHa": 75.32,
+          "villages": 18
+        },
+        {
+          "name": "Dibrugarh West",
+          "people": 2926,
+          "cropHa": 87,
+          "villages": 13
+        }
+      ],
+      "villages": 104
+    },
+    {
+      "name": "Golaghat",
+      "people": 16799,
+      "cropHa": 2826.08,
+      "circles": [
+        {
+          "name": "Golaghat",
+          "people": 12136,
+          "cropHa": 1277.53,
+          "villages": 43
+        },
+        {
+          "name": "Khumtai",
+          "people": 1280,
+          "cropHa": 619.85,
+          "villages": 30
+        },
+        {
+          "name": "Bokakhat",
+          "people": 1427,
+          "cropHa": 378.1,
+          "villages": 18
+        },
+        {
+          "name": "Morongi",
+          "people": 826,
+          "cropHa": 191.29,
+          "villages": 15
+        },
+        {
+          "name": "Sarupathar",
+          "people": 0,
+          "cropHa": 32,
+          "villages": 3
+        },
+        {
+          "name": "Dergaon",
+          "people": 1130,
+          "cropHa": 327.31,
+          "villages": 24
+        }
+      ],
+      "villages": 133
+    },
+    {
+      "name": "Hojai",
+      "people": 0,
+      "cropHa": 206.3,
+      "circles": [
+        {
+          "name": "Doboka",
+          "people": 0,
+          "cropHa": 202,
+          "villages": 7
+        },
+        {
+          "name": "Hojai",
+          "people": 0,
+          "cropHa": 4.3,
+          "villages": 1
+        }
+      ],
+      "villages": 8
+    },
+    {
+      "name": "Jorhat",
+      "people": 87662,
+      "cropHa": 5104.55,
+      "circles": [
+        {
+          "name": "Jorhat West",
+          "people": 12051,
+          "cropHa": 1689.85,
+          "villages": 44
+        },
+        {
+          "name": "Mariani",
+          "people": 0,
+          "cropHa": 6,
+          "villages": 3
+        },
+        {
+          "name": "Jorhat East",
+          "people": 12541,
+          "cropHa": 0,
+          "villages": 22
+        },
+        {
+          "name": "Teok",
+          "people": 59058,
+          "cropHa": 3408.7,
+          "villages": 48
+        },
+        {
+          "name": "Titabor",
+          "people": 4012,
+          "cropHa": 0,
+          "villages": 37
+        }
+      ],
+      "villages": 154
+    },
+    {
+      "name": "Kamrup",
+      "people": 1600,
+      "cropHa": 20.4,
+      "circles": [
+        {
+          "name": "Chaygaon",
+          "people": 0,
+          "cropHa": 20.4,
+          "villages": 4
+        },
+        {
+          "name": "Palashbari",
+          "people": 1600,
+          "cropHa": 0,
+          "villages": 7
+        },
+        {
+          "name": "Hajo",
+          "people": 0,
+          "cropHa": 0,
+          "villages": 0
+        }
+      ],
+      "villages": 11
+    },
+    {
+      "name": "Kamrup (M)",
+      "people": 576,
+      "cropHa": 4.15,
+      "circles": [
+        {
+          "name": "Azara",
+          "people": 200,
+          "cropHa": 0,
+          "villages": 1
+        },
+        {
+          "name": "Sonapur",
+          "people": 376,
+          "cropHa": 4.15,
+          "villages": 5
+        }
+      ],
+      "villages": 6
+    },
+    {
+      "name": "Karbi Anglong",
+      "people": 3810,
+      "cropHa": 0,
+      "circles": [
+        {
+          "name": "Phuloni",
+          "people": 3810,
+          "cropHa": 0,
+          "villages": 8
+        }
+      ],
+      "villages": 8
+    },
+    {
+      "name": "Lakhimpur",
+      "people": 0,
+      "cropHa": 0,
+      "circles": [
+        {
+          "name": "Dhakuakhana",
+          "people": 0,
+          "cropHa": 0,
+          "villages": 0
+        },
+        {
+          "name": "Subansiri",
+          "people": 0,
+          "cropHa": 0,
+          "villages": 0
+        },
+        {
+          "name": "North Lakhimpur",
+          "people": 0,
+          "cropHa": 0,
+          "villages": 1
+        }
+      ],
+      "villages": 1
+    },
+    {
+      "name": "Nagaon",
+      "people": 732,
+      "cropHa": 77,
+      "circles": [
+        {
+          "name": "Samaguri",
+          "people": 0,
+          "cropHa": 77,
+          "villages": 16
+        },
+        {
+          "name": "Kaliabor",
+          "people": 732,
+          "cropHa": 0,
+          "villages": 3
+        }
+      ],
+      "villages": 19
+    },
+    {
+      "name": "Sivasagar",
+      "people": 359535,
+      "cropHa": 12674.61,
+      "circles": [
+        {
+          "name": "Nazira",
+          "people": 119973,
+          "cropHa": 3654.02,
+          "villages": 100
+        },
+        {
+          "name": "Sivsagar",
+          "people": 21349,
+          "cropHa": 652,
+          "villages": 49
+        },
+        {
+          "name": "Amguri",
+          "people": 82457,
+          "cropHa": 7388.59,
+          "villages": 88
+        },
+        {
+          "name": "Demow",
+          "people": 121926,
+          "cropHa": 980,
+          "villages": 21
+        },
+        {
+          "name": "Sonari RC part",
+          "people": 13830,
+          "cropHa": 0,
+          "villages": 10
+        }
+      ],
+      "villages": 268
+    },
+    {
+      "name": "Sonitpur",
+      "people": 0,
+      "cropHa": 4.27,
+      "circles": [
+        {
+          "name": "Dhekiajuli",
+          "people": 0,
+          "cropHa": 4.27,
+          "villages": 1
+        }
+      ],
+      "villages": 1
+    },
+    {
+      "name": "Tinsukia",
+      "people": 70,
+      "cropHa": 574,
+      "circles": [
+        {
+          "name": "Doomdooma",
+          "people": 0,
+          "cropHa": 62,
+          "villages": 8
+        },
+        {
+          "name": "Margherita",
+          "people": 70,
+          "cropHa": 512,
+          "villages": 13
+        }
+      ],
+      "villages": 21
+    },
+    {
+      "name": "Udalguri",
+      "people": 0,
+      "cropHa": 2,
+      "circles": [
+        {
+          "name": "Udalguri",
+          "people": 0,
+          "cropHa": 2,
+          "villages": 1
+        }
+      ],
+      "villages": 1
+    }
+  ]
+}
