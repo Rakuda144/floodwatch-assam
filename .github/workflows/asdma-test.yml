@@ -1,5 +1,5 @@
 # .github/workflows/asdma-test.yml
-# Daily ASDMA district report: finds the newest report (today, or up to 6 days back),
+# Daily ASDMA district report: finds the newest report (today, or up to 29 days back),
 # reads its tables, saves data/asdma.json when all checks pass, and attaches the output.
 name: ASDMA daily report
 
@@ -32,7 +32,7 @@ jobs:
       - name: Install poppler (pdftotext)
         run: sudo apt-get update && sudo apt-get install -y poppler-utils
 
-      - name: Find the newest report (today, then up to 6 days back)
+      - name: Find the newest report (today, then up to 29 days back)
         env:
           RELAY_KEY: ${{ secrets.RELAY_KEY }}
           MANUAL_DATE: ${{ github.event.inputs.date }}
@@ -41,7 +41,7 @@ jobs:
           if [ -n "$MANUAL_DATE" ]; then
             dates="$MANUAL_DATE"
           else
-            dates=$(for i in 0 1 2 3 4 5 6; do TZ=Asia/Kolkata date -d "-$i day" +%F; done)
+            dates=$(for i in $(seq 0 29); do TZ=Asia/Kolkata date -d "-$i day" +%F; done)
           fi
           for d in $dates; do
             node scripts/fetch-asdma.mjs "$d" || true
