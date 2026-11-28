@@ -66,6 +66,10 @@ function blocks(sec, rowRe) {
   return out;
 }
 
+function popRowsCount(sec) {
+  return sec.lines.filter((l) => /^\s*[A-Za-z][A-Za-z ()]*?\s+\d[\d,]*\s+\d[\d,]*\s+\d[\d,]*\s+\d[\d,]*\s+\d+(?:\.\d+)?\b/.test(l)).length;
+}
+
 export function parseReport(text) {
   const lines = text.split(/\r?\n/);
   const dateMatch = text.match(/as on\s+(\d{2}-\d{2}-\d{4})/i);
@@ -75,6 +79,7 @@ export function parseReport(text) {
   // ---- Population & crop area (district totals + circles) ----
   const pop = section(lines, /^\s*Population\s+District/);
   if (!pop) throw new Error("Population section not found");
+  if (popRowsCount(pop) === 0) throw new Error("No district rows found in the population table");
   const popRow = /^\s*([A-Za-z][A-Za-z ()]*?)\s+(\d[\d,]*)\s+(\d[\d,]*)\s+(\d[\d,]*)\s+(\d[\d,]*)\s+(\d+(?:\.\d+)?)\b/;
   const popBlocks = blocks(pop, popRow);
 
@@ -161,6 +166,7 @@ export function parseReport(text) {
     checks.push({ district: "(report total)", ok: false, people: `${sumDistrictPeople} vs ${totals.people}` });
   }
 
+  if (districts.length === 0 || totals.people === null) allOk = false;
   return { reportDate, totals, ok: allOk, warnings, checks, districts };
 }
 
