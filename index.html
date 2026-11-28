@@ -3967,7 +3967,9 @@
         document.getElementById('district-impact-asof').textContent =
           'Official ASDMA report · as on ' + (data.reportDate || 'unknown date');
         const age = reportAgeDays(data.reportDate);
-        if (age !== null && age > 2) {
+        if (age !== null && age > 7) {
+          setNotice('Showing the report for ' + data.reportDate + ', published ' + age + ' days ago. No newer report has been released.', 'warn');
+        } else if (age !== null && age > 2) {
           setNotice('Showing the report for ' + data.reportDate + '. Newer figures are not available yet.', 'info');
         }
         const sorted = [...data.districts].sort((a, b) => b.people - a.people);

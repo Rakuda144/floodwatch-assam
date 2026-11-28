@@ -1,26 +1,27 @@
 # .github/workflows/asdma-test.yml
-# Manual test: downloads one day's flood report (through the Mumbai relay),
-# reads its tables, and attaches the results to the run.
+# Daily ASDMA district report: finds the newest report (today, or up to 6 days back),
+# reads its tables, saves data/asdma.json when all checks pass, and attaches the output.
 name: ASDMA daily report
+
+on:
+  schedule:
+    # 13:00 IST and 19:00 IST (07:30 and 13:30 UTC)
+    - cron: "30 7 * * *"
+    - cron: "30 13 * * *"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Report date, YYYY-MM-DD (leave empty to find the newest report)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
 
-on:
-  schedule:
-    # Daily at 13:00 IST (07:30 UTC). With no date, the script uses today.
-    - cron: "30 7 * * *"
-  workflow_dispatch:
-    inputs:
-      date:
-        description: "Report date, YYYY-MM-DD (leave empty for today)"
-        required: false
-        default: ""
-
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -31,17 +32,35 @@ jobs:
       - name: Install poppler (pdftotext)
         run: sudo apt-get update && sudo apt-get install -y poppler-utils
 
-      - name: Try to download the report
+      - name: Find the newest report (today, then up to 6 days back)
         env:
           RELAY_KEY: ${{ secrets.RELAY_KEY }}
-        run: node scripts/fetch-asdma.mjs ${{ github.event.inputs.date }}
+          MANUAL_DATE: ${{ github.event.inputs.date }}
+        run: |
+          shopt -s nullglob
+          if [ -n "$MANUAL_DATE" ]; then
+            dates="$MANUAL_DATE"
+          else
+            dates=$(for i in 0 1 2 3 4 5 6; do TZ=Asia/Kolkata date -d "-$i day" +%F; done)
+          fi
+          for d in $dates; do
+            node scripts/fetch-asdma.mjs "$d" || true
+            pdfs=(out/Daily_Flood_Report_*.pdf)
+            if [ ${#pdfs[@]} -gt 0 ]; then
+              echo "Using the report for $d"
+              break
+            fi
+          done
+          pdfs=(out/Daily_Flood_Report_*.pdf)
+          if [ ${#pdfs[@]} -eq 0 ]; then
+            echo "No report found in the checked dates; keeping the existing data"
+          fi
 
       - name: Extract text and parse
         run: |
           shopt -s nullglob
           pdfs=(out/Daily_Flood_Report_*.pdf)
           if [ ${#pdfs[@]} -eq 0 ]; then
-            echo "No PDF downloaded, nothing to parse"
             exit 0
           fi
           pdftotext -layout "${pdfs[0]}" out/report.txt
@@ -67,5 +86,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: asdma-test
+          name: asdma-daily
           path: out/
