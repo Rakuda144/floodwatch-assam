@@ -464,6 +464,27 @@
         <div id="map-legend" class="mt-2.5 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500"></div>
       </section>
 
+      <!-- DISTRICT IMPACT: official ASDMA daily report (data/asdma.json) -->
+      <section id="district-impact-section" class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
+        <div class="flex flex-col gap-1 mb-4">
+          <h2 class="text-base sm:text-lg font-bold text-slate-900">District impact</h2>
+          <p id="district-impact-asof" class="text-xs text-slate-500">Loading official ASDMA report…</p>
+        </div>
+        <div id="district-impact-notice" class="hidden mb-3 rounded-xl border px-3 py-2 text-xs font-medium"></div>
+        <div id="district-impact-body" class="hidden space-y-4">
+          <label class="flex flex-col gap-1 text-xs font-semibold text-slate-600">
+            District
+            <select id="district-impact-select" onchange="renderDistrictDetail(this.value)" class="rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 min-h-[44px]"></select>
+          </label>
+          <div id="district-impact-tiles" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5"></div>
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">By revenue circle</div>
+            <div id="district-impact-circles" class="space-y-2"></div>
+          </div>
+        </div>
+        <p class="mt-4 text-[11px] leading-relaxed text-slate-500">Official figures reported by ASDMA (DRIMS). Single-day counts, not running totals. Emergency: <a href="tel:1070" class="underline">1070</a> · <a href="tel:1077" class="underline">1077</a></p>
+      </section>
+
       <!-- LEVEL 4: UPSTREAM-TO-DOWNSTREAM FLOW CHAIN -->
       <section class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-4">
@@ -3873,6 +3894,109 @@
       });
       loadLiveAssamRainfall();
     });
+  </script>
+  <script>
+    // District impact card: reads data/asdma.json written by the daily ASDMA job.
+    (function () {
+      let asdmaData = null;
+      const fmt = (n) => Number(n || 0).toLocaleString('en-IN');
+      const fmtHa = (n) => Number(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 2 }) + ' ha';
+
+      function reportAgeDays(s) {
+        const m = /^(\d{2})-(\d{2})-(\d{4})$/.exec(s || '');
+        if (!m) return null;
+        const d = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+        const today = new Date(); today.setHours(0, 0, 0, 0);
+        return Math.round((today - d) / 86400000);
+      }
+
+      function setNotice(text, tone) {
+        const el = document.getElementById('district-impact-notice');
+        if (!el) return;
+        el.textContent = text;
+        el.className = 'mb-3 rounded-xl border px-3 py-2 text-xs font-medium ' +
+          (tone === 'warn' ? 'bg-amber-50 border-amber-200 text-amber-900' : 'bg-slate-50 border-slate-200 text-slate-700');
+      }
+
+      function tile(value, label) {
+        const d = document.createElement('div');
+        d.className = 'rounded-xl bg-slate-50 border border-slate-200 p-2.5';
+        const v = document.createElement('div');
+        v.className = 'text-lg font-bold text-slate-900 tabular-nums';
+        v.textContent = value;
+        const l = document.createElement('div');
+        l.className = 'text-[11px] text-slate-500';
+        l.textContent = label;
+        d.append(v, l);
+        return d;
+      }
+
+      function renderDistrictDetail(name) {
+        if (!asdmaData) return;
+        const d = asdmaData.districts.find((x) => x.name === name);
+        if (!d) return;
+        document.getElementById('district-impact-tiles').replaceChildren(
+          tile(fmt(d.villages), 'villages affected'),
+          tile(fmt(d.people), 'people affected'),
+          tile(fmtHa(d.cropHa), 'crop area submerged'),
+          tile(fmt(d.circles.length), 'revenue circles')
+        );
+        const circles = [...d.circles].sort((a, b) => b.people - a.people);
+        document.getElementById('district-impact-circles').replaceChildren(...circles.map((c) => {
+          const row = document.createElement('div');
+          row.className = 'rounded-xl bg-slate-50 border border-slate-200 p-3';
+          const top = document.createElement('div');
+          top.className = 'flex justify-between items-baseline gap-2';
+          const n = document.createElement('span');
+          n.className = 'font-semibold text-sm text-slate-900';
+          n.textContent = c.name;
+          const p = document.createElement('span');
+          p.className = 'text-sm tabular-nums text-slate-800';
+          p.textContent = fmt(c.people) + ' people';
+          top.append(n, p);
+          const sub = document.createElement('div');
+          sub.className = 'text-xs text-slate-500 mt-0.5';
+          sub.textContent = fmt(c.villages) + ' villages · ' + fmtHa(c.cropHa) + ' crop submerged';
+          row.append(top, sub);
+          return row;
+        }));
+      }
+
+      function render(data) {
+        asdmaData = data;
+        document.getElementById('district-impact-asof').textContent =
+          'Official ASDMA report · as on ' + (data.reportDate || 'unknown date');
+        const age = reportAgeDays(data.reportDate);
+        if (age !== null && age > 2) {
+          setNotice('Latest figures are from ' + data.reportDate + '. A newer report has not been published yet.', 'info');
+        }
+        const sorted = [...data.districts].sort((a, b) => b.people - a.people);
+        document.getElementById('district-impact-select').replaceChildren(...sorted.map((d) => {
+          const o = document.createElement('option');
+          o.value = d.name;
+          o.textContent = d.name;
+          return o;
+        }));
+        document.getElementById('district-impact-body').classList.remove('hidden');
+        if (sorted.length) renderDistrictDetail(sorted[0].name);
+      }
+
+      async function loadDistrictImpact() {
+        try {
+          const r = await fetch('data/asdma.json', { cache: 'no-store' });
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          const data = await r.json();
+          if (!data || !Array.isArray(data.districts)) throw new Error('unexpected file');
+          render(data);
+        } catch (e) {
+          document.getElementById('district-impact-asof').textContent = 'District report not available right now.';
+          setNotice('We could not load the latest district figures. Please check again later.', 'warn');
+        }
+      }
+
+      window.renderDistrictDetail = renderDistrictDetail;
+      window.addEventListener('DOMContentLoaded', loadDistrictImpact);
+    })();
   </script>
 </body>
 </html>
