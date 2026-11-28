@@ -1,12 +1,15 @@
 # .github/workflows/asdma-test.yml
 # Manual test: downloads one day's flood report (through the Mumbai relay),
 # reads its tables, and attaches the results to the run.
-name: ASDMA report test
+name: ASDMA daily report
 
 permissions:
   contents: write
 
 on:
+  schedule:
+    # Daily at 13:00 IST (07:30 UTC). With no date, the script uses today.
+    - cron: "30 7 * * *"
   workflow_dispatch:
     inputs:
       date:
