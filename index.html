@@ -114,6 +114,17 @@
       min-height: 420px;
     }
   </style>
+  <script>
+    // Show the tab from the link straight away, so the dashboard never flashes first
+    (function () {
+      var t = location.hash.slice(1);
+      if (!t || t === 'dashboard' || ['rivers', 'weather', 'alerts', 'about', 'sos'].indexOf(t) < 0) return;
+      var st = document.createElement('style');
+      st.id = 'initial-tab-style';
+      st.textContent = '[id^="view-"]{display:none!important}#view-' + t + '{display:block!important}';
+      document.head.appendChild(st);
+    })();
+  </script>
 </head>
 <body class="min-h-screen flex flex-col pb-20 md:pb-0">
 
@@ -3809,6 +3820,9 @@
     window.addEventListener('load', () => {
       const name = tabFromHash();
       if (name && name !== 'dashboard') switchTab(name, true);
+      // The tab is now set up properly, so drop the temporary style from the <head>
+      const temp = document.getElementById('initial-tab-style');
+      if (temp) temp.remove();
     });
     window.addEventListener('hashchange', () => switchTab(tabFromHash() || 'dashboard', true));
 
