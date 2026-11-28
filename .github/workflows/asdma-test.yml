@@ -70,6 +70,7 @@ jobs:
         if: success()
         run: |
           if [ -f out/asdma.json ]; then
+            node -e "const fs=require('fs');const d=JSON.parse(fs.readFileSync('out/asdma.json','utf8'));d.checkedAt=new Date().toISOString();fs.writeFileSync('out/asdma.json',JSON.stringify(d,null,2))"
             mkdir -p data
             cp out/asdma.json data/asdma.json
           fi

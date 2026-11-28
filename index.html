@@ -3902,6 +3902,17 @@
       const fmt = (n) => Number(n || 0).toLocaleString('en-IN');
       const fmtHa = (n) => Number(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 2 }) + ' ha';
 
+      // "today at 11:35 am IST" or "27 Nov, 8:00 am IST", based on India time
+      function formatCheckedAt(iso) {
+        const d = new Date(iso);
+        if (isNaN(d)) return '';
+        const day = (x) => x.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+        const time = d.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit' });
+        if (day(d) === day(new Date())) return 'today at ' + time + ' IST';
+        const date = d.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short' });
+        return date + ', ' + time + ' IST';
+      }
+
       function reportAgeDays(s) {
         const m = /^(\d{2})-(\d{2})-(\d{4})$/.exec(s || '');
         if (!m) return null;
@@ -3965,7 +3976,7 @@
       function render(data) {
         asdmaData = data;
         document.getElementById('district-impact-asof').textContent =
-          'Official ASDMA report · as on ' + (data.reportDate || 'unknown date');
+          'Official ASDMA report · as on ' + (data.reportDate || 'unknown date') + (data.checkedAt ? ' · checked ' + formatCheckedAt(data.checkedAt) : '');
         const age = reportAgeDays(data.reportDate);
         if (age !== null && age > 7) {
           setNotice('Showing the report for ' + data.reportDate + ', published ' + age + ' days ago. No newer report has been released.', 'warn');
@@ -3974,7 +3985,7 @@
         }
         const sorted = [...data.districts].sort((a, b) => b.people - a.people);
         if (sorted.length === 0) {
-          setNotice('The ASDMA report for ' + data.reportDate + ' shows no flood impact in any district.', 'info');
+          setNotice('Checked ' + (data.checkedAt ? formatCheckedAt(data.checkedAt) : 'recently') + '. Last report: ' + data.reportDate + ', which records no flood damage in any district. No newer report has been published.', 'info');
           document.getElementById('district-impact-body').classList.add('hidden');
           return;
         }
