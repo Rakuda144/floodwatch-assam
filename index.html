@@ -3973,6 +3973,11 @@
           setNotice('Showing the report for ' + data.reportDate + '. Newer figures are not available yet.', 'info');
         }
         const sorted = [...data.districts].sort((a, b) => b.people - a.people);
+        if (sorted.length === 0) {
+          setNotice('The ASDMA report for ' + data.reportDate + ' shows no flood impact in any district.', 'info');
+          document.getElementById('district-impact-body').classList.add('hidden');
+          return;
+        }
         document.getElementById('district-impact-select').replaceChildren(...sorted.map((d) => {
           const o = document.createElement('option');
           o.value = d.name;

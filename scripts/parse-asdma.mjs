@@ -79,7 +79,8 @@ export function parseReport(text) {
   // ---- Population & crop area (district totals + circles) ----
   const pop = section(lines, /^\s*Population\s+District/);
   if (!pop) throw new Error("Population section not found");
-  if (popRowsCount(pop) === 0) throw new Error("No district rows found in the population table");
+  const isNilReport = pop.lines.some((l) => /^\s*Total\s+Nil/.test(l));
+  if (popRowsCount(pop) === 0 && !isNilReport) throw new Error("No district rows found in the population table");
   const popRow = /^\s*([A-Za-z][A-Za-z ()]*?)\s+(\d[\d,]*)\s+(\d[\d,]*)\s+(\d[\d,]*)\s+(\d[\d,]*)\s+(\d+(?:\.\d+)?)\b/;
   const popBlocks = blocks(pop, popRow);
 
@@ -166,7 +167,15 @@ export function parseReport(text) {
     checks.push({ district: "(report total)", ok: false, people: `${sumDistrictPeople} vs ${totals.people}` });
   }
 
-  if (districts.length === 0 || totals.people === null) allOk = false;
+  // A report that says "Nil" everywhere is a valid no-impact day, not a parsing failure
+  const noImpact = districts.length === 0 && isNilReport;
+  if (noImpact) {
+    totals.people = 0;
+    totals.cropHa = 0;
+    totals.villages = 0;
+  } else if (districts.length === 0 || totals.people === null) {
+    allOk = false;
+  }
   return { reportDate, totals, ok: allOk, warnings, checks, districts };
 }
 
