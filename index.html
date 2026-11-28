@@ -3748,7 +3748,7 @@
       if (banner) banner.classList.toggle('hidden', navigator.onLine);
     }
 
-    function switchTab(tabName) {
+    function switchTab(tabName, fromHash = false) {
       ['dashboard', 'rivers', 'weather', 'alerts', 'about', 'sos'].forEach(v => {
         const el = document.getElementById(`view-${v}`);
         if (el) el.classList.toggle('hidden', v !== tabName);
@@ -3789,7 +3789,28 @@
         if (userLocation && select && select.querySelector('option[value="gps"]')) select.value = 'gps';
         loadWeatherForecast(select ? select.value : 'sonari');
       }
+
+      // Keep the address in step with the tab, so the link can be shared and Back works
+      if (!fromHash) {
+        const target = tabName === 'dashboard' ? location.pathname + location.search : '#' + tabName;
+        if (location.hash !== (tabName === 'dashboard' ? '' : '#' + tabName)) {
+          history.pushState(null, '', target);
+        }
+      }
     }
+
+    // Tabs that can be opened directly from a link such as /#sos
+    const TAB_NAMES = ['dashboard', 'rivers', 'weather', 'alerts', 'about', 'sos'];
+    function tabFromHash() {
+      const name = location.hash.slice(1);
+      return TAB_NAMES.includes(name) ? name : null;
+    }
+    // Registered on 'load' so the page is fully set up before the tab opens
+    window.addEventListener('load', () => {
+      const name = tabFromHash();
+      if (name && name !== 'dashboard') switchTab(name, true);
+    });
+    window.addEventListener('hashchange', () => switchTab(tabFromHash() || 'dashboard', true));
 
     function updateClock() {
       const formatted = new Date().toLocaleString('en-IN', {
